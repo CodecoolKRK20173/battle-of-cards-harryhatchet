@@ -7,8 +7,8 @@ public class Hand {
     private List<Card> cards;
     private int handPoints;
 
-    public Hand() {
-        this.cards = new ArrayList<>();
+    public Hand(List<Card> cards) {
+        this.cards = cards;
         this.handPoints = 100;
     }
 
@@ -16,9 +16,13 @@ public class Hand {
         this.cards.add(card);
     }
 
-    public void replaceCards(Card cardToDelete, Card cardToAdd) {
+    private void replaceCards(Card cardToDelete, Card cardToAdd) {
         this.cards.remove(cardToDelete);
         this.cards.add(cardToAdd);
+    }
+
+    public List<Card> getCards() {
+        return this.cards;
     }
 
     public static void main(String[] args) {
