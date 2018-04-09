@@ -16,6 +16,11 @@ public class Hand {
         this.cards.add(card);
     }
 
+    public void replaceCards(Card cardToDelete, Card cardToAdd) {
+        this.cards.remove(cardToDelete);
+        this.cards.add(cardToAdd);
+    }
+
     public static void main(String[] args) {
         System.out.println("Test main");
     }
