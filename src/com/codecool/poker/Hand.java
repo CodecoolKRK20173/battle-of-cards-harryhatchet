@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Hand {
-    List<Card> cards;
-    int handPoints;
+    private List<Card> cards;
+    private int handPoints;
 
     public Hand() {
         this.cards = new ArrayList<>();
