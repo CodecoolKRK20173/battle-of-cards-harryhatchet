@@ -1,1 +1,5 @@
+src/com/codecool/poker/Suit.java
+src/com/codecool/poker/Rank.java
+src/com/codecool/poker/Deck.java
 src/com/codecool/poker/Main.java
+src/com/codecool/poker/Card.java
