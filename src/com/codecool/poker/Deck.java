@@ -13,4 +13,8 @@ public class Deck {
             }
         }
     }
+
+    public void shuffle() {
+        Collections.shuffle(this.deck);
+    }
 }
