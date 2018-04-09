@@ -17,4 +17,24 @@ public class Deck {
     public void shuffle() {
         Collections.shuffle(this.deck);
     }
+
+    public List<Card> drawCards(int n) {
+        Random generator = new Random();
+        List<Card> drawnCards = new ArrayList<>();
+        int i = 0;
+
+        do {
+            int cardIndex = 0;
+            do {
+                cardIndex = generator.nextInt(52);
+            }
+            while (drawnCards.contains(this.deck.get(cardIndex)));
+            drawnCards.add(this.deck.get(cardIndex));
+
+            i++;
+        }
+        while (i <= n);
+
+        return drawnCards;
+    }
 }
