@@ -12,8 +12,8 @@ public class Hand {
         this.handPoints = 100;
     }
 
-    public addCard(Card card) {
-        this.handPoints.add(card);
+    public void addCard(Card card) {
+        this.cards.add(card);
     }
 
     public static void main(String[] args) {
