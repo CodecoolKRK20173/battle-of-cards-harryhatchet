@@ -1,10 +1,19 @@
 package com.codecool.poker;
-/**
- * Main
- */
+
+import java.util.*;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Test main");
+
+        Deck deck = new Deck();
+        deck.shuffle();
+        List<Card> drawnCards = new ArrayList<>();
+
+        drawnCards = deck.drawCards(5);
+
+        for (Card card : drawnCards) {
+            System.out.println(card.getRank().toString() + card.getSuit().toString());
+        }
     }
 }
