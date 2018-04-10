@@ -9,6 +9,8 @@ public class Table {
     private List<Player> players;
     private Deck deck;
 
+    private int pot;
+
     public Table() {
         initPlayers();
         this.deck = new Deck(); 
