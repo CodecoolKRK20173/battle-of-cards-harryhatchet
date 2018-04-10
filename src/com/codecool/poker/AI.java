@@ -72,6 +72,14 @@ public class AI extends Player {
         this.hand = hand;
     }
 
+    public void resetBet() {
+        this.bet = 0;
+    }
+
+    public void resetFold() {
+        this.isFold = false;
+    }
+
     public void takeAction() {
         if (isFold) {
             return;
