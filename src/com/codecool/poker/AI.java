@@ -12,6 +12,7 @@ public class AI extends Player {
     private boolean isSmallBlind = false;
     private boolean isBigBlind = false;
     private double chanceOfWinning = 0;
+    private int round = 1;
 
     public int getChips() {
         return chips;
@@ -116,18 +117,19 @@ public class AI extends Player {
             return true;
         }
 
-        return riskAHighCard();
+        return shouldRiskAHighCard();
     }
 
     public int placeBet() {
-        bet = 0;
-        if (isSmallBlind) {
-            bet = bet +1;
-        } else if (isBigBlind) {
-            bet = bet + 2;
+        int bet = 0;
+        if (isSmallBlind && round == 1) {
+            bet = 1;
+        } else if (isBigBlind && round == 1) {
+            bet = 2;
         } else {
-            bet = bet + customBet;
+            bet = chooseBet();
         }
+        round++;
         return bet;
     }
 }
