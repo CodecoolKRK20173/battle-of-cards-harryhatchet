@@ -17,6 +17,10 @@ public class HumanPlayer extends Player {
         chips += newChips;
     }
 
+    public void throwChips(int bet) {
+        chips -= bet;
+    }
+
     public int getChips() {
         return chips;
     }
@@ -34,28 +38,35 @@ public class HumanPlayer extends Player {
 
     // }
 
-    private void resetBet() {
+    public void resetBet() {
         this.bet = 0;
     }
 
-    private void resetFold() {
+    public void resetFold() {
         if (isFold == true) {
             isFold = false;
         }
     }
 
-    private int makeRaise (int smth) {
-        if (betDiff == 1) {
+    private int makeRaise (int playersRaise) {
+        if (table.getDiff() == 1) {
             minRaise = table.getMaxBet() + 2;
         } else {
-            minRaise = getMaxBet() + getDiff;
+            minRaise = table.getMaxBet() + table.getDiff();
         }
-        bet = minRaise + smth;
-        return raise;
+        bet = minRaise + playersRaise;
+        if (bet > getChips()) {
+            bet = getChips();
+        }
+        throwChips(bet);
+        return bet;
     }
+    
 
-    private void makeCall() {
+    private int makeCall() {
         bet = getMaxBet();
+        throwChips(bet);
+        return bet;
         }
 
     public int getBet() {
