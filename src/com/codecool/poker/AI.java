@@ -123,7 +123,7 @@ public class AI extends Player {
     }
 
     private boolean checkIfCloseToStrit() {
-        Iterator<E> handIterator = hand.getRankIterator();
+        Iterator<Integer> handIterator = hand.getRankIterator();
         int offByOne = 0;
         int previous = -1;
 
@@ -136,6 +136,33 @@ public class AI extends Player {
         }
 
         return offByOne == 4;
+    }
+
+    private boolean checkIfCloseToFlush() {
+        Iterator<String> handIterator = hand.getSuitIterator();
+        int hearths = 0;
+        int diamonds = 0;
+        int clubs = 0;
+        int spades = 0;
+
+        while (handIterator.hasNext()) {
+            String suit = handIterator.next();
+            switch(suit) {
+            case "h":
+                hearths++;
+                break;
+            case "d":
+                diamonds++;
+                break;
+            case "c":
+                clubs++;
+                break;
+            case "s":
+                spades++;
+                break;
+            }
+        }
+        return hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
     }
 
     public int placeBet() {
