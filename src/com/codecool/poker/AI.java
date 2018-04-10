@@ -15,6 +15,8 @@ public class AI extends Player {
     private boolean isBigBlind = false;
     private double chanceOfWinning = 0;
     private int round = 1;
+    private boolean closeToFlush = false;
+    private boolean closeToStrit = false;
 
     public int getChips() {
         return chips;
@@ -135,8 +137,8 @@ public class AI extends Player {
             previous = current;
         }
 
-        boolean closeToStrit = offByOne == 4;
-        if (closeToStrit) {
+        boolean almostStrit = offByOne == 4;
+        if (almostStrit) {
             int highestCardRank = getHighestCardRank();
             chanceOfWinning = 0.05 * (0.5 + 0.01 * highestCardRank);
             return true;
@@ -151,6 +153,7 @@ public class AI extends Player {
         int clubs = 0;
         int spades = 0;
         String mostCommonSuit;
+
         while (handIterator.hasNext()) {
             String suit = handIterator.next();
             switch (suit) {
@@ -173,8 +176,8 @@ public class AI extends Player {
             }
         }
 
-        boolean closeToFlush = hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
-        if (closeToFlush) {
+        boolean almostFlush = hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
+        if (almostFlush) {
             int highestCardRank = getHighestCardRank(mostCommonSuit);
             chanceOfWinning = 0.25 * (0.6 + 0.01 * highestCardRank);
             return true;
