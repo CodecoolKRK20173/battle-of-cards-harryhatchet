@@ -111,20 +111,14 @@ public class AI extends Player {
     }
 
     private boolean isCloseToHand() {
-        boolean closeToHand = checkIfCloseToFlush();
-        if (closeToHand) {
-            return true;
-        }
-
-        closeToHand = checkIfCloseToStrit();
-        if (closeToHand) {
-            return true;
-        }
-
-        return shouldRiskAHighCard();
+        chanceOfWinning = 0;
+        chanceOfWinning += addChanceForFlush();
+        chanceOfWinning += addChanceForStrit();
+        int numOfCardsToChange = getNumOfCardsToChange();
+        return makeADecision();
     }
 
-    private boolean checkIfCloseToStrit() {
+    private int addChanceForStrit() {
         Iterator<Integer> handIterator = hand.getRankIterator();
         int offByOne = 0;
         int previous = -1;
@@ -138,15 +132,16 @@ public class AI extends Player {
         }
 
         boolean almostStrit = offByOne == 4;
+        int chanceForStrit = 0;
         if (almostStrit) {
             int highestCardRank = getHighestCardRank();
-            chanceOfWinning = 0.05 * (0.5 + 0.01 * highestCardRank);
-            return true;
+            chanceForFlush += 0.17 * (0.5 + 0.01 * highestCardRank);
+            closeToStrit = true;
         }
-        return false;
+        return chanceForStrit;
     }
 
-    private boolean checkIfCloseToFlush() {
+    private int addChanceForFlush() {
         Iterator<String> handIterator = hand.getSuitIterator();
         int hearths = 0;
         int diamonds = 0;
@@ -177,12 +172,13 @@ public class AI extends Player {
         }
 
         boolean almostFlush = hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
+        int chanceForFlush = 0;
         if (almostFlush) {
             int highestCardRank = getHighestCardRank(mostCommonSuit);
-            chanceOfWinning = 0.25 * (0.6 + 0.01 * highestCardRank);
-            return true;
+            chanceForFlush += 0.25 * (0.6 + 0.01 * highestCardRank);
+            closeToFlush = true;
         }
-        return false;
+        return chanceForFlush;
     }
 
     private int getHighestCardRank(String suit) {
