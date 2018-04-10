@@ -162,7 +162,15 @@ public class AI extends Player {
                 break;
             }
         }
-        return hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
+
+        boolean closeToFlush = hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
+        if (closeToFlush) {
+            String mostCommonSuit = getMostCommonSuit();
+            int highestCardRank = getHighestCardRank(mostCommonSuit);
+            chanceOfWinning = 0.24 + 0.01 * highestCardRank;
+            return true;
+        }
+        return false;
     }
 
     public int placeBet() {
