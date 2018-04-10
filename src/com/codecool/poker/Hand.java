@@ -40,6 +40,16 @@ public class Hand {
         }
     }
 
+    public void addCards(List<Card> cardsToAdd) {
+        for(int i = 0; i < cardsToAdd.size(); i++) {
+            this.cards.add(cardsToAdd.get(i));
+        }
+    }
+
+    public void discard(int index) {
+        this.cards.remove(index));
+    }
+
     private Map<Integer, Integer> calculateCardsOccurrence() {
         Map<Integer, Integer> cardsOccurrence = new HashMap<>();
         Integer count;
@@ -134,7 +144,11 @@ public class Hand {
         return new SuitIterator(this);
     }
 
-    // private boolean isSameColor
+    private boolean isSameColor() {
+        Iterator itr = getSuitIterator();
+        String firstCardColor = 
+
+    }
 
     public static void main(String[] args) {
         System.out.println("Test main");
