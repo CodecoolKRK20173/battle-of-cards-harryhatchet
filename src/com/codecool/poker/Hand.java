@@ -83,7 +83,7 @@ public class Hand {
     }
 
     private int calculateHandPoints() {
-        if (isSeveralTheSameRank) {
+        if (isSeveralTheSameRank()) {
             return getRankPoints();
         } else if (isSameColor() && isInSequence() && isFirstAce()) {
             return 10;
@@ -96,6 +96,10 @@ public class Hand {
         } else {
             return 1;
         }
+    }
+
+    private boolean isSeveralTheSameRank() {
+        return this.cardsOccurrence.size() < this.cards.size();
     }
 
     public static void main(String[] args) {
