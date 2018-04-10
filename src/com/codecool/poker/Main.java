@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         Deck deck = new Deck();
-        System.out.println("s");
+        System.out.println("ss");
         deck.shuffle();
         List<Card> drawnCards = new ArrayList<>();
         Hand hand = new Hand(deck.drawCards(5));
