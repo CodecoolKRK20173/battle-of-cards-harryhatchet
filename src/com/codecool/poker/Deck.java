@@ -25,10 +25,11 @@ public class Deck {
         for (int i = 0; i < n; i++) {
             int cardIndex = i;
             do {
-                cardIndex = generator.nextInt(52);
+                cardIndex = generator.nextInt(52 - i);
             }
             while (drawnCards.contains(this.deck.get(cardIndex)));
             drawnCards.add(this.deck.get(cardIndex));
+            this.deck.remove(cardIndex);
         }
 
         return drawnCards;
