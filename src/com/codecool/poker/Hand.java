@@ -146,7 +146,14 @@ public class Hand {
 
     private boolean isSameColor() {
         Iterator itr = getSuitIterator();
-        String firstCardColor = 
+        String firstCardColor = cards.get(0).getSuit()).toString();
+
+        while(itr.hasNext()) {
+            if(!itr.next().equals(firstCardColor)) {
+                return false;
+            }
+        }
+        return true;
 
     }
 
