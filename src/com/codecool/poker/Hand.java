@@ -145,7 +145,7 @@ public class Hand {
     }
 
     private boolean isSameColor() {
-        Iterator itr = getSuitIterator();
+        Iterator<String> itr = getSuitIterator();
         String firstCardColor = itr.hasNext() ? itr.next() : null;
 
         while(itr.hasNext()) {
@@ -157,7 +157,7 @@ public class Hand {
     }
 
     private boolean isInSequence() {
-        Iterator itr = getRankIterator();
+        Iterator<Integer> itr = getRankIterator();
         int cardValue1 = itr.hasNext() ? itr.next() : 0;
         int cardValue2 = itr.hasNext() ? itr.next() : 0;
 
