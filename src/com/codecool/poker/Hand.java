@@ -82,6 +82,22 @@ public class Hand {
         this.cards = sortedCards;
     }
 
+    private Integer calculateHandPoints() {
+        if (isSeveralTheSameRank) {
+            return getRankPoints();
+        } else if (isSameColor() && isInSequence() && isFirstAce()) {
+            return 10;
+        } else if (isSameColor() && isInSequence()) {
+            return 9;
+        } else if (isSameColor()) {
+            return 6;
+        } else if (isInSequence()) {
+            return 5;
+        } else {
+            return 1;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("Test main");
     }
