@@ -1,10 +1,10 @@
 package com.codecool.poker;
 
-import Hand;
 
 public class HumanPlayer extends Player {
 
-    private Hand hand;
+    Hand hand = new Hand();
+
     private int chips=100;
     private int bet=0;
     private boolean isFold = false;

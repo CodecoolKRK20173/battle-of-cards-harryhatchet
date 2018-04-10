@@ -1,6 +1,5 @@
 package com.codecool.poker;
 
-import Hand;
 
 public abstract class Player {
 
@@ -9,6 +8,8 @@ public abstract class Player {
     public abstract void addChips(int newChips);
     public abstract Hand getHand();
     public abstract void setHand(Hand hand);
+    public abstract void resetBet();
+    public abstract void resetFold();
     public abstract int getBet();
     public abstract boolean placeBet();
     public abstract void fold();
