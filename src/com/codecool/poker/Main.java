@@ -8,7 +8,6 @@ public class Main {
 
         Deck deck = new Deck();
         System.out.println("ss");
-        deck.shuffle();
         List<Card> drawnCards = new ArrayList<>();
         Hand hand = new Hand(deck.drawCards(5));
         
