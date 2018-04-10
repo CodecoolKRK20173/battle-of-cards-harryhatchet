@@ -6,13 +6,19 @@ public abstract class Player {
 
     public abstract boolean getFold();
     public abstract int getChips();
-    public abstract int getBet();
+    public abstract void addChips(int newChips);
     public abstract Hand getHand();
-    public abstract void takeAction();
+    public abstract void setHand(Hand hand);
+    public abstract int getBet();
     public abstract boolean placeBet();
     public abstract void fold();
-    public abstract void switchDealer();
-    public abstract void switchSmallBlind();
-    public abstract void switchBigBlind();
+    public abstract void setDealer();
+    public abstract void setSmallBlind();
+    public abstract void setBigBlind();
+    public abstract void setUTG();
+    public abstract boolean getCurrentDealer();
+    public abstract boolean getCurrentSmallBlind();
+    public abstract boolean getCurrentBigBlind();
+    public abstract boolean getCurrentUTG();
 
 }
