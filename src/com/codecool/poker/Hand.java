@@ -95,21 +95,21 @@ public class Hand {
         this.cards = sortedCards;
     }
 
-    // private int calculateHandPoints() {
-    //     if (isSeveralTheSameRank()) {
-    //         return getRankPoints();
-    //     } else if (isSameColor() && isInSequence() && isFirstAce()) {
-    //         return 10;
-    //     } else if (isSameColor() && isInSequence()) {
-    //         return 9;
-    //     } else if (isSameColor()) {
-    //         return 6;
-    //     } else if (isInSequence()) {
-    //         return 5;
-    //     } else {
-    //         return 1;
-    //     }
-    // }
+    private int calculateHandPoints() {
+        if (isSeveralTheSameRank()) {
+            return getRankPoints();
+        } else if (isSameColor() && isInSequence() && isFirstAce()) {
+            return 10;
+        } else if (isSameColor() && isInSequence()) {
+            return 9;
+        } else if (isSameColor()) {
+            return 6;
+        } else if (isInSequence()) {
+            return 5;
+        } else {
+            return 1;
+        }
+    }
 
     private boolean isSeveralTheSameRank() {
         return this.cardsOccurrence.size() < this.cards.size();
@@ -164,7 +164,7 @@ public class Hand {
         while(itr.hasNext()) {
             cardValue2 = itr.next();
 
-            if(cardValue1 != cardValue2) {
+            if(cardValue1 - cardValue2 != 1) {
                 return false;
             }
 
