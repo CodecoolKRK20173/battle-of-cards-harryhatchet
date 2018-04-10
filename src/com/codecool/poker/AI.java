@@ -72,6 +72,19 @@ public class AI extends Player {
         this.hand = hand;
     }
 
+    public void takeAction() {
+        if (isFold) {
+            return;
+        }
+
+        boolean shouldFold = checkIfShouldFold();
+        if (shouldFold) {
+            fold();
+        } else {
+            placeBet();
+        }
+    }
+
     public int placeBet() {
         bet = 0;
         if (isSmallBlind) {
@@ -83,5 +96,4 @@ public class AI extends Player {
         }
         return bet;
     }
-
 }
