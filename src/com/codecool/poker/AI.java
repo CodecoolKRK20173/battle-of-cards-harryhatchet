@@ -147,7 +147,7 @@ public class AI extends Player {
 
         while (handIterator.hasNext()) {
             String suit = handIterator.next();
-            switch(suit) {
+            switch (suit) {
             case "h":
                 hearths++;
                 break;
