@@ -16,7 +16,7 @@ public class Hand {
         this.cards = cards;
         this.cardsOccurrence = calculateCardsOccurrence();
         sortCards();
-        // this.handPoints = calculateHandPoints();
+        this.handPoints = calculateHandPoints();
     }
 
     public List<Card> getCards() {
@@ -28,7 +28,7 @@ public class Hand {
     }
 
     private List<Integer> getSortedOccurValues() {
-        List<Integer> occurValues = (List) cardsOccurrence.values();
+        List<Integer> occurValues = new ArrayList<>(cardsOccurrence.values());
         Collections.sort(occurValues, Collections.reverseOrder());
         return occurValues;
     }
@@ -159,7 +159,7 @@ public class Hand {
     private boolean isInSequence() {
         Iterator<Integer> itr = getRankIterator();
         int cardValue1 = itr.hasNext() ? itr.next() : 0;
-        int cardValue2 = itr.hasNext() ? itr.next() : 0;
+        int cardValue2;
 
         while(itr.hasNext()) {
             cardValue2 = itr.next();
@@ -173,7 +173,9 @@ public class Hand {
         return true;
     }
 
-    public static void main(String[] args) {
-        System.out.println("Test main");
+    private boolean isFirstAce() {
+        Iterator<Integer> itr = getRankIterator();
+        return itr.next().equals(14);
     }
+
 }
