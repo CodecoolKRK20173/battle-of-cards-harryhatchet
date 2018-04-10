@@ -109,12 +109,12 @@ public class AI extends Player {
     }
 
     private boolean isCloseToHand() {
-        boolean closeToHand = checkIfCloseToStrit();
+        boolean closeToHand = checkIfCloseToFlush();
         if (closeToHand) {
             return true;
         }
 
-        closeToHand = checkIfCloseToFlush();
+        closeToHand = checkIfCloseToStrit();
         if (closeToHand) {
             return true;
         }
@@ -135,7 +135,13 @@ public class AI extends Player {
             previous = current;
         }
 
-        return offByOne == 4;
+        boolean closeToStrit = offByOne == 4;
+        if (closeToStrit) {
+            int highestCardRank = getHighestCardRank();
+            chanceOfWinning = 0.05 * (0.5 + 0.01 * highestCardRank);
+            return true;
+        }
+        return false;
     }
 
     private boolean checkIfCloseToFlush() {
@@ -170,7 +176,7 @@ public class AI extends Player {
         boolean closeToFlush = hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
         if (closeToFlush) {
             int highestCardRank = getHighestCardRank(mostCommonSuit);
-            chanceOfWinning = 0.24 + 0.01 * highestCardRank;
+            chanceOfWinning = 0.25 * (0.6 + 0.01 * highestCardRank);
             return true;
         }
         return false;
@@ -179,7 +185,17 @@ public class AI extends Player {
     private int getHighestCardRank(String suit) {
         int highestRank = -1;
         for (Card c : hand.getCards()) {
-            if (c.getRank() > highestRank && c.getSuit().equals("suit")) {
+            if (c.getRank() > highestRank && c.getSuit().equals(suit)) {
+                highestRank = c.getRank();
+            }
+        }
+        return highestRank;
+    }
+
+    private int getHighestCardRank() {
+        int highestRank = -1;
+        for (Card c : hand.getCards()) {
+            if (c.getRank() > highestRank) {
                 highestRank = c.getRank();
             }
         }
