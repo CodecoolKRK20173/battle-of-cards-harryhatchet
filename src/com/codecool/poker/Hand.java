@@ -2,17 +2,23 @@ package com.codecool.poker;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
 
 public class Hand {
     private List<Card> cards;
-    private int handPoints;
+    private Map<Integer, Integer> cardsOccurrence;
+    private Integer handPoints;
 
     public Hand(List<Card> cards) {
         this.cards = cards;
-        this.handPoints = 100;
+        this.cardsOccurrence = calculateCardsOccurrence();
         sortCards();
+    }
+
+    private List<Integer> getSortedOccurValues() {
+        return Collections.sort(cardsOccurrence.values(), Collections.reverseOrder()); 
     }
 
     public void addCard(Card card) {
@@ -48,7 +54,6 @@ public class Hand {
     }
 
     private void sortCards() {
-        Map<Integer, Integer> cardsOccurrence = calculateCardsOccurrence();
         List<Card> sortedCards = new ArrayList<>();
         Integer count1;
         Integer count2;
