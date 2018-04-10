@@ -9,32 +9,32 @@ import java.util.HashMap;
 public class Hand {
     private List<Card> cards;
     private Map<Integer, Integer> cardsOccurrence;
-    private Integer handPoints;
+    private int handPoints;
 
     public Hand(List<Card> cards) {
         this.cards = cards;
         this.cardsOccurrence = calculateCardsOccurrence();
         sortCards();
+        this.handPoints = calculateHandPoints();
+    }
+
+    public List<Card> getCards() {
+        return this.cards;
+    }
+
+    public int getHandPoints() {
+        return this.handPoints;
     }
 
     private List<Integer> getSortedOccurValues() {
         return Collections.sort(cardsOccurrence.values(), Collections.reverseOrder()); 
     }
 
-    public void addCard(Card card) {
-        this.cards.add(card);
-    }
-
-    private void replaceCards(List<Card> cardsToDelete, List<Card> cardsToAdd) {
+    public void replaceCards(List<Card> cardsToDelete, List<Card> cardsToAdd) {
         for(int i = 0; i < cardsToDelete.size(); i++) {
             this.cards.remove(cardsToDelete.get(i));
             this.cards.add(cardsToAdd.get(i));
         }
-        
-    }
-
-    public List<Card> getCards() {
-        return this.cards;
     }
 
     private Map<Integer, Integer> calculateCardsOccurrence() {
@@ -82,7 +82,7 @@ public class Hand {
         this.cards = sortedCards;
     }
 
-    private Integer calculateHandPoints() {
+    private int calculateHandPoints() {
         if (isSeveralTheSameRank) {
             return getRankPoints();
         } else if (isSameColor() && isInSequence() && isFirstAce()) {
