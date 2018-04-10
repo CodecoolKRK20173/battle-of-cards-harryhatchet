@@ -13,7 +13,18 @@ public class Table {
 
     public Table() {
         initPlayers();
-        this.deck = new Deck(); 
+    }
+
+    public initHand() {
+        int dealerIndex = players.indexOf(chooseDealer());
+        players.get(dealerIndex).setDealer();
+        players.get((dealerIndex + 1) % 4).setSmallBlind();
+        players.getSmallBlind().postSmallBlind();
+        players.get((dealerIndex + 2) % 4).setBigBlind();
+        players.getBigBlind().postBigBlind();
+        players.get((dealerIndex + 3) % 4).setUTG();
+        this.deck = new Deck();
+        dealCards();
     }
 
     private initPlayers() {
