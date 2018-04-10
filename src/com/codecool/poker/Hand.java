@@ -103,7 +103,7 @@ public class Hand {
     }
 
     private int getRankPoints() {
-        List<Integer> occurValues = hand.getSortedOccurValues();
+        List<Integer> occurValues = getSortedOccurValues();
         int maxOccurrence = occurValues.get(0);
         int secondMaxOccurrence = occurValues.get(1);
 
@@ -118,10 +118,9 @@ public class Hand {
         } else if (maxOccurrence == 2) {
             if (secondMaxOccurrence == 2) {
                 return 3;
-            } else {
-                return 2;
-            }
+            } 
         }
+        return 2;
     }
 
     public static void main(String[] args) {
