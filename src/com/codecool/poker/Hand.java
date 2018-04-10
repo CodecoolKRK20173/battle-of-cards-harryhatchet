@@ -47,7 +47,7 @@ public class Hand {
     }
 
     public void discard(int index) {
-        this.cards.remove(index));
+        this.cards.remove(index);
     }
 
     private Map<Integer, Integer> calculateCardsOccurrence() {
@@ -146,7 +146,7 @@ public class Hand {
 
     private boolean isSameColor() {
         Iterator itr = getSuitIterator();
-        String firstCardColor = cards.get(0).getSuit()).toString();
+        String firstCardColor = itr.hasNext() ? itr.next() : null;
 
         while(itr.hasNext()) {
             if(!itr.next().equals(firstCardColor)) {
@@ -154,7 +154,23 @@ public class Hand {
             }
         }
         return true;
+    }
 
+    private boolean isInSequence() {
+        Iterator itr = getRankIterator();
+        int cardValue1 = itr.hasNext() ? itr.next() : 0;
+        int cardValue2 = itr.hasNext() ? itr.next() : 0;
+
+        while(itr.hasNext()) {
+            cardValue2 = itr.next();
+
+            if(cardValue1 != cardValue2) {
+                return false;
+            }
+
+            cardValue1 = cardValue2;
+        }
+        return true;
     }
 
     public static void main(String[] args) {
