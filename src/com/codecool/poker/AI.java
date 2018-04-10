@@ -93,6 +93,16 @@ public class AI extends Player {
         }
     }
 
+    private boolean checkIfShouldFold() {
+        int points = hand.getHandPoints();
+
+        if (points > 0) {
+            return true;
+        } else {
+            return isCloseToHand();
+        }
+    }
+
     public int placeBet() {
         bet = 0;
         if (isSmallBlind) {
