@@ -1,5 +1,7 @@
 package com.codecool.poker;
 
+import java.util.Iterator;
+
 import Hand;
 
 public class AI extends Player {
@@ -118,6 +120,22 @@ public class AI extends Player {
         }
 
         return shouldRiskAHighCard();
+    }
+
+    private boolean checkIfCloseToStrit() {
+        Iterator<E> handIterator = hand.getRankIterator();
+        int offByOne = 0;
+        int previous = -1;
+
+        while (handIterator.hasNext()) {
+            int current = handIterator.next();
+            if (previous + 1 == current) {
+                offByOne++;
+            }
+            previous = current;
+        }
+
+        return offByOne == 4;
     }
 
     public int placeBet() {
