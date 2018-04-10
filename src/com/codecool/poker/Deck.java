@@ -7,6 +7,11 @@ public class Deck {
     private List<Card> deck = new ArrayList<>();
 
     public Deck() {
+        generateCards();
+        shuffle();
+    }
+
+    private generateCards() {
         for (Suit suit: Suit.values()) {
             for (Rank rank: Rank.values()) {
                 this.deck.add(new Card(rank, suit));
@@ -14,7 +19,7 @@ public class Deck {
         }
     }
 
-    public void shuffle() {
+    private void shuffle() {
         Collections.shuffle(this.deck);
     }
 
