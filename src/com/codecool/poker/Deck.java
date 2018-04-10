@@ -21,19 +21,15 @@ public class Deck {
     public List<Card> drawCards(int n) {
         Random generator = new Random();
         List<Card> drawnCards = new ArrayList<>();
-        int i = 0;
 
-        do {
-            int cardIndex = 0;
+        for (int i = 0; i < n; i++) {
+            int cardIndex = i;
             do {
                 cardIndex = generator.nextInt(52);
             }
             while (drawnCards.contains(this.deck.get(cardIndex)));
             drawnCards.add(this.deck.get(cardIndex));
-
-            i++;
         }
-        while (i <= n);
 
         return drawnCards;
     }
