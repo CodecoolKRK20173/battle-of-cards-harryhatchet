@@ -11,6 +11,7 @@ public class AI extends Player {
     private boolean isDealer = false;
     private boolean isSmallBlind = false;
     private boolean isBigBlind = false;
+    private double chanceOfWinning = 0;
 
     public int getChips() {
         return chips;
@@ -97,6 +98,7 @@ public class AI extends Player {
         int points = hand.getHandPoints();
 
         if (points > 0) {
+            this.chanceOfWinning = points / 10;
             return true;
         } else {
             return isCloseToHand();
