@@ -105,6 +105,20 @@ public class AI extends Player {
         }
     }
 
+    private boolean isCloseToHand() {
+        boolean closeToHand = checkIfCloseToStrit();
+        if (closeToHand) {
+            return true;
+        }
+
+        closeToHand = checkIfCloseToFlush();
+        if (closeToHand) {
+            return true;
+        }
+
+        return riskAHighCard();
+    }
+
     public int placeBet() {
         bet = 0;
         if (isSmallBlind) {
