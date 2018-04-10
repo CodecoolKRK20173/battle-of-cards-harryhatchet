@@ -102,6 +102,28 @@ public class Hand {
         return this.cardsOccurrence.size() < this.cards.size();
     }
 
+    private int getRankPoints() {
+        List<Integer> occurValues = hand.getSortedOccurValues();
+        int maxOccurrence = occurValues.get(0);
+        int secondMaxOccurrence = occurValues.get(1);
+
+        if (maxOccurrence == 4) {
+            return 8;
+        } else if (maxOccurrence == 3) {
+            if (secondMaxOccurrence == 2) {
+                return 7;
+            } else {
+                return 4;
+            }
+        } else if (maxOccurrence == 2) {
+            if (secondMaxOccurrence == 2) {
+                return 3;
+            } else {
+                return 2;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("Test main");
     }
