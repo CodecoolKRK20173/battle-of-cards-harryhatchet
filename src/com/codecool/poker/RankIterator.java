@@ -21,7 +21,7 @@ public class RankIterator implements Iterator<Integer> {
 
 	@Override
 	public Integer next() {
-		Integer number = Integer.parseInt(cards.get(index).getRank().toString());
+		Integer number = cards.get(index).getRank().getCardStrength();
 		index++;
 		return number;
 	}
