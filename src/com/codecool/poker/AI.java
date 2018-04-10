@@ -144,33 +144,46 @@ public class AI extends Player {
         int diamonds = 0;
         int clubs = 0;
         int spades = 0;
-
+        String mostCommonSuit;
         while (handIterator.hasNext()) {
             String suit = handIterator.next();
             switch (suit) {
             case "h":
                 hearths++;
+                mostCommonSuit = (hearths == 4 ? "h" : mostCommonSuit);
                 break;
             case "d":
                 diamonds++;
+                mostCommonSuit = (diamonds == 4 ? "d" : mostCommonSuit);
                 break;
             case "c":
                 clubs++;
+                mostCommonSuit = (clubs == 4 ? "c" : mostCommonSuit);
                 break;
             case "s":
                 spades++;
+                mostCommonSuit = (spades == 4 ? "s" : mostCommonSuit);
                 break;
             }
         }
 
         boolean closeToFlush = hearths == 4 || diamonds == 4 || clubs == 4 || spades == 4;
         if (closeToFlush) {
-            String mostCommonSuit = getMostCommonSuit();
             int highestCardRank = getHighestCardRank(mostCommonSuit);
             chanceOfWinning = 0.24 + 0.01 * highestCardRank;
             return true;
         }
         return false;
+    }
+
+    private int getHighestCardRank(String suit) {
+        int highestRank = -1;
+        for (Card c : hand.getCards()) {
+            if (c.getRank() > highestRank && c.getSuit().equals("suit")) {
+                highestRank = c.getRank();
+            }
+        }
+        return highestRank;
     }
 
     public int placeBet() {
