@@ -19,9 +19,12 @@ public class Hand {
         this.cards.add(card);
     }
 
-    private void replaceCards(Card cardToDelete, Card cardToAdd) {
-        this.cards.remove(cardToDelete);
-        this.cards.add(cardToAdd);
+    private void replaceCards(List<Card> cardsToDelete, List<Card> cardsToAdd) {
+        for(int i = 0; i < cardsToDelete.size(); i++) {
+            this.cards.remove(cardsToDelete.get(i));
+            this.cards.add(cardsToAdd.get(i));
+        }
+        
     }
 
     public List<Card> getCards() {
