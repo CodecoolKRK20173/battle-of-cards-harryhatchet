@@ -11,7 +11,7 @@ public class Deck {
         shuffle();
     }
 
-    private generateCards() {
+    private void generateCards() {
         for (Suit suit: Suit.values()) {
             for (Rank rank: Rank.values()) {
                 this.deck.add(new Card(rank, suit));
