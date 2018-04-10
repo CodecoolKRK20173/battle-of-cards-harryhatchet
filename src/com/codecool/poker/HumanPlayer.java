@@ -12,9 +12,9 @@ public class HumanPlayer extends Player {
     private boolean isSmallBlind = false;
     private boolean isBigBlind = false;
 
-    public HumanPlayer(Hand hand, int chips) {
+    public HumanPlayer(Hand hand) {
         this.hand = hand;
-        this.chips = chips;
+        this.chips = 100;
     }
 
     public int getChips() {
@@ -31,10 +31,6 @@ public class HumanPlayer extends Player {
 
     public void fold() {
         isFold = !isFold;
-    }
-
-    public void takeAction(int bet) {
-
     }
 
     public void switchDealer() {
