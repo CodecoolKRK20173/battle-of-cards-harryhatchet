@@ -121,19 +121,19 @@ public class HumanPlayer extends Player {
             }
             throwChips(bet);
             return bet;*/
-            minRaise = 10;
-            bet = minRaise + playersRaise;
-            if (bet > getChips()) {
-                bet = getChips();
+            minRaise = 4;
+            if (raise < minRaise) {
+                raise = minRaise;
             }
-            throwChips(bet);
-            return bet;
+            if (raise > getChips()) {
+                raise = getChips();
+            }
+            throwChips(raise);
+            return raise;
     }    
 
     public int makeCall() {
-        //bet = table.getMaxBet();
-        bet = 10;
-        throwChips(bet);
+        throwChips(this.table.getActiveBet());
         return bet;
         }
 
