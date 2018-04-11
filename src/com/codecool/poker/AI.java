@@ -18,6 +18,7 @@ public class AI extends Player {
     private boolean closeToStrit = false;
     private boolean bluff = false;
     private int numberOfCardsToChange = 0;
+    private boolean allIn = false;
 
     public AI(Table table) {
         this.table = table;
@@ -84,7 +85,7 @@ public class AI extends Player {
     }
 
     public void takeAction() {
-        if (isFold) {
+        if (isFold || allIn) {
             return;
         }
 
@@ -261,7 +262,7 @@ public class AI extends Player {
         return highestRank;
     }
 
-    public int placeBet() {
+    public void placeBet() {
         int bet = 0;
         if (isSmallBlind() && round == 1) {
             bet = 1;
@@ -271,7 +272,9 @@ public class AI extends Player {
             bet = chooseBet();
         }
         round++;
-        return bet;
+        this.chips -= bet;
+        this.bet += bet;
+        this.allIn = chips == 0;
     }
 
     private int chooseBet() {
@@ -289,5 +292,14 @@ public class AI extends Player {
                 call();
             }
         }
+    }
+
+    private int raise() {
+        // Go all IN
+        return chips - bet;
+    }
+
+    private int raise(double percentOfChipsToBet) {
+
     }
 }
