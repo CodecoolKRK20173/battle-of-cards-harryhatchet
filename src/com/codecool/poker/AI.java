@@ -11,12 +11,17 @@ public class AI extends Player {
     private boolean isFold = false;
     private int round = 1;
     private Position position = Position.UTG;
+    private Table table;
 
     private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
     private boolean bluff = false;
     private int numberOfCardsToChange = 0;
+
+    public AI(Table table) {
+        this.table = table;
+    }
 
     public int getChips() {
         return chips;
