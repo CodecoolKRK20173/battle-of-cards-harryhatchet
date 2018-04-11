@@ -73,28 +73,25 @@ public class HumanPlayer extends Player {
     }
 
     private int makeRaise (int playersRaise) {
-        while (playersRaise > getChips()) {
+        minRaise = table.getMaxBet() + table.getDiff();
+        bet = minRaise + playersRaise;
+
+        while (bet > getChips()) {                             // Excessive bet control
             System.out.println("Please choose avaliable size of bet");
             playersRaise = sc.nextInt();
         }
-            if (table.getDiff() == 1) {
-                minRaise = table.getMaxBet() + 2;
-            } else {
-                minRaise = table.getMaxBet() + table.getDiff();
-            }
-            bet = minRaise + playersRaise;
-            if (bet > getChips()) {
-                bet = getChips();
-            }
             throwChips(bet);
             return bet;
     }    
 
     private int makeCall() {
-        bet = table.getMaxBet();
-        throwChips(bet);
-        return bet;
+        if ((table.getMaxBet() - getBet()) > getChips() && getChips() > 0) {
+            bet = throwChips(getChips());
+        } else {
+            bet = throwChips(table.getMaxBet() - getBet());
         }
+        return bet;
+    }
 
     public int getBet() {
         return bet;
@@ -105,47 +102,35 @@ public class HumanPlayer extends Player {
     }
 
     public void setDealer() {
-        isDealer = true;
-        isSmallBlind = false;
-        isBigBlind = false;
-        isUTG = false;
+        this.position = Position.DEALER;
     }
 
     public void setSmallBlind() {
-        isDealer = false;
-        isSmallBlind = true;
-        isBigBlind = false;
-        isUTG = false;
+        this.position = Position.SMALL_BLIND;
     }
 
     public void setBigBlind() {
-        isDealer = false;
-        isSmallBlind = false;
-        isBigBlind = true;
-        isUTG = false;
+        this.position = Position.BIG_BLIND;
     }
 
     public void setUTG() {
-        isDealer = false;
-        isSmallBlind = false;
-        isBigBlind = false;
-        isUTG = true;
+        this.position = Position.UTG;
     }
 
-    public boolean getCurrentDealer() {
-        return isDealer;
+    public boolean isDealer() {
+        return position.equals(Position.DEALER);
     }
 
-    public boolean getCurrentSmallBlind() {
-        return isSmallBlind;
+    public boolean isSmallBlind() {
+        return position.equals(Position.SMALL_BLIND);
     }
 
-    public boolean getCurrentBigBlind() {
-        return isBigBlind;
+    public boolean isBigBlind() {
+        return position.equals(Position.BIG_BLIND);
     }
 
-    public boolean getCurrentUTG() {
-        return isUTG;
+    public boolean isUTG() {
+        return position.equals(Position.UTG);
     }
 
 }
