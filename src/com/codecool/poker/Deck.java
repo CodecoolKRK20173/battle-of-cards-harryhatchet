@@ -27,13 +27,13 @@ public class Deck {
         Random generator = new Random();
         List<Card> drawnCards = new ArrayList<>();
 
+        int cardIndex = 0;
         for (int i = 0; i < n; i++) {
-            int cardIndex = i;
-            do {
-                cardIndex = generator.nextInt(52);
-            }
-            while (drawnCards.contains(this.deck.get(cardIndex)));
+            cardIndex = generator.nextInt(this.deck.size() - i);
+            System.out.println("cardindex" + cardIndex);
+            System.out.println("deck size" + deck.size());
             drawnCards.add(this.deck.get(cardIndex));
+            this.deck.remove(cardIndex);
         }
 
         return drawnCards;

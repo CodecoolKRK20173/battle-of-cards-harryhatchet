@@ -15,8 +15,8 @@ public class Hand {
         sortCards();
     }
 
-    public void addCard(Card card) {
-        this.cards.add(card);
+    public void addCards(List<Card> cards) {
+        this.cards.addAll(cards);
     }
 
     private void replaceCards(Card cardToDelete, Card cardToAdd) {
