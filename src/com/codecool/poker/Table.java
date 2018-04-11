@@ -122,17 +122,20 @@ public class Table {
         return isTrue;
     }
 
-    public void playHand() {
-        initHand();
+    public void showCards() {
         for (Player player : getPlayers()) {
             System.out.println(player.getHand().toString());
         }
+    }
+
+    public void playHand() {
+        initHand();
+        showCards();
         playRound(1);
         if (activePlayers.size() > 1) {
             exchangeCards();
-            for (Player player : getPlayers()) {
-                System.out.println(player.getHand().toString());
-            }
+            showCards();
+            this.activeBet = 0;
             playRound(2);
         }
         //determineWinners();
