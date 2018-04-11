@@ -53,19 +53,19 @@ public class HumanPlayer extends Player {
         }
     }
 
-    public int removeCards() {
+    public int changeCards() {
         boolean[] cardStatus = {false, false, false, false, false};
         int cardToDissmiss;
         do {
-            System.out.println("Which cards do you wish to change?");
-            cardToDissmiss = sc.nextInt();
+            System.out.println("Choose cards to change or press 0 to quit");
+               cardToDissmiss = sc.nextInt();
             cardStatus[cardToDissmiss-1] = true;
         } while (cardToDissmiss == 0);
 
-
         int discard = 0;
         for (int i=4; i >= 0; i--) {
-            if (cardStatus[i] == true) {
+            if (cardStatus[i]) {
+                hand.discard(i);
                 discard++;
             }
         }
