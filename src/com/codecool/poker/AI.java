@@ -1,6 +1,7 @@
 package com.codecool.poker;
 
 import java.util.Iterator;
+import java.util.Random;
 
 public class AI extends Player {
 
@@ -14,6 +15,8 @@ public class AI extends Player {
     private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
+    private boolean bluff = false;
+    private int numberOfCardsToChange = 0;
 
     public int getChips() {
         return chips;
@@ -171,7 +174,7 @@ public class AI extends Player {
     }
 
     private double chanceForGoodDraw() {
-        
+
         int numOfCards = 0;
 
         if (closeToFlush || closeToStrit) {
@@ -185,7 +188,11 @@ public class AI extends Player {
             }
         }
 
-        return (1 - chanceForFail(numOfCards));
+        numberOfCardsToChange = numOfCards;
+
+        // 1 - chanceForFail gives us chance for success
+        // 0.1 is chance of winning for single pair 
+        return ((1 - chanceForFail(numOfCards)) * 0.1);
     }
 
     private double chanceForFail(int numOfCardsToChange) {
@@ -194,6 +201,33 @@ public class AI extends Player {
         }
         double percentChance = (47-((5 - numOfCardsToChange)*3))/47;
         return percentChance * chanceForFail(numOfCardsToChange - 1);
+    }
+
+    private boolean makeDecision() {
+
+        // AI goes in if has more than 20% chance of winning
+        if (chanceOfWinning > 0.2) {
+            return true;
+        }
+
+        Random generator = new Random();
+        
+        // AI goes in no matter how bad cards it has once in 50 takes
+        if (generator.nextInt(101) <= 2) {
+            bluff = true;
+            return true;
+        }
+
+        // AI randomly chooses to fold if chanceOfWinning is to small
+        // (lower than random double in range <0, 0.25>)
+        if (generator.nextDouble() / 4 > chanceOfWinning) {
+            return false;
+        }
+
+        int highestBet = 50; //table.getMaxBet(); #Not yet implemented
+
+        // AI goes in if it plays for less than (chanceOfWinning + random<0, 0.25>) percent of its chips
+        return (highestBet / (chips + bet) < generator.nextDouble() / 4 + chanceOfWinning);
     }
 
     private int getHighestCardRank(String suit) {
