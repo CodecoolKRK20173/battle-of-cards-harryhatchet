@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
+    Table table;
     Hand hand;
     Scanner sc = new Scanner(System.in);
 
