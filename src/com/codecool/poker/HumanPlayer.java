@@ -48,7 +48,7 @@ public class HumanPlayer extends Player {
     }
 
     public void resetFold() {
-        if (isFold == true) {
+        if (isFold == true && getChips() > 0) {
             isFold = false;
         }
     }
