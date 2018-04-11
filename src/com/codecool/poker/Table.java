@@ -9,6 +9,7 @@ public class Table {
     private List<Player> activePlayers;
     private Deck deck;
     private int activeBet;
+    private int previousBet;
 
     private int pot;
 
@@ -135,6 +136,7 @@ public class Table {
         if (activePlayers.size() > 1) {
             exchangeCards();
             showCards();
+            this.previousBet = 0;
             this.activeBet = 0;
             playRound(2);
         }
@@ -153,6 +155,7 @@ public class Table {
 
         do {
             this.pot += currentPlayer.makeAction();
+            this.previousBet = activeBet;
             this.activeBet = currentPlayer.getBet();
             if (currentPlayer.isFold()) {
                 this.activePlayers.remove(currentPlayer);
@@ -161,6 +164,11 @@ public class Table {
             System.out.println("POT: " + this.pot);
         }
         while (!isBettingFinished());
+    }
+
+    public int getDiff() {
+        int difference = activeBet - previousBet;
+        return difference;
     }
 
     private void exchangeCards() {
