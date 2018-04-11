@@ -6,14 +6,15 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-    Hand hand;
-    Table table;
+    private Hand hand;
+    private Table table;
     Scanner sc = new Scanner(System.in);
 
     private int chips=100;
     private int bet=0;
     private boolean isFold = false;
     private int minRaise;
+    private Position position = Position.UTG;
 
     public HumanPlayer() {
         this.table = table;
@@ -148,19 +149,20 @@ public class HumanPlayer extends Player {
 
     public int makeCall() {
         if ((table.getActiveBet() - getBet()) > getChips() && getChips() > 0) {
-            bet = throwChips(getChips());
+            throwChips(getChips());
+            return getChips();
         } else {
-            bet = throwChips(table.getActiveBet() - getBet());
+            throwChips(table.getActiveBet() - getBet());
+            return table.getActiveBet();
         }
-        return bet;
     }
 
     public int makeCheck(){
-        if (table.getMaxBet() == getBet()) {
+        if (table.getActiveBet() == getBet()) {
             return bet;
         }
-        return null;
-    }
+        return table.getActiveBet();
+        }
 
     public int getBet() {
         return bet;
