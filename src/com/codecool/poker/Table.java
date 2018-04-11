@@ -1,6 +1,5 @@
 package com.codecool.poker;
 
-<<<<<<< HEAD
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
@@ -13,9 +12,6 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
-=======
-import java.util.*;
->>>>>>> a28069644a15e0dc661293144bc8a60744850026
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +19,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Table extends Pane {
     
@@ -47,7 +44,7 @@ public class Table extends Pane {
         initPlayers();
         this.deck = new Deck();
         //deck = Card.createNewDeck();
-        iniHands();
+        initHands();
         deck.shuffle();
         List<Card> drawnCards = new ArrayList<>();
     }
@@ -137,7 +134,7 @@ public class Table extends Pane {
 
     private void dealCards() {
         for (Player player : this.players) {
-            player.setHand(new Hand(this.deck.drawCards(5)));
+            //layer.setHand(new Hand(this.deck.drawCards(5)));
         }
     }
 
