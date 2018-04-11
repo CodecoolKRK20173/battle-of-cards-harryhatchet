@@ -9,11 +9,11 @@ public class Main {
         Deck deck = new Deck();
         deck.shuffle();
         List<Card> drawnCards = new ArrayList<>();
-        Hand hand = new Hand(deck.drawCards(5));
+        /*Hand hand = new Hand(deck.drawCards(5));
         
 
         for (Card card : hand.getCards()) {
             System.out.println(card.getRank().toString() + card.getSuit().toString());
-        }
+        }*/
     }
 }
