@@ -325,4 +325,9 @@ public class AI extends Player {
             return this.chips;
         }
     }
+
+    public int changeCards() {
+        hand.discard(0);
+        return 1;
+    }
 }
