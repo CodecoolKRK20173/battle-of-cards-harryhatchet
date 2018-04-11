@@ -72,7 +72,7 @@ public class HumanPlayer extends Player {
         return discard;
     }
 
-    private int makeRaise (int playersRaise) {
+    int makeRaise (int playersRaise) {
         minRaise = table.getMaxBet() + table.getDiff();
         
         while ((minRaise + playersRaise) > getChips()) {                             // Excessive bet control
@@ -84,13 +84,20 @@ public class HumanPlayer extends Player {
         return bet;
     }    
 
-    private int makeCall() {
+    int makeCall() {
         if ((table.getMaxBet() - getBet()) > getChips() && getChips() > 0) {
             bet = throwChips(getChips());
         } else {
             bet = throwChips(table.getMaxBet() - getBet());
         }
         return bet;
+    }
+
+    int makeCheck(){
+        if (table.getMaxBet() == getBet()) {
+            return bet;
+        }
+        return null;
     }
 
     public int getBet() {
