@@ -199,7 +199,7 @@ public class AI extends Player {
     private int getHighestCardRank(String suit) {
         int highestRank = -1;
         for (Card c : hand.getCards()) {
-            if (c.getRank() > highestRank && c.getSuit().equals(suit)) {
+            if (c.getRank().getCardStrength() > highestRank && c.getSuit().equals(suit)) {
                 highestRank = c.getRank();
             }
         }
@@ -209,7 +209,7 @@ public class AI extends Player {
     private int getHighestCardRank() {
         int highestRank = -1;
         for (Card c : hand.getCards()) {
-            if (c.getRank() > highestRank) {
+            if (c.getRank().getCardStrength()  > highestRank) {
                 highestRank = c.getRank();
             }
         }
