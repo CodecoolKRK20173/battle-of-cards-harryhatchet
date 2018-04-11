@@ -16,7 +16,7 @@ public class HumanPlayer extends Player {
     private boolean isSmallBlind = false;
     private boolean isBigBlind = false;
     private boolean isUTG = false;
-    int minRaise;
+    private int minRaise;
 
     public void addChips(int newChips) {
         chips += newChips;
@@ -58,7 +58,7 @@ public class HumanPlayer extends Player {
         int cardToDissmiss;
         do {
             System.out.println("Choose cards to change or press 0 to quit");
-               cardToDissmiss = sc.nextInt();
+            cardToDissmiss = sc.nextInt();
             cardStatus[cardToDissmiss-1] = true;
         } while (cardToDissmiss == 0);
 
@@ -71,7 +71,6 @@ public class HumanPlayer extends Player {
         }
         return discard;
     }
-
 
     private int makeRaise (int playersRaise) {
         while (playersRaise > getChips()) {

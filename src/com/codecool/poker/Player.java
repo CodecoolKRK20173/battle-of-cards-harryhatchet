@@ -7,7 +7,6 @@ public abstract class Player {
 
     public abstract int getChips();
     public abstract void addChips(int newChips);
-    public abstract void throwChips(int bet);
 
     public abstract Hand getHand();
     public abstract void setHand(Hand hand);
@@ -16,8 +15,6 @@ public abstract class Player {
     public abstract void resetFold();
 
     public abstract int getBet();
-    public abstract int makeRaise();
-    public abstract int makeCall();
 
     public abstract void fold();
 
