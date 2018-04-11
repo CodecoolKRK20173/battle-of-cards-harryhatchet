@@ -10,13 +10,17 @@ import java.util.Iterator;
 public class Hand {
     private List<Card> cards;
     private Map<Integer, Integer> cardsOccurrence;
-    private int handPoints;
+    private HandPoints handPoints;
 
     public Hand(List<Card> cards) {
         this.cards = cards;
         this.cardsOccurrence = calculateCardsOccurrence();
         sortCards();
-        this.handPoints = calculateHandPoints();
+        this.handPoints = new HandPoints(this);
+    }
+
+    public Map<Integer, Integer> getCardsOccurrence() {
+        return this.cardsOccurrence;
     }
 
     public List<Card> getCards() {
@@ -24,13 +28,7 @@ public class Hand {
     }
 
     public int getHandPoints() {
-        return this.handPoints;
-    }
-
-    private List<Integer> getSortedOccurValues() {
-        List<Integer> occurValues = new ArrayList<>(cardsOccurrence.values());
-        Collections.sort(occurValues, Collections.reverseOrder());
-        return occurValues;
+        return this.handPoints.getHandPoints();
     }
 
     public void replaceCards(List<Card> cardsToDelete, List<Card> cardsToAdd) {
@@ -94,88 +92,4 @@ public class Hand {
         
         this.cards = sortedCards;
     }
-
-    private int calculateHandPoints() {
-        if (isSeveralTheSameRank()) {
-            return getRankPoints();
-        } else if (isSameColor() && isInSequence() && isFirstAce()) {
-            return 10;
-        } else if (isSameColor() && isInSequence()) {
-            return 9;
-        } else if (isSameColor()) {
-            return 6;
-        } else if (isInSequence()) {
-            return 5;
-        } else {
-            return 1;
-        }
-    }
-
-    private boolean isSeveralTheSameRank() {
-        return this.cardsOccurrence.size() < this.cards.size();
-    }
-
-    private int getRankPoints() {
-        List<Integer> occurValues = getSortedOccurValues();
-        int maxOccurrence = occurValues.get(0);
-        int secondMaxOccurrence = occurValues.get(1);
-
-        if (maxOccurrence == 4) {
-            return 8;
-        } else if (maxOccurrence == 3) {
-            if (secondMaxOccurrence == 2) {
-                return 7;
-            } else {
-                return 4;
-            }
-        } else if (maxOccurrence == 2) {
-            if (secondMaxOccurrence == 2) {
-                return 3;
-            } 
-        }
-        return 2;
-    }
-
-    public Iterator<Integer> getRankIterator() {
-        return new RankIterator(this);
-    }
-
-    public Iterator<String> getSuitIterator() {
-        return new SuitIterator(this);
-    }
-
-    private boolean isSameColor() {
-        Iterator<String> itr = getSuitIterator();
-        String firstCardColor = itr.hasNext() ? itr.next() : null;
-
-        while(itr.hasNext()) {
-            if(!itr.next().equals(firstCardColor)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isInSequence() {
-        Iterator<Integer> itr = getRankIterator();
-        int cardValue1 = itr.hasNext() ? itr.next() : 0;
-        int cardValue2;
-
-        while(itr.hasNext()) {
-            cardValue2 = itr.next();
-
-            if(cardValue1 - cardValue2 != 1) {
-                return false;
-            }
-
-            cardValue1 = cardValue2;
-        }
-        return true;
-    }
-
-    private boolean isFirstAce() {
-        Iterator<Integer> itr = getRankIterator();
-        return itr.next().equals(14);
-    }
-
 }
