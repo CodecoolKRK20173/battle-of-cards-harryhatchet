@@ -1,22 +1,35 @@
 package com.codecool.poker;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Hand {
-    private List<Card> cards;
+public class Hand extends Pane {
     private int handPoints;
+    private double cardGap;
+    private ObservableList<Card> cards = FXCollections.observableArrayList();
 
-    public Hand(List<Card> cards) {
-        this.cards = cards;
-        this.handPoints = 100;
-        sortCards();
+    public Hand(String name, double cardGap) {
+        //this.cards = cards;
+        this.cardGap = cardGap;        
+        this.handPoints = 100;   
+        //sortCards();
     }
 
     public void addCard(Card card) {
         this.cards.add(card);
+        //card.setContainingPile(this);
+        card.toFront();
+        layoutCard(card);
     }
 
     private void replaceCards(Card cardToDelete, Card cardToAdd) {
@@ -24,8 +37,12 @@ public class Hand {
         this.cards.add(cardToAdd);
     }
 
-    public List<Card> getCards() {
+    public ObservableList<Card> getCards() {
         return this.cards;
+    }
+
+    public double getCardGap() {
+        return cardGap;
     }
 
     private Map<Integer, Integer> calculateCardsOccurrence() {
@@ -46,7 +63,7 @@ public class Hand {
 
     private void sortCards() {
         Map<Integer, Integer> cardsOccurrence = calculateCardsOccurrence();
-        List<Card> sortedCards = new ArrayList<>();
+        ObservableList<Card> sortedCards = FXCollections.observableArrayList();
         Integer count1;
         Integer count2;
         
@@ -76,5 +93,22 @@ public class Hand {
 
     public static void main(String[] args) {
         System.out.println("Test main");
+    }
+
+    private void layoutCard(Card card) {
+        card.relocate(card.getLayoutX() + card.getTranslateX(), card.getLayoutY() + card.getTranslateY());
+        card.setTranslateX(0);
+        card.setTranslateY(0);
+        card.setLayoutX(getLayoutX());
+        card.setLayoutY(getLayoutY() + (cards.size() - 1) * cardGap);
+    }
+
+    public void setBlurredBackground() {
+        setPrefSize(Card.WIDTH, Card.HEIGHT);
+        BackgroundFill backgroundFill = new BackgroundFill(Color.gray(0.0, 0.2), null, null);
+        Background background = new Background(backgroundFill);
+        GaussianBlur gaussianBlur = new GaussianBlur(10);
+        setBackground(background);
+        setEffect(gaussianBlur);
     }
 }
