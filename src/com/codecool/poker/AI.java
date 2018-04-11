@@ -10,11 +10,10 @@ public class AI extends Player {
     private int chips = 100;
     private int bet;
     private boolean isFold = false;
-    private boolean isDealer = false;
-    private boolean isSmallBlind = false;
-    private boolean isBigBlind = false;
-    private double chanceOfWinning = 0;
     private int round = 1;
+    private Position position = Position.UTG;
+
+    private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
 
@@ -39,39 +38,31 @@ public class AI extends Player {
     }
 
     public void setDealer() {
-        isDealer = true;
-        isSmallBlind = false;
-        isBigBlind = false;
+        this.position = Position.DEALER;
     }
 
     public void setSmallBlind() {
-        isDealer = true;
-        isSmallBlind = false;
-        isBigBlind = false;
+        this.position = Position.SMALL_BLIND;
     }
 
     public void setBigBlind() {
-        isDealer = true;
-        isSmallBlind = false;
-        isBigBlind = false;
+        this.position = Position.BIG_BLIND;
     }
 
     public void setUTG() {
-        isDealer = false;
-        isSmallBlind = false;
-        isBigBlind = false;
+        this.position = Position.UTG;
     }
 
-    public boolean isCurrentDealer() {
-        return isDealer;
+    public boolean isDealer() {
+        return position.equals(Position.DEALER);
     }
 
-    public boolean isCurrentSmallBlind() {
-        return isSmallBlind;
+    public boolean isSmallBlind() {
+        return position.equals(Position.SMALL_BLIND);
     }
 
-    public boolean isCurrentBigBlind() {
-        return isBigBlind;
+    public boolean isBigBlind() {
+        return position.equals(Position.BIG_BLIND);
     }
 
     public void setHand(Hand hand) {

@@ -15,4 +15,8 @@ public abstract class Player {
     public abstract void switchSmallBlind();
     public abstract void switchBigBlind();
 
+    public enum Position {
+        DEALER, SMALL_BLIND, BIG_BLIND, UTG;
+    }
+
 }
