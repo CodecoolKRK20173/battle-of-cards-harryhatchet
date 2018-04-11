@@ -19,12 +19,17 @@ public class HumanPlayer extends Player {
     private boolean isUTG = false;
     int minRaise;
 
+    public HumanPlayer(Table table) {
+        this.table = table;
+    }
+
     public void addChips(int newChips) {
-        chips += newChips;
+        this.chips += newChips;
     }
 
     public void throwChips(int bet) {
-        chips -= bet;
+        this.chips -= bet;
+        this.bet = bet;
     }
 
     public int getChips() {
@@ -53,9 +58,7 @@ public class HumanPlayer extends Player {
     }
 
     public void resetFold() {
-        if (isFold == true) {
-            isFold = false;
-        }
+        isFold = false;
     }
 
     public int changeCards() {
@@ -78,11 +81,11 @@ public class HumanPlayer extends Player {
     }
 
     public void postSmallBlind() {
-        this.chips -= 1;
+        throwChips(1);
     }
 
     public void postBigBlind() {
-        this.chips -= 2;
+        throwChips(2);
     }
 
     public int makeAction() {
