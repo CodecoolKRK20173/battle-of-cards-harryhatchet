@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-    Hand hand = new Hand(cards);
+    Hand hand;
     Scanner sc = new Scanner(System.in);
 
     private int chips=100;
@@ -47,6 +47,10 @@ public class HumanPlayer extends Player {
         this.bet = 0;
     }
 
+    public boolean isFold() {
+        return this.isFold;
+    }
+
     public void resetFold() {
         if (isFold == true) {
             isFold = false;
@@ -58,26 +62,48 @@ public class HumanPlayer extends Player {
         int cardToDissmiss;
         do {
             System.out.println("Choose cards to change or press 0 to quit");
-               cardToDissmiss = sc.nextInt();
+            cardToDissmiss = sc.nextInt();
             cardStatus[cardToDissmiss-1] = true;
         } while (cardToDissmiss == 0);
 
         int discard = 0;
         for (int i=4; i >= 0; i--) {
             if (cardStatus[i]) {
-                hand.discard(i);
+                hand.getCards().remove(i);
                 discard++;
             }
         }
         return discard;
     }
 
+    public void postSmallBlind() {
+        this.chips -= 1;
+    }
 
-    private int makeRaise (int playersRaise) {
-        while (playersRaise > getChips()) {
-            System.out.println("Please choose avaliable size of bet");
-            playersRaise = sc.nextInt();
+    public void postBigBlind() {
+        this.chips -= 2;
+    }
+
+    public int makeAction() {
+        System.out.println("Choose your action: ");
+        String action = sc.next();
+        switch (action) {
+            case "fold":
+                fold();
+                return 0;
+            case "call":
+                return makeCall();
+            case "raise":
+                return makeRaise(1000);
         }
+        return 1;
+    }
+
+    public int makeRaise (int playersRaise) {
+        while (playersRaise > getChips()) {
+            System.out.println("Please choose available size of bet");
+            playersRaise = sc.nextInt();
+        }/*
             if (table.getDiff() == 1) {
                 minRaise = table.getMaxBet() + 2;
             } else {
@@ -88,11 +114,19 @@ public class HumanPlayer extends Player {
                 bet = getChips();
             }
             throwChips(bet);
+            return bet;*/
+            minRaise = 10;
+            bet = minRaise + playersRaise;
+            if (bet > getChips()) {
+                bet = getChips();
+            }
+            throwChips(bet);
             return bet;
     }    
 
-    private int makeCall() {
-        bet = table.getMaxBet();
+    public int makeCall() {
+        //bet = table.getMaxBet();
+        bet = 10;
         throwChips(bet);
         return bet;
         }
@@ -133,20 +167,19 @@ public class HumanPlayer extends Player {
         isUTG = true;
     }
 
-    public boolean getCurrentDealer() {
-        return isDealer;
+    public boolean isDealer() {
+        return this.isDealer;
     }
 
-    public boolean getCurrentSmallBlind() {
-        return isSmallBlind;
+    public boolean isSmallBlind() {
+        return this.isSmallBlind;
     }
 
-    public boolean getCurrentBigBlind() {
-        return isBigBlind;
+    public boolean isBigBlind() {
+        return this.isBigBlind;
     }
 
-    public boolean getCurrentUTG() {
-        return isUTG;
+    public boolean isUTG() {
+        return this.isUTG;
     }
-
 }

@@ -5,15 +5,9 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        Table table = new Table();
 
-        Deck deck = new Deck();
-        System.out.println("ss");
-        List<Card> drawnCards = new ArrayList<>();
-        Hand hand = new Hand(deck.drawCards(5));
-        
+        table.playHand();
 
-        for (Card card : hand.getCards()) {
-            System.out.println(card.getRank().toString() + card.getSuit().toString());
-        }
     }
 }

@@ -26,7 +26,9 @@ public class Table {
         int smallBlindIndex = (dealerIndex + 1) % NUM_OF_PLAYERS;
         Player smallBlind = players.get(smallBlindIndex);
         smallBlind.setSmallBlind();
+        this.pot += 1;
         smallBlind.postSmallBlind();
+        this.pot += 2;
 
         int bigBlindIndex = (dealerIndex + 2) % NUM_OF_PLAYERS;
         Player bigBlind = players.get(bigBlindIndex);
@@ -121,9 +123,15 @@ public class Table {
 
     public void playHand() {
         initHand();
+        for (Player player : getPlayers()) {
+            System.out.println(player.getHand().toString());
+        }
         playRound(1);
         if (activePlayers.size() > 1) {
             exchangeCards();
+            for (Player player : getPlayers()) {
+                System.out.println(player.getHand().toString());
+            }
             playRound(2);
         }
         //determineWinners();
@@ -140,7 +148,7 @@ public class Table {
         }
 
         do {
-            currentPlayer.makeAction();
+            this.pot += currentPlayer.makeAction();
             if (currentPlayer.isFold()) {
                 this.activePlayers.remove(currentPlayer);
             }
@@ -151,10 +159,17 @@ public class Table {
 
     private void exchangeCards() {
         for (Player player : activePlayers) {
-            //to jest dobre int numOfCardsToExchange = player.changeCards();
-            int numOfCardsToExchange = 2;
+            int numOfCardsToExchange = player.changeCards();
             List<Card> newCards = deck.drawCards(numOfCardsToExchange);
             player.getHand().addCards(newCards);
         }
+    }
+
+    public int getPot() {
+        return this.pot;
+    }
+
+    public List<Player> getPlayers() {
+        return this.players;
     }
 }

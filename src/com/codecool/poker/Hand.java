@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.StringBuilder;
 
 public class Hand {
     private List<Card> cards;
@@ -74,7 +75,13 @@ public class Hand {
         this.cards = sortedCards;
     }
 
-    public static void main(String[] args) {
-        System.out.println("Test main");
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (Card card : this.cards) {
+            output.append(card.toString());
+            output.append(" ");
+        }
+        return output.toString();
     }
 }

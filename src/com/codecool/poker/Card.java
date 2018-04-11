@@ -17,4 +17,10 @@ public class Card {
     public Suit getSuit() {
         return this.suit;
     }
+
+    @Override
+    public String toString() {
+        String output = this.rank.toString() + this.suit.toString();
+        return output;
+    }
 }
