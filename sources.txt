@@ -1,9 +1,12 @@
+src/com/codecool/poker/HandComparator.java
 src/com/codecool/poker/Suit.java
 src/com/codecool/poker/Rank.java
 src/com/codecool/poker/Table.java
 src/com/codecool/poker/HumanPlayer.java
 src/com/codecool/poker/Deck.java
+src/com/codecool/poker/RankIterator.java
 src/com/codecool/poker/Hand.java
 src/com/codecool/poker/Main.java
+src/com/codecool/poker/SuitIterator.java
 src/com/codecool/poker/Card.java
 src/com/codecool/poker/Player.java
