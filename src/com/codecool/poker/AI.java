@@ -102,18 +102,19 @@ public class AI extends Player {
 
         if (points > 0) {
             this.chanceOfWinning = points / 10;
-            return true;
+            return false;
         } else {
-            return isCloseToHand();
+            return ifShouldNotPlay();
         }
     }
 
-    private boolean isCloseToHand() {
+    private boolean ifShouldNotPlay() {
         chanceOfWinning = 0;
         chanceOfWinning += addChanceForFlush();
         chanceOfWinning += addChanceForStrit();
         chanceOfWinning += chanceForGoodDraw();
-        return makeDecision();
+        boolean wantsToPlay =  makeDecision();
+        return !wantsToPlay;
     }
 
     private double addChanceForStrit() {
@@ -287,7 +288,7 @@ public class AI extends Player {
             if (highestBet == 0 && chanceOfWinning < 0.1) {
                 bet = 0;
             } else if (highestBet / (chips + bet) < (chips + bet) * chanceOfWinning) {
-                bet = raise((chips + bet) * chanceOfWinning);
+                bet = raise((int)((chips + bet) * chanceOfWinning));
             } else {
                 call();
             }
@@ -296,10 +297,22 @@ public class AI extends Player {
 
     private int raise() {
         // Go all IN
-        return chips - bet;
+        return this.chips - this.bet;
     }
 
-    private int raise(double percentOfChipsToBet) {
+    private int raise(int goalNumOfChips) {
 
+        Random generator = new Random();
+        int minRaisedBet = table.getMaxBet() + table.getDiff();
+        if (minRaisedBet > this.chips + this.bet) {
+            return this.chips - this.bet;
+        } else {
+            int increasedBet = goalNumOfChips + generator.nextInt(10);
+            if (increasedBet > this.chips + this.bet) {
+                return goalNumOfChips - this.chips;
+            } else {
+                return increasedBet - this.chips;
+            }
+        }
     }
 }
