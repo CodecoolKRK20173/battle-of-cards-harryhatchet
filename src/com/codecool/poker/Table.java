@@ -153,10 +153,12 @@ public class Table {
 
         do {
             this.pot += currentPlayer.makeAction();
+            this.activeBet = currentPlayer.getBet();
             if (currentPlayer.isFold()) {
                 this.activePlayers.remove(currentPlayer);
             }
             currentPlayer = getNextPlayer(currentPlayer);
+            System.out.println("POT: " + this.pot);
         }
         while (!isBettingFinished());
     }
@@ -171,6 +173,10 @@ public class Table {
 
     public int getPot() {
         return this.pot;
+    }
+
+    public int getActiveBet() {
+        return this.activeBet;
     }
 
     public List<Player> getPlayers() {
