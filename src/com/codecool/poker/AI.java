@@ -188,6 +188,14 @@ public class AI extends Player {
         return (1 - chanceForFail(numOfCards));
     }
 
+    private double chanceForFail(int numOfCardsToChange) {
+        if (numOfCardsToChange == 0) {
+            return 1.0;
+        }
+        double percentChance = (47-((5 - numOfCardsToChange)*3))/47;
+        return percentChance * chanceForFail(numOfCardsToChange - 1);
+    }
+
     private int getHighestCardRank(String suit) {
         int highestRank = -1;
         for (Card c : hand.getCards()) {
