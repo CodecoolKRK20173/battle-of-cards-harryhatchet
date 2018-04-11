@@ -29,8 +29,8 @@ public class Hand implements Comparable<Hand> {
         return this.cards;
     }
 
-    public int getHandPoints() {
-        return this.handPoints.getHandPoints();
+    public HandPoints getHandPoints() {
+        return this.handPoints;
     }
 
     public void replaceCards(List<Card> cardsToDelete, List<Card> cardsToAdd) {
@@ -54,6 +54,7 @@ public class Hand implements Comparable<Hand> {
         Map<Integer, Integer> cardsOccurrence = new HashMap<>();
         Integer count;
         Integer strength;
+        
         for (Card card : cards) {
             strength = card.getRank().getCardStrength();
             if (cardsOccurrence.containsKey(strength)) {
@@ -108,15 +109,16 @@ public class Hand implements Comparable<Hand> {
     @Override
     public int compareTo(Hand other) {
         List<Card> cards2 = other.getCards();
-        int result;
+        int result = handPoints.compareTo(other.getHandPoints());
 
-        for(int i = 0; i < cards.size(); i++) {
-            result = cards.get(i).compareTo(cards2.get(i));
-
-            if(result != 0) {
-                return result;
+        if (result == 0) {
+            for (int i = 0; i < cards.size(); i++) {
+                result = cards.get(i).compareTo(cards2.get(i));
+                if (result != 0) {
+                    return result;
+                }
             }
         }
-        return 0;
+        return result;
     }
 }

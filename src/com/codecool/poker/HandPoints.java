@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class HandPoints {
+public class HandPoints implements Comparable<HandPoints> {
     private Hand hand;
     private String name;
     private int points;
@@ -110,4 +110,8 @@ public class HandPoints {
         return itr.next().equals(14);
     }
 
+    @Override
+    public int compareTo(HandPoints other) {
+        return points - other.getHandPoints();
+    }
 }

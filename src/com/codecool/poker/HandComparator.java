@@ -22,21 +22,13 @@ public class HandComparator {
         List<Hand> theBestHand = new ArrayList<>();
         Hand maxHand = hands.get(0);
 
-        for(Hand hand: hands) {
-            if(hand.getHandPoints() > maxHand.getHandPoints()) {
+        for (Hand hand : hands) {
+            if (hand.compareTo(maxHand) > 0) {
                 theBestHand.clear();
                 theBestHand.add(hand);
                 maxHand = hand;
-            } else if(hand.getHandPoints() == maxHand.getHandPoints()) {
-                
-                if(hand.compareTo(maxHand) > 0) {
-                    theBestHand.clear();
-                    theBestHand.add(hand);
-                    maxHand = hand;
-                } else if(hand.compareTo(maxHand) == 0) {
-                    theBestHand.add(hand);
-                }
-                
+            } else if (hand.compareTo(maxHand) >= 0) {
+                theBestHand.add(hand);
             }
         }
 
