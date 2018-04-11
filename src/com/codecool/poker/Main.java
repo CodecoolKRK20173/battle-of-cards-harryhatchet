@@ -5,6 +5,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        Table table = new Table();
 
        
         List<Card> drawnCards = new ArrayList<>();
@@ -24,5 +25,7 @@ public class Main {
             System.out.println(card.getRank().toString() + card.getSuit().toString());
         }
         System.out.println(hand1.compareTo(hand2));
+        table.playHand();
+
     }
 }

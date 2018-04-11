@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.StringBuilder;
 import java.util.Iterator;
 import java.lang.Comparable;
 
@@ -88,12 +89,22 @@ public class Hand implements Comparable<Hand> {
             }
             if (!sortedCards.contains(card)) {
                 sortedCards.add(card);
-            }
+            }  
         }
-
+        
         this.cards = sortedCards;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (Card card : this.cards) {
+            output.append(card.toString());
+            output.append(" ");
+        }
+        return output.toString();
+    }
+    
     @Override
     public int compareTo(Hand other) {
         List<Card> cards2 = other.getCards();
