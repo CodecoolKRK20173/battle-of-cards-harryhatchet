@@ -95,11 +95,17 @@ public class Hand implements Comparable<Hand> {
     }
 
     @Override
-    public int compareTo(Hand otherHand) {
+    public int compareTo(Hand other) {
+        List<Card> cards2 = other.getCards();
+        int result;
 
-    }
-    
-    private boolean equals(Hand otherHand) {
+        for(int i = 0; i < cards.size(); i++) {
+            result = cards.get(i).compareTo(cards2.get(i));
 
+            if(result != 0) {
+                return result;
+            }
+        }
+        return 0;
     }
 }
