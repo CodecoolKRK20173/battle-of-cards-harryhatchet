@@ -16,6 +16,7 @@ public abstract class Player {
     public abstract void setUTG();
 
     public abstract void addChips(int newChips);
+    public abstract int changeCards();
     public abstract void resetBet();
     public abstract void resetFold();
 
