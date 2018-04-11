@@ -32,6 +32,10 @@ public class Hand extends Pane {
         layoutCard(card);
     }
 
+    public void addCards(List<Card> cards) {
+        this.cards.addAll(cards);
+    }
+
     private void replaceCards(Card cardToDelete, Card cardToAdd) {
         this.cards.remove(cardToDelete);
         this.cards.add(cardToAdd);
