@@ -98,15 +98,17 @@ public class HumanPlayer extends Player {
             case "call":
                 return makeCall();
             case "raise":
-                return makeRaise(1000);
+                System.out.println("Choose raise size: ");
+                int raiseSize = sc.nextInt();
+                return makeRaise(raiseSize);
         }
         return 1;
     }
 
-    public int makeRaise (int playersRaise) {
-        while (playersRaise > getChips()) {
+    public int makeRaise (int raise) {
+        while (raise > getChips()) {
             System.out.println("Please choose available size of bet");
-            playersRaise = sc.nextInt();
+            raise = sc.nextInt();
         }/*
             if (table.getDiff() == 1) {
                 minRaise = table.getMaxBet() + 2;
