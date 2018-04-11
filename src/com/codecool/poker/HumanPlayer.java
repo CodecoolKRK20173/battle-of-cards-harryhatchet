@@ -74,14 +74,14 @@ public class HumanPlayer extends Player {
 
     private int makeRaise (int playersRaise) {
         minRaise = table.getMaxBet() + table.getDiff();
-        bet = minRaise + playersRaise;
-
-        while (bet > getChips()) {                             // Excessive bet control
+        
+        while ((minRaise + playersRaise) > getChips()) {                             // Excessive bet control
             System.out.println("Please choose avaliable size of bet");
             playersRaise = sc.nextInt();
         }
-            throwChips(bet);
-            return bet;
+        bet = minRaise + playersRaise;
+        throwChips(bet);
+        return bet;
     }    
 
     private int makeCall() {
