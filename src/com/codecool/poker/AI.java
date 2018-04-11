@@ -2,8 +2,6 @@ package com.codecool.poker;
 
 import java.util.Iterator;
 
-import Hand;
-
 public class AI extends Player {
 
     private Hand hand;
