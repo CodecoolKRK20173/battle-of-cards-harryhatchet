@@ -218,6 +218,12 @@ public class AI extends Player {
             return true;
         }
 
+        // AI goes bluffs if it has chanceOfWinning < 5% once in 50 takes
+        if (chanceOfWinning < 0.05 && generator.nextInt(101) <= 2) {
+            bluff = true;
+            return true;
+        }
+
         // AI randomly chooses to fold if chanceOfWinning is to small
         // (lower than random double in range <0, 0.25>)
         if (generator.nextDouble() / 4 > chanceOfWinning) {
@@ -252,14 +258,31 @@ public class AI extends Player {
 
     public int placeBet() {
         int bet = 0;
-        if (isSmallBlind && round == 1) {
+        if (isSmallBlind() && round == 1) {
             bet = 1;
-        } else if (isBigBlind && round == 1) {
+        } else if (isBigBlind() && round == 1) {
             bet = 2;
         } else {
             bet = chooseBet();
         }
         round++;
         return bet;
+    }
+
+    private int chooseBet() {
+        int bet;
+        int highestBet = 50; //table.getMaxBet(); #Not yet implemented
+        Random generator = new Random();
+        if (bluff) {
+            bet = raise();
+        } else {
+            if (highestBet == 0 && chanceOfWinning < 0.1) {
+                bet = 0;
+            } else if (highestBet / (chips + bet) < (chips + bet) * chanceOfWinning) {
+                bet = raise((chips + bet) * chanceOfWinning);
+            } else {
+                call();
+            }
+        }
     }
 }
