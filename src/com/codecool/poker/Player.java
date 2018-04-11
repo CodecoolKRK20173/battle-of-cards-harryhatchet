@@ -3,13 +3,25 @@ package com.codecool.poker;
 
 public abstract class Player {
 
-
-    public abstract int getBet();
-    public abstract boolean getFold();
     public abstract int getChips();
     public abstract Hand getHand();
     
     public abstract void setHand(Hand hand);
+
+    public abstract void resetBet();
+    public abstract void resetFold();
+
+    public abstract void postSmallBlind();
+    public abstract void postBigBlind();
+    public abstract int getBet();
+    public abstract int makeAction();
+    public abstract int makeRaise(int playersRaise);
+    public abstract int makeCall();
+    public abstract int makeCheck();
+
+    public abstract boolean isFold();
+    public abstract void fold();
+
     public abstract void setDealer();
     public abstract void setSmallBlind();
     public abstract void setBigBlind();
@@ -17,8 +29,6 @@ public abstract class Player {
 
     public abstract void addChips(int newChips);
     public abstract int changeCards();
-    public abstract void resetBet();
-    public abstract void resetFold();
 
     public abstract boolean isDealer();
     public abstract boolean isSmallBlind();

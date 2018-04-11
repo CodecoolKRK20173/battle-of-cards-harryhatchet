@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.StringBuilder;
 import java.util.Iterator;
 
 public class Hand {
@@ -17,6 +18,10 @@ public class Hand {
         this.cardsOccurrence = calculateCardsOccurrence();
         sortCards();
         this.handPoints = calculateHandPoints();
+    }
+
+    public void addCards(List<Card> cards) {
+        this.cards.addAll(cards);
     }
 
     public List<Card> getCards() {
@@ -36,12 +41,6 @@ public class Hand {
     public void replaceCards(List<Card> cardsToDelete, List<Card> cardsToAdd) {
         for(int i = 0; i < cardsToDelete.size(); i++) {
             this.cards.remove(cardsToDelete.get(i));
-            this.cards.add(cardsToAdd.get(i));
-        }
-    }
-
-    public void addCards(List<Card> cardsToAdd) {
-        for(int i = 0; i < cardsToAdd.size(); i++) {
             this.cards.add(cardsToAdd.get(i));
         }
     }
@@ -95,6 +94,16 @@ public class Hand {
         this.cards = sortedCards;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (Card card : this.cards) {
+            output.append(card.toString());
+            output.append(" ");
+        }
+        return output.toString();
+    }
+    
     private int calculateHandPoints() {
         if (isSeveralTheSameRank()) {
             return getRankPoints();

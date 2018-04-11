@@ -6,17 +6,31 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-    public HumanPlayer() {
-        this.table = table;
-    }
-
-    Hand hand = new Hand(cards);
+    Hand hand;
+    Table table;
     Scanner sc = new Scanner(System.in);
 
     private int chips=100;
     private int bet=0;
     private boolean isFold = false;
     private int minRaise;
+
+    public HumanPlayer() {
+        this.table = table;
+    }
+
+    public HumanPlayer(Table table) {
+        this.table = table;
+    }
+
+    public void addChips(int newChips) {
+        this.chips += newChips;
+    }
+
+    public void throwChips(int bet) {
+        this.chips -= bet;
+        this.bet = bet;
+    }
 
     public int getChips() {
         return chips;
@@ -62,16 +76,12 @@ public class HumanPlayer extends Player {
         return position.equals(Position.UTG);
     }
 
-    public void addChips(int newChips) {
-        chips += newChips;
-    }
-
-    private void throwChips(int bet) {
-        chips -= bet;
-    }
-
     public void resetBet() {
         this.bet = 0;
+    }
+
+    public boolean isFold() {
+        return this.isFold;
     }
 
     public void resetFold() {
@@ -92,15 +102,40 @@ public class HumanPlayer extends Player {
         int discard = 0;
         for (int i=4; i >= 0; i--) {
             if (cardStatus[i]) {
-                hand.discard(i);
+                hand.getCards().remove(i);
                 discard++;
             }
         }
         return discard;
     }
 
+    public void postSmallBlind() {
+        throwChips(1);
+    }
+
+    public void postBigBlind() {
+        throwChips(2);
+    }
+
+    public int makeAction() {
+        System.out.println("Choose your action: ");
+        String action = sc.next();
+        switch (action) {
+            case "fold":
+                fold();
+                return 0;
+            case "call":
+                return makeCall();
+            case "raise":
+                System.out.println("Choose raise size: ");
+                int raiseSize = sc.nextInt();
+                return makeRaise(raiseSize);
+        }
+        return 1;
+    }
+
     public int makeRaise (int playersRaise) {
-        minRaise = table.getMaxBet() + table.getDiff();
+        minRaise = table.getActiveBet() + table.getDiff();
         
         while ((minRaise + playersRaise) > getChips()) {                             // Excessive bet control
             System.out.println("Please choose avaliable size of bet");
@@ -109,13 +144,13 @@ public class HumanPlayer extends Player {
         bet = minRaise + playersRaise;
         throwChips(bet);
         return bet;
-    }    
+    }
 
     public int makeCall() {
-        if ((table.getMaxBet() - getBet()) > getChips() && getChips() > 0) {
+        if ((table.getActiveBet() - getBet()) > getChips() && getChips() > 0) {
             bet = throwChips(getChips());
         } else {
-            bet = throwChips(table.getMaxBet() - getBet());
+            bet = throwChips(table.getActiveBet() - getBet());
         }
         return bet;
     }
@@ -131,7 +166,7 @@ public class HumanPlayer extends Player {
         return bet;
     }
 
-    private void fold() {
+    public void fold() {
         isFold = !isFold;
     }
 }

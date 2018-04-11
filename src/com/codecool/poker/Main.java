@@ -5,19 +5,9 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        Table table = new Table();
 
-       
-        List<Card> drawnCards = new ArrayList<>();
-        Hand hand;
-        do { 
-            Deck deck = new Deck();
-            hand = new Hand(deck.drawCards(5));
+        table.playHand();
 
-            
-        } while (hand.getHandPoints() != 10 );
-        for (Card card : hand.getCards()) {
-            System.out.println(card.getRank().toString() + card.getSuit().toString());
-        }
-        System.out.println(hand.getHandPoints());
     }
 }
