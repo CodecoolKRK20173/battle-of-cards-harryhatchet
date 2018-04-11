@@ -94,18 +94,18 @@ public class AI extends Player {
 
     public int makeAction() {
         if (fold || allIn) {
+            System.out.println("Fold: " + fold + " | allIn: " + allIn);
             return 0;
         }
 
         boolean shouldFold = checkIfShouldFold();
         if (shouldFold) {
+            System.out.println("ShouldFold!");
             fold();
             return 0;
         } else {
-            placeBet();
+            return placeBet();
         }
-
-        return this.bet;
     }
 
     private boolean checkIfShouldFold() {
@@ -274,9 +274,11 @@ public class AI extends Player {
         return highestRank;
     }
 
-    public void placeBet() {
+    public int placeBet() {
         int bet = chooseBet();
+        System.out.println("Choosen bet: " + bet);
         throwChips(bet);
+        return bet;
     }
 
     private int chooseBet() {
@@ -287,6 +289,7 @@ public class AI extends Player {
             chosenBet = raise();
         } else {
             if (highestBet == 0 && chanceOfWinning < 0.1) {
+                System.out.println("HB = 0 && chance of win = " + chanceOfWinning);
                 chosenBet = 0;
             } else if (highestBet / (this.chips + this.bet) < (this.chips + this.bet) * chanceOfWinning) {
                 chosenBet = raise((int)((this.chips + this.bet) * chanceOfWinning));
@@ -307,13 +310,16 @@ public class AI extends Player {
         Random generator = new Random();
         int minRaisedBet = table.getActiveBet() + table.getDiff();
         if (minRaisedBet > this.chips + this.bet) {
+            System.out.println("allIn from raise!");
             return this.chips;
         } else {
             int increasedBet = goalNumOfChips + generator.nextInt(10);
             if (increasedBet > this.chips + this.bet) {
-                return goalNumOfChips - this.chips;
+                System.out.println("Not enough for increased bet!");
+                return goalNumOfChips - this.bet;
             } else {
-                return increasedBet - this.chips;
+                System.out.println("Increased bet! Jahar!");
+                return increasedBet - this.bet;
             }
         }
     }
@@ -321,8 +327,10 @@ public class AI extends Player {
     private int call() {
         int maxBet = table.getActiveBet();
         if (maxBet < this.chips + this.bet) {
+            System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
             return maxBet - this.bet;
         } else {
+            System.out.println("All in from Call!");
             return this.chips;
         }
     }
@@ -337,7 +345,7 @@ public class AI extends Player {
 
     public void throwChips(int bet) {
         this.chips -= bet;
-        this.bet = bet;
+        this.bet += bet;
         this.allIn = this.chips == 0;
     }
 
