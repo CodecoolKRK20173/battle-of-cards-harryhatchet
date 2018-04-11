@@ -142,7 +142,7 @@ public class HumanPlayer extends Player {
     }
 
     public void fold() {
-        isFold = !isFold;
+        isFold = true;
     }
 
     public void setDealer() {
