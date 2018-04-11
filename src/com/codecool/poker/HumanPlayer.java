@@ -2,6 +2,7 @@ package com.codecool.poker;
 
 import java.util.List;
 import java.util.Scanner;
+import java.lang.StringBuilder;
 
 
 public class HumanPlayer extends Player {
@@ -29,7 +30,7 @@ public class HumanPlayer extends Player {
 
     public void throwChips(int bet) {
         this.chips -= bet;
-        this.bet = bet;
+        this.bet += bet;
     }
 
     public int getChips() {
@@ -133,9 +134,10 @@ public class HumanPlayer extends Player {
     }    
 
     public int makeCall() {
-        throwChips(this.table.getActiveBet());
-        return bet;
-        }
+        int callAmount = this.table.getActiveBet() - this.bet;
+        throwChips(callAmount);
+        return callAmount;
+    }
 
     public int getBet() {
         return bet;
@@ -187,5 +189,25 @@ public class HumanPlayer extends Player {
 
     public boolean isUTG() {
         return this.isUTG;
+    }
+
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        if (isSmallBlind()) {
+            output.append("SB: ");
+        }
+        else if (isBigBlind()) {
+            output.append("BB: ");
+        }
+        else if (isDealer()) {
+            output.append("D: ");
+        }
+        else if (isUTG()) {
+            output.append("UTG: ");
+        }
+        output.append(getHand().toString());
+        output.append("\tstack: ");
+        output.append(this.chips);
+        return output.toString();
     }
 }
