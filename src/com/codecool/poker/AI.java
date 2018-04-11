@@ -290,9 +290,10 @@ public class AI extends Player {
             } else if (highestBet / (chips + bet) < (chips + bet) * chanceOfWinning) {
                 bet = raise((int)((chips + bet) * chanceOfWinning));
             } else {
-                call();
+                bet = call();
             }
         }
+        return bet;
     }
 
     private int raise() {
@@ -305,7 +306,7 @@ public class AI extends Player {
         Random generator = new Random();
         int minRaisedBet = table.getMaxBet() + table.getDiff();
         if (minRaisedBet > this.chips + this.bet) {
-            return this.chips - this.bet;
+            return this.chips;
         } else {
             int increasedBet = goalNumOfChips + generator.nextInt(10);
             if (increasedBet > this.chips + this.bet) {
@@ -313,6 +314,15 @@ public class AI extends Player {
             } else {
                 return increasedBet - this.chips;
             }
+        }
+    }
+
+    private int call() {
+        int maxBet = table.getMaxBet();
+        if (maxBet < this.chips + this.bet) {
+            return maxBet - this.bet;
+        } else {
+            return this.chips;
         }
     }
 }
