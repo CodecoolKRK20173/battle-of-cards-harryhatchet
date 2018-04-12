@@ -148,26 +148,30 @@ public class Table {
             currentPlayer = getUTG();
         }
         else {
-            currentPlayer = this.activePlayers.get(0);
+            this.activeBet = 0;
+            currentPlayer = getSmallBlind();
         }
 
         do {
             this.pot += currentPlayer.makeAction();
             this.activeBet = currentPlayer.getBet();
-            if (currentPlayer.isFold()) {
-                this.activePlayers.remove(currentPlayer);
-            }
-            currentPlayer = getNextPlayer(currentPlayer);
+            currentPlayer = getNextActivePlayer(currentPlayer);
             System.out.println("POT: " + this.pot);
         }
-        while (!isBettingFinished());
+        while (isBettingFinished());
     }
 
     private void exchangeCards() {
-        for (Player player : activePlayers) {
+        for (Player player : players) {
             int numOfCardsToExchange = player.changeCards();
             List<Card> newCards = deck.drawCards(numOfCardsToExchange);
             player.getHand().addCards(newCards);
+        }
+    }
+
+    private void resetPlayersBets() {
+        for (Player player : players) {
+            player.resetBet();
         }
     }
 
