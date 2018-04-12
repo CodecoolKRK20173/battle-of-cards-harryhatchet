@@ -109,7 +109,7 @@ public class AI extends Player {
     }
 
     private boolean checkIfShouldFold() {
-        int points = hand.getHandPoints();
+        int points = hand.getHandPoints().getHandPoints();
 
         if (points > 0) {
             this.chanceOfWinning = points / 10;
