@@ -365,7 +365,7 @@ public class AI extends Player {
             return 1;
         }
 
-        if (this.numberOfCardsToChange >= 3) {
+        if (this.numberOfCardsToChange > 3) {
             return discardCards();
         }
 
@@ -385,6 +385,23 @@ public class AI extends Player {
                     hand.getCards().remove(i);
                 }
             }
+        }
+    }
+
+    private int discardCards() {
+        if (this.numberOfCardsToChange == 5) {
+            for (int i = 4; i >= 0; i--) {
+                hand.getCards().remove(i);
+            }
+            return 5;
+        } else {
+            int highestRank = getHighestCardRank();
+            for (int i = 4; i >= 0; i--) {
+                if (hand.getCards().get(i).getRank().getCardStrength() != highestRank) {
+                    hand.getCards().remove(i);
+                }
+            }
+            return 4;
         }
     }
 
