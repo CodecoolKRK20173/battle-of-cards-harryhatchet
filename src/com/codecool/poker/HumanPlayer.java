@@ -1,5 +1,6 @@
 package com.codecool.poker;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.lang.StringBuilder;
@@ -159,9 +160,13 @@ public class HumanPlayer extends Player {
                 return makeCheck();
             case "raise":
                 System.out.println("Choose raise size: ");
-                int raiseSize = sc.nextInt();
+                try {
+                    int raiseSize = sc.nextInt();
                 this.hasActed = true;
                 return makeRaise(raiseSize);
+                } catch (InputMismatchException e) {
+                    e.getMessage();
+                }
             default:
                 return 0;
         }
