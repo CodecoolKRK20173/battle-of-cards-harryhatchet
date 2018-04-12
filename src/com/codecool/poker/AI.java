@@ -104,6 +104,14 @@ public class AI extends Player {
         this.fold = false;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
     public int makeAction() {
         System.out.println("~~Action of: " + this.name + " ~~");
         this.hasActed = true;
