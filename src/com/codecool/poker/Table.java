@@ -216,6 +216,13 @@ public class Table {
         }
     }
 
+    private void resetPlayersAction() {
+        for (Player player : players) {
+            if (!player.isFold())
+                player.setHasActed(false);
+        }
+    }
+
     public int getPot() {
         return this.pot;
     }
