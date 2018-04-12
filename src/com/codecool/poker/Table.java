@@ -181,6 +181,9 @@ public class Table {
         else {
             this.activeBet = 0;
             currentPlayer = getSmallBlind();
+            if (currentPlayer.isFold()) {
+                currentPlayer = getNextActivePlayer(currentPlayer);
+            }
         }
 
         do {
