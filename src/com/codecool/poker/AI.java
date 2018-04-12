@@ -9,16 +9,19 @@ public class AI extends Player {
     private int chips = 100;
     private int bet = 0;
     private boolean fold = false;
-    private int round = 1;
     private Position position = Position.UTG;
     private Table table;
+    private String name;
 
     private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
     private boolean bluff = false;
-    private int numberOfCardsToChange = 0;
+    private int numberOfCardsToChange = -1;
     private boolean allIn = false;
+    private Suit mostCommonSuit = Suit.CLUBS; // Implementation requires a default Suit.
+    private int rankOfCardOutOfOrder = -1;
+    private boolean hasActed = false;
 
     public AI(Table table) {
         this.table = table;
@@ -40,8 +43,9 @@ public class AI extends Player {
         this.chips += newChips;
     }
 
-    public void fold() {
+    public int fold() {
         this.fold = true;
+        return 0;
     }
 
     public boolean isFold() {
@@ -64,6 +68,10 @@ public class AI extends Player {
         this.position = Position.UTG;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public boolean isDealer() {
         return position.equals(Position.DEALER);
     }
@@ -80,6 +88,14 @@ public class AI extends Player {
         return position.equals(Position.UTG);
     }
 
+    public boolean hasActed() {
+        return this.hasActed;
+    }
+
+    public void setHasActed(boolean hasActed) {
+        this.hasActed = hasActed;
+    }
+
     public void setHand(Hand hand) {
         this.hand = hand;
     }
@@ -93,10 +109,14 @@ public class AI extends Player {
     }
 
     public int makeAction() {
-        if (fold || allIn) {
-            System.out.println("Fold: " + fold + " | allIn: " + allIn);
+        if (fold || allIn || hasActed) {
+            this.hasActed = true;
+            System.out.println("Fold: " + fold + " | allIn: " + allIn + " | hasActed: " + hasActed);
             return 0;
         }
+
+        System.out.println("~~Action of: " + this.name + " ~~");
+        this.hasActed = true;
 
         boolean shouldFold = checkIfShouldFold();
         if (shouldFold) {
@@ -111,8 +131,9 @@ public class AI extends Player {
     private boolean checkIfShouldFold() {
         int points = hand.getHandPoints().getPoints();
 
-        if (points > 0) {
-            this.chanceOfWinning = points / 10;
+        if (points > 1) {
+            System.out.println("Has a lot of points!: " + points);
+            this.chanceOfWinning = points / 10.0;
             return false;
         } else {
             return ifShouldNotPlay();
@@ -120,10 +141,11 @@ public class AI extends Player {
     }
 
     private boolean ifShouldNotPlay() {
-        chanceOfWinning = 0;
-        chanceOfWinning += addChanceForFlush();
-        chanceOfWinning += addChanceForStrit();
-        chanceOfWinning += chanceForGoodDraw();
+        System.out.println("if should not play");
+        this.chanceOfWinning = 0;
+        this.chanceOfWinning += addChanceForFlush();
+        this.chanceOfWinning += addChanceForStrit();
+        this.chanceOfWinning += chanceForGoodDraw();
         boolean wantsToPlay =  makeDecision();
         return !wantsToPlay;
     }
@@ -137,6 +159,8 @@ public class AI extends Player {
             int current = handIterator.next();
             if (previous + 1 == current) {
                 offByOne++;
+            } else {
+                rankOfCardOutOfOrder = current;
             }
             previous = current;
         }
@@ -157,26 +181,25 @@ public class AI extends Player {
         int diamonds = 0;
         int clubs = 0;
         int spades = 0;
-        String mostCommonSuit = "";
 
         while (handIterator.hasNext()) {
             String suit = handIterator.next();
             switch (suit) {
             case "h":
                 hearths++;
-                mostCommonSuit = (hearths == 4 ? "h" : mostCommonSuit);
+                mostCommonSuit = (hearths == 4 ? Suit.HEARTS : mostCommonSuit);
                 break;
             case "d":
                 diamonds++;
-                mostCommonSuit = (diamonds == 4 ? "d" : mostCommonSuit);
+                mostCommonSuit = (diamonds == 4 ? Suit.DIAMONDS : mostCommonSuit);
                 break;
             case "c":
                 clubs++;
-                mostCommonSuit = (clubs == 4 ? "c" : mostCommonSuit);
+                mostCommonSuit = (clubs == 4 ? Suit.CLUBS : mostCommonSuit);
                 break;
             case "s":
                 spades++;
-                mostCommonSuit = (spades == 4 ? "s" : mostCommonSuit);
+                mostCommonSuit = (spades == 4 ? Suit.SPADES : mostCommonSuit);
                 break;
             }
         }
@@ -206,7 +229,7 @@ public class AI extends Player {
             }
         }
 
-        numberOfCardsToChange = numOfCards;
+        this.numberOfCardsToChange = numOfCards;
 
         // 1 - chanceForFail gives us chance for success
         // 0.1 is chance of winning for single pair 
@@ -222,7 +245,7 @@ public class AI extends Player {
     }
 
     private boolean makeDecision() {
-
+        System.out.println("MAKE DECISION");
         // AI goes in if has more than 20% chance of winning
         if (chanceOfWinning > 0.2) {
             return true;
@@ -232,13 +255,14 @@ public class AI extends Player {
         
         // AI goes in no matter how bad cards it has once in 50 takes
         if (generator.nextInt(101) <= 2) {
-            bluff = true;
+            System.out.println("BLUFF");
+            this.bluff = true;
             return true;
         }
 
         // AI goes bluffs if it has chanceOfWinning < 5% once in 50 takes
         if (chanceOfWinning < 0.05 && generator.nextInt(101) <= 2) {
-            bluff = true;
+            this.bluff = true;
             return true;
         }
 
@@ -254,7 +278,7 @@ public class AI extends Player {
         return (highestBet / (chips + bet) < generator.nextDouble() / 4 + chanceOfWinning);
     }
 
-    private int getHighestCardRank(String suit) {
+    private int getHighestCardRank(Suit suit) {
         int highestRank = -1;
         for (Card c : hand.getCards()) {
             if (c.getRank().getCardStrength() > highestRank && c.getSuit().equals(suit)) {
@@ -276,8 +300,10 @@ public class AI extends Player {
 
     public int placeBet() {
         int bet = chooseBet();
-        System.out.println("Choosen bet: " + bet);
+        System.out.println("Chosen bet: " + bet);
         throwChips(bet);
+        System.out.println("Current bet total: " + this.bet);
+        System.out.println(this.position + " | COW: " + this.chanceOfWinning);
         return bet;
     }
 
@@ -285,14 +311,16 @@ public class AI extends Player {
         int chosenBet;
         int highestBet = table.getActiveBet();
         Random generator = new Random();
-        if (bluff) {
-            chosenBet = raise();
+        System.out.println("Curr chips: " + chips + " | curr bet: " + bet);
+        if (this.bluff) {
+            System.out.println("Choose bet: bluff - " + this.bluff);
+            chosenBet = bluffHighBet();
         } else {
             if (highestBet == 0 && chanceOfWinning < 0.1) {
                 System.out.println("HB = 0 && chance of win = " + chanceOfWinning);
                 chosenBet = 0;
-            } else if (highestBet / (this.chips + this.bet) < (this.chips + this.bet) * chanceOfWinning) {
-                chosenBet = raise((int)((this.chips + this.bet) * chanceOfWinning));
+            } else if (highestBet / (this.chips + this.bet) < this.chips * chanceOfWinning) {
+                chosenBet = raise();
             } else {
                 chosenBet = call();
             }
@@ -300,23 +328,25 @@ public class AI extends Player {
         return chosenBet;
     }
 
-    private int raise() {
+    private int bluffHighBet() {
         // Go all IN
         return this.chips - this.bet;
     }
 
-    private int raise(int goalNumOfChips) {
+    private int raise() {
 
         Random generator = new Random();
         int minRaisedBet = table.getActiveBet() + table.getDiff();
+        System.out.println("Raise! MinRaisedBet: " + minRaisedBet);
         if (minRaisedBet > this.chips + this.bet) {
             System.out.println("allIn from raise!");
             return this.chips;
         } else {
-            int increasedBet = goalNumOfChips + generator.nextInt(10);
+            int increasedBet = minRaisedBet + generator.nextInt((int)(chanceOfWinning * 10));
+            System.out.println("Goal num of chips: " + increasedBet);
             if (increasedBet > this.chips + this.bet) {
                 System.out.println("Not enough for increased bet!");
-                return goalNumOfChips - this.bet;
+                return chips;
             } else {
                 System.out.println("Increased bet! Jahar!");
                 return increasedBet - this.bet;
@@ -327,7 +357,7 @@ public class AI extends Player {
     private int call() {
         int maxBet = table.getActiveBet();
         if (maxBet < this.chips + this.bet) {
-            System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
+//System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
             return maxBet - this.bet;
         } else {
             System.out.println("All in from Call!");
@@ -350,17 +380,101 @@ public class AI extends Player {
     }
 
     public int changeCards() {
-        hand.discard(0);
-        return 1;
+        if (this.closeToFlush || this.closeToStrit) {
+            discardSingleCard();
+            return 1;
+        }
+
+        if (this.numberOfCardsToChange > 3) {
+            return discardCards();
+        }
+
+        return optimalDiscardForCurrentHand(); // AI already has a high chance for win. Discard unwanted cards
     }
 
-    public int makeRaise(int playersRaise) {
-        return 1;
+    private void discardSingleCard() {
+        if (closeToFlush) {
+            for (int i = 4; i >= 0; i--) {
+                if (!hand.getCards().get(i).getSuit().equals(mostCommonSuit)){
+                    hand.getCards().remove(i);
+                }
+            }
+        } else {
+            for (int i = 4; i >= 0; i--) {
+                if (hand.getCards().get(i).getRank().getCardStrength() == rankOfCardOutOfOrder){
+                    hand.getCards().remove(i);
+                }
+            }
+        }
     }
-    public int makeCall() {
-        return 1;
+
+    private int discardCards() {
+        if (this.numberOfCardsToChange == 5) {
+            for (int i = 4; i >= 0; i--) {
+                hand.getCards().remove(i);
+            }
+            return 5;
+        } else {
+            int highestRank = getHighestCardRank();
+            for (int i = 4; i >= 0; i--) {
+                if (hand.getCards().get(i).getRank().getCardStrength() != highestRank) {
+                    hand.getCards().remove(i);
+                }
+            }
+            return 4;
+        }
     }
-    public int makeCheck() {
-        return 1;
+
+    private int discardCards(int numOfCardsToDiscard) {
+        int discarded = 0;
+        for (int i = 4; i >= 0; i--) {
+            if (discarded < numOfCardsToDiscard) {
+                discarded++;
+                hand.getCards().remove(i);
+            }
+        }
+        return discarded;
+    }
+
+    private int optimalDiscardForCurrentHand() {
+        int handPoints = hand.getHandPoints().getPoints();
+        int numOfCardsToDiscard = 0;
+        switch (handPoints) {
+        case 10:
+        case 9:
+        case 7:
+        case 6:
+        case 5:                             // Cases 10,9,7,6, and 5 handle hands made of all 5 good cards
+            numOfCardsToDiscard = 0;        // Nothing to replace
+            break;
+        case 8:                             // Case 8: Four of a kind (Quads) -> replace last card
+            numOfCardsToDiscard = 1;
+            break;
+        case 4:                             // Case 4: Three of a kind
+            int highestCardRank = getHighestCardRank();
+            if (highestCardRank >= 12) {    // If has Quenn or higher in hand -> replace 1 card, 2 otherwise
+                numOfCardsToDiscard = 1;
+            } else {
+                numOfCardsToDiscard = 2;
+            }
+            break;
+        case 3:                             // Case 3: Two pair
+            int rankOfLastCard = hand.getCards().get(4).getRank().getCardStrength();
+            if (rankOfLastCard < 10) {      // Replace last card if lower than ten
+                numOfCardsToDiscard = 1;
+            } else {
+                numOfCardsToDiscard = 0;
+            }
+            break;
+        case 2:                             // Case 2: Single pair
+            int rankOfMiddleCard = hand.getCards().get(4).getRank().getCardStrength();
+            if (rankOfMiddleCard < 10) {    // Replace last card if lower than ten
+                numOfCardsToDiscard = 3;
+            } else {
+                numOfCardsToDiscard = 2;
+            }
+            break;
+        }
+        return discardCards(numOfCardsToDiscard);
     }
 }

@@ -7,9 +7,12 @@ public class Main {
     public static void main(String[] args) {
         Table table = new Table();
         PrintTable pt = new PrintTable(table);
-       
-        table.playHand();
-        pt.printTable();
+               
+
+        while (!table.isGameFinished()) {
+            table.playHand();
+            pt.printTable();
+        }
 
     }
 }

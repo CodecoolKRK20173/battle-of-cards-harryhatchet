@@ -6,32 +6,32 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class HandComparator {
-    List<Hand> hands;
-    List<Hand> theBestHand;
+    private List<Hand> hands;
+    private List<Hand> bestHands;
 
     public HandComparator(List<Hand> hands) {
         this.hands = hands;
-        this.theBestHand = findTheBestHand();
+        this.bestHands = findBestHands();
     }
 
-    public List<Hand> getTheBestHand() {
-        return this.theBestHand;
+    public List<Hand> getBestHands() {
+        return this.bestHands;
     }
 
-    private List<Hand> findTheBestHand() {
-        List<Hand> theBestHand = new ArrayList<>();
+    private List<Hand> findBestHands() {
+        List<Hand> bestHands = new ArrayList<>();
         Hand maxHand = hands.get(0);
 
         for (Hand hand : hands) {
             if (hand.compareTo(maxHand) > 0) {
-                theBestHand.clear();
-                theBestHand.add(hand);
+                bestHands.clear();
+                bestHands.add(hand);
                 maxHand = hand;
-            } else if (hand.compareTo(maxHand) >= 0) {
-                theBestHand.add(hand);
+            } else if (hand.compareTo(maxHand) == 0) {
+                bestHands.add(hand);
             }
         }
 
-        return theBestHand;
+        return bestHands;
     }
 }
