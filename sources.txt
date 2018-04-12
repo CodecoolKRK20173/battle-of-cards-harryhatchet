@@ -5,6 +5,7 @@ src/com/codecool/poker/Table.java
 src/com/codecool/poker/Rank.java
 src/com/codecool/poker/Card.java
 src/com/codecool/poker/Iterators.java
+src/com/codecool/poker/PrintTable.java
 src/com/codecool/poker/Hand.java
 src/com/codecool/poker/Deck.java
 src/com/codecool/poker/Main.java
