@@ -15,17 +15,16 @@ public abstract class Player {
     public abstract void postBigBlind();
     public abstract int getBet();
     public abstract int makeAction();
-    public abstract int makeRaise(int playersRaise);
-    public abstract int makeCall();
-    public abstract int makeCheck();
 
     public abstract boolean isFold();
-    public abstract void fold();
+    public abstract int fold();
 
     public abstract void setDealer();
     public abstract void setSmallBlind();
     public abstract void setBigBlind();
     public abstract void setUTG();
+    public abstract void setName(String name);
+    public abstract void setHasActed(boolean hasActed);
 
     public abstract void addChips(int newChips);
     public abstract int changeCards();
@@ -34,6 +33,7 @@ public abstract class Player {
     public abstract boolean isSmallBlind();
     public abstract boolean isBigBlind();
     public abstract boolean isUTG();
+    public abstract boolean hasActed();
 
     public enum Position {
         DEALER, SMALL_BLIND, BIG_BLIND, UTG;

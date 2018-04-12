@@ -11,7 +11,9 @@ public class AI extends Player {
     private boolean fold = false;
     private Position position = Position.UTG;
     private Table table;
+    private String name;
 
+    private boolean hasActed;
     private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
@@ -41,8 +43,9 @@ public class AI extends Player {
         this.chips += newChips;
     }
 
-    public void fold() {
+    public int fold() {
         this.fold = true;
+        return 0;
     }
 
     public boolean isFold() {
@@ -65,6 +68,10 @@ public class AI extends Player {
         this.position = Position.UTG;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public boolean isDealer() {
         return position.equals(Position.DEALER);
     }
@@ -79,6 +86,14 @@ public class AI extends Player {
 
     public boolean isUTG() {
         return position.equals(Position.UTG);
+    }
+
+    public boolean hasActed() {
+        return this.hasActed;
+    }
+
+    public void setHasActed(boolean hasActed) {
+        this.hasActed = hasActed;
     }
 
     public void setHand(Hand hand) {
@@ -132,7 +147,7 @@ public class AI extends Player {
     }
 
     private double addChanceForStrit() {
-        Iterator<Integer> handIterator = hand.getHandPoints().getRankIterator();
+        Iterator<Integer> handIterator = hand.getRankIterator();
         int offByOne = 0;
         int previous = -1;
 
@@ -157,7 +172,7 @@ public class AI extends Player {
     }
 
     private double addChanceForFlush() {
-        Iterator<String> handIterator = hand.getHandPoints().getSuitIterator();
+        Iterator<String> handIterator = hand.getSuitIterator();
         int hearths = 0;
         int diamonds = 0;
         int clubs = 0;
@@ -403,6 +418,10 @@ public class AI extends Player {
             }
             return 4;
         }
+    }
+
+    private int optimalDiscardForCurrentHand() {
+        return 1;
     }
 
     public int makeRaise(int playersRaise) {

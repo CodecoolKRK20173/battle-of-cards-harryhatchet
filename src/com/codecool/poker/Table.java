@@ -21,10 +21,12 @@ public class Table {
         int dealerIndex = players.indexOf(chooseDealer());
         Player dealer = players.get(dealerIndex);
         dealer.setDealer();
+        dealer.setName("dealer");
 
         int smallBlindIndex = (dealerIndex + 1) % NUM_OF_PLAYERS;
         Player smallBlind = players.get(smallBlindIndex);
         smallBlind.setSmallBlind();
+        smallBlind.setName("SB");
         this.pot += 1;
         smallBlind.postSmallBlind();
         this.pot += 2;
@@ -32,12 +34,14 @@ public class Table {
         int bigBlindIndex = (dealerIndex + 2) % NUM_OF_PLAYERS;
         Player bigBlind = players.get(bigBlindIndex);
         bigBlind.setBigBlind();
+        bigBlind.setName("BB");
         bigBlind.postBigBlind();
         this.activeBet = 2;
 
         int utgIndex = (dealerIndex + 3) % NUM_OF_PLAYERS;
         Player utg = players.get(utgIndex);
         utg.setUTG();
+        utg.setName("UTG");
 
         this.deck = new Deck();
         dealCards();
@@ -95,12 +99,34 @@ public class Table {
     private Player getNextActivePlayer(Player currentPlayer) {
         int currentPlayerIndex = this.players.indexOf(currentPlayer);
         Player nextPlayer = null; 
-        do {
-            nextPlayer = this.players.get((currentPlayerIndex + 1) % this.players.size());
-        }
-        while (nextPlayer.isFold());
 
-        return nextPlayer;
+        for (int i = 1; i < NUM_OF_PLAYERS; i++) {
+            nextPlayer = this.players.get((currentPlayerIndex + i) % this.players.size());
+            if (!nextPlayer.isFold()) {
+                return nextPlayer;
+            }
+        }
+
+        return null;
+    /*
+        int i = 1;
+        do {
+            nextPlayer = this.players.get((currentPlayerIndex + i) % this.players.size());
+            i++;
+        }
+        while (nextPlayer.isFold() && i < NUM_OF_PLAYERS);
+
+        return nextPlayer;*/
+    }
+
+    private int countActivePlayers() {
+        int numOfActivePlayers = 0;
+        for (Player player : this.players) {
+            if (!player.isFold()) {
+                numOfActivePlayers++;
+            }
+        }
+        return numOfActivePlayers;
     }
 
     private void dealCards() {
@@ -113,12 +139,20 @@ public class Table {
         boolean isTrue = true;
 
         for (Player player : this.players) {
-            if (!player.isFold() && player.getBet() != this.activeBet) {
+            if (!player.hasActed()) {
                 isTrue = false;
             }
         }
 
         return isTrue;
+        /*
+        for (Player player : this.players) {
+            if (!player.isFold() && player.getBet() != this.activeBet ) {
+                isTrue = false;
+            }
+        }
+
+        return isTrue;*/
     }
 
     public void showHands() {
@@ -133,9 +167,10 @@ public class Table {
         initHand();
         showHands();
         playRound(1);
-        if (players.size() > 1) {
+        if (countActivePlayers() > 1) {
             exchangeCards();
             resetPlayersBets();
+            resetPlayersAction();
             showHands();
             playRound(2);
         }
@@ -153,21 +188,19 @@ public class Table {
             currentPlayer = getSmallBlind();
         }
 
-        // This part was changed only for AI tests only. When 
-        // Original is fixed, this shall be removed
-        // do 
-        for (int i = 0; i < 16; i++) {
-            this.pot += currentPlayer.makeAction();
-            if (currentPlayer.getBet() > this.activeBet) {
-                this.previousBet = activeBet;
+        do {
+            int raiseSize = currentPlayer.makeAction();
+            this.pot += raiseSize;
+            if (raiseSize > this.activeBet) {
+                resetPlayersAction(currentPlayer);
                 this.activeBet = currentPlayer.getBet();
             }
-            // this.previousBet = activeBet;
-            // this.activeBet = currentPlayer.getBet();
+            System.out.println("Acted? " + currentPlayer.hasActed());
             currentPlayer = getNextActivePlayer(currentPlayer);
-            System.out.println("POT: " + this.pot + "\n\n");
+            System.out.println("Is betting finished? " + isBettingFinished());
+            System.out.println("POT: " + this.pot);
         }
-        // while (isBettingFinished());
+        while (!isBettingFinished());
     }
 
     public int getDiff() {
@@ -189,6 +222,20 @@ public class Table {
         }
     }
 
+    private void resetPlayersAction(Player currentPlayer) {
+        for (Player player : players) {
+            if (!player.isFold() && !player.equals(currentPlayer))
+                player.setHasActed(false);
+        }
+    }
+
+    private void resetPlayersAction() {
+        for (Player player : players) {
+            if (!player.isFold()) {
+                player.setHasActed(false);
+            }
+        }
+    }
     public int getPot() {
         return this.pot;
     }

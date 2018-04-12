@@ -7,19 +7,18 @@ import java.lang.StringBuilder;
 
 public class HumanPlayer extends Player {
 
-    private Hand hand;
     private Table table;
-    Scanner sc = new Scanner(System.in);
+    private Hand hand;
+    private String name;
+    private Scanner sc = new Scanner(System.in);
 
+    private boolean hasActed = false;
     private int chips=100;
     private int bet=0;
     private boolean isFold = false;
     private int minRaise;
     private Position position = Position.UTG;
-
-    public HumanPlayer() {
-        this.table = table;
-    }
+    private int cardToDissmiss;
 
     public HumanPlayer(Table table) {
         this.table = table;
@@ -46,6 +45,20 @@ public class HumanPlayer extends Player {
         return hand;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean hasActed() {
+        return this.hasActed;
+    }
+
+    public void setHasActed(boolean hasActed) {
+        this.hasActed = hasActed;
+    }
+
+    // public int placeBet(int customBet) {
+    //     if (isSmallBlind) {
     public void setDealer() {
         this.position = Position.DEALER;
     }
@@ -94,12 +107,11 @@ public class HumanPlayer extends Player {
 
     public int changeCards() {
         boolean[] cardStatus = {false, false, false, false, false};
-        int cardToDissmiss;
-        do {
+        while (!(cardToDissmiss == 0)) {
             System.out.println("Choose cards to change or press 0 to quit");
             cardToDissmiss = sc.nextInt();
             cardStatus[cardToDissmiss-1] = true;
-        } while (cardToDissmiss == 0);
+        }
 
         int discard = 0;
         for (int i=4; i >= 0; i--) {
@@ -120,57 +132,63 @@ public class HumanPlayer extends Player {
     }
 
     public int makeAction() {
-        System.out.println("Choose your action: ");
+        System.out.println(this.name + ", choose your action: ");
         String action = sc.next();
         switch (action) {
             case "fold":
-                fold();
-                return 0;
+                this.hasActed = true;
+                return fold();
             case "call":
+                this.hasActed = true;
                 return makeCall();
+            case "check":
+                this.hasActed = true;
+                return makeCheck();
             case "raise":
                 System.out.println("Choose raise size: ");
                 int raiseSize = sc.nextInt();
+                this.hasActed = true;
                 return makeRaise(raiseSize);
         }
         return 1;
     }
 
-    public int makeRaise (int playersRaise) {
+    private int makeRaise (int playersRaise) {
         minRaise = table.getActiveBet() + table.getDiff();
+        if (playersRaise < minRaise) {
+            playersRaise = minRaise;
+        }
         
         while ((minRaise + playersRaise) > getChips()) {                             // Excessive bet control
             System.out.println("Please choose avaliable size of bet");
             playersRaise = sc.nextInt();
         }
-        bet = minRaise + playersRaise;
-        throwChips(bet);
-        return bet;
+        throwChips(playersRaise);
+        return playersRaise;
     }
 
-    public int makeCall() {
+    private int makeCall() {
         if ((table.getActiveBet() - getBet()) > getChips() && getChips() > 0) {
             throwChips(getChips());
             return getChips();
         } else {
+            int callAmount = table.getActiveBet() - getBet();
             throwChips(table.getActiveBet() - getBet());
-            return table.getActiveBet();
+            return callAmount;
         }
     }
 
-    public int makeCheck(){
-        if (table.getActiveBet() == getBet()) {
-            return bet;
-        }
-        return table.getActiveBet();
-        }
+    private int makeCheck(){
+        return 0;
+    }
 
     public int getBet() {
         return bet;
     }
 
-    public void fold() {
+    public int fold() {
         isFold = !isFold;
+        return 0;
     }
 
     public String toString() {
