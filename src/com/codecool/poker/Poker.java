@@ -22,15 +22,13 @@ public class Poker extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Card.loadCardImages();
         Table table = new Table();
-        table.setTableBackground(new Image("/table/green.png"));
+        //table.setTableBackground(new Image("/table/green.png"));
 
         Scene scene = new Scene(table, WINDOW_WIDTH, WINDOW_HEIGHT);
         MenuBar menuBar = new MenuBar();
         
         Menu menuFile = new Menu("File");
-        MenuItem reset = new MenuItem("Reset game");
         MenuItem exit = new MenuItem("Exit");
         
         exit.setOnAction(new EventHandler<ActionEvent>(){
@@ -39,18 +37,9 @@ public class Poker extends Application {
             }
         });        
 
-        reset.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent event) {
-                Table table = new Table();
-                table.setTableBackground(new Image("/table/green.png"));
-                table.getChildren().addAll(menuBar);                
-                scene.setRoot(table);
-            }
-        });
-
-        menuFile.getItems().addAll(reset, exit);      
+        menuFile.getItems().addAll(exit);      
         menuBar.getMenus().addAll(menuFile);
-        table.getChildren().addAll(menuBar);
+        //table.getChildren().addAll(menuBar);
 
         primaryStage.setTitle("Poker");
         primaryStage.setScene(scene);
