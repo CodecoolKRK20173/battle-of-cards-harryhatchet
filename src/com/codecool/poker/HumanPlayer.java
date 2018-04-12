@@ -18,73 +18,13 @@ public class HumanPlayer extends Player {
     private Position position = Position.UTG;
     private int cardToDissmiss;
 
-    public HumanPlayer() {
-        this.table = table;
-    }
-
     public HumanPlayer(Table table) {
         this.table = table;
-    }
-
-    public void addChips(int newChips) {
-        this.chips += newChips;
     }
 
     public void throwChips(int bet) {
         this.chips -= bet;
         this.bet += bet;
-    }
-
-    public int getChips() {
-        return chips;
-    }
-
-    public void setHand(Hand hand) {
-        this.hand = hand;
-    }
-
-    public Hand getHand() {
-        return hand;
-    }
-
-    public void setDealer() {
-        this.position = Position.DEALER;
-    }
-
-    public void setSmallBlind() {
-        this.position = Position.SMALL_BLIND;
-    }
-
-    public void setBigBlind() {
-        this.position = Position.BIG_BLIND;
-    }
-
-    public void setUTG() {
-        this.position = Position.UTG;
-    }
-
-    public boolean isDealer() {
-        return position.equals(Position.DEALER);
-    }
-
-    public boolean isSmallBlind() {
-        return position.equals(Position.SMALL_BLIND);
-    }
-
-    public boolean isBigBlind() {
-        return position.equals(Position.BIG_BLIND);
-    }
-
-    public boolean isUTG() {
-        return position.equals(Position.UTG);
-    }
-
-    public void resetBet() {
-        this.bet = 0;
-    }
-
-    public boolean isFold() {
-        return this.isFold;
     }
 
     public void resetFold() {
@@ -166,14 +106,6 @@ public class HumanPlayer extends Player {
         }
         return table.getActiveBet();
         }
-
-    public int getBet() {
-        return bet;
-    }
-
-    public void fold() {
-        isFold = !isFold;
-    }
 
     public String toString() {
         StringBuilder output = new StringBuilder();
