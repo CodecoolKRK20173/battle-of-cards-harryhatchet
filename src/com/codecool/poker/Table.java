@@ -168,7 +168,8 @@ public class Table {
             showHands();
             playRound(2);
         }
-        //determineWinners();
+        List<Player> winners = getWinners();
+        awardPot(winners);
     }
 
     private void playRound(int round) {
@@ -195,6 +196,35 @@ public class Table {
             System.out.println("POT: " + this.pot);
         }
         while (!isBettingFinished());
+    }
+
+    private List<Player> getWinners() {
+        List<Hand> allHands = new ArrayList<>();
+        List<Hand> winningHands = new ArrayList<>();
+        List<Player> winners = new ArrayList<>();
+        for (Player player : players) {
+            if (!player.isFold()) {
+                allHands.add(player.getHand());
+            }
+        }
+
+        handComparator = new HandComparator(allHands);
+        winningHands = handComparator.getBestHands();
+
+        for (Hand winningHand : winningHands) {
+            for (Player player : players) {
+                if (player.getHand().compareTo(winningHand) == 0) {
+                    winners.add(player);
+                }
+            }
+        }
+        return winners;
+    }
+
+    private void awardPot(List<Player> winners) {
+        for (Player winner : winners) {
+            winner.addChips(this.pot);
+        }
     }
 
     public int getDiff() {
