@@ -426,7 +426,45 @@ public class AI extends Player {
     }
 
     private int optimalDiscardForCurrentHand() {
-        return 1;
+        int handPoints = hand.getHandPoints().getPoints();
+        int numOfCardsToDiscard;
+        switch (handPoints) {
+        case 10:
+        case 9:
+        case 7:
+        case 6:
+        case 5:                             // Cases 10,9,7,6, and 5 handle hands made of all 5 good cards
+            numOfCardsToDiscard = 0;        // Nothing to replace
+            break;
+        case 8:                             // Case 8: Four of a kind (Quads) -> replace last card
+            numOfCardsToDiscard = 1;
+            break;
+        case 4:                             // Case 4: Three of a kind
+            int highestCardRank = getHighestCardRank();
+            if (highestCardRank >= 12) {    // If has Quenn or higher in hand -> replace 1 card, 2 otherwise
+                numOfCardsToDiscard = 1;
+            } else {
+                numOfCardsToDiscard = 2;
+            }
+            break;
+        case 3:                             // Case 3: Two pair
+            int rankOfLastCard = hand.getCards().get(4).getRank().getCardStrength();
+            if (rankOfLastCard < 10) {      // Replace last card if lower than ten
+                numOfCardsToDiscard = 1;
+            } else {
+                numOfCardsToDiscard = 0;
+            }
+            break;
+        case 2:                             // Case 2: Single pair
+            int rankOfMiddleCard = hand.getCards().get(4).getRank().getCardStrength();
+            if (rankOfMiddleCard < 10) {      // Replace last card if lower than ten
+                numOfCardsToDiscard = 3;
+            } else {
+                numOfCardsToDiscard = 2;
+            }
+            break;
+        }
+        return numOfCardsToDiscard();
     }
 
     public int makeRaise(int playersRaise) {
