@@ -91,10 +91,15 @@ public class Table {
         return null;
     }
 
-    private Player getNextPlayer(Player currentPlayer) {
-        int currentPlayerIndex = this.activePlayers.indexOf(currentPlayer);
-        
-        return this.activePlayers.get((currentPlayerIndex + 1) % this.activePlayers.size());
+    private Player getNextActivePlayer(Player currentPlayer) {
+        int currentPlayerIndex = this.players.indexOf(currentPlayer);
+        Player nextPlayer = null; 
+        do {
+            nextPlayer = this.players.get((currentPlayerIndex + 1) % this.players.size());
+        }
+        while (nextPlayer.isFold());
+
+        return nextPlayer;
     }
 
     private void dealCards() {
@@ -106,8 +111,8 @@ public class Table {
     private boolean isBettingFinished() {
         boolean isTrue = true;
 
-        for (Player player : this.activePlayers) {
-            if (player.getBet() != this.activeBet) {
+        for (Player player : this.players) {
+            if (!player.isFold() && player.getBet() != this.activeBet) {
                 isTrue = false;
             }
         }
