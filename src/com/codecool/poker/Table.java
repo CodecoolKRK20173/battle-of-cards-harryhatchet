@@ -53,6 +53,7 @@ public class Table {
         for (int i = 0; i < 0; i++) {
             Player newPlayer = new HumanPlayer(this);
             players.add(newPlayer);
+            newPlayer.setName("AI " + (i + 1));
         }
         
         Player newAI1 = new AI(this);
@@ -207,7 +208,7 @@ public class Table {
             System.out.println("Acted? " + currentPlayer.hasActed());
             currentPlayer = getNextActivePlayer(currentPlayer);
             System.out.println("Is betting finished? " + isBettingFinished());
-            System.out.println("POT: " + this.pot);
+            System.out.println("POT: " + this.pot + "\n~~~~~~~~~~\n");
         }
         while (!isBettingFinished());
     }
