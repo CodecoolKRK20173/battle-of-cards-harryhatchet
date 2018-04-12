@@ -1,6 +1,8 @@
 package com.codecool.poker;
 
-public class Card {
+import java.lang.Comparable;
+
+public class Card implements Comparable<Card> {
 
     private Rank rank;
     private Suit suit;
@@ -16,6 +18,11 @@ public class Card {
 
     public Suit getSuit() {
         return this.suit;
+    }
+
+    @Override
+    public int compareTo(Card other) {
+        return rank.compareTo(other.getRank());
     }
 
     @Override
