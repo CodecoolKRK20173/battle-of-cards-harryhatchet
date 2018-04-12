@@ -43,6 +43,10 @@ public class HumanPlayer extends Player {
     public Hand getHand() {
         return hand;
     }
+    
+    public String getName() {
+        return this.name;
+    }
 
     public void setName(String name) {
         this.name = name;

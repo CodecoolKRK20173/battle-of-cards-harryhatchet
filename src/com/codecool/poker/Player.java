@@ -19,6 +19,7 @@ public abstract class Player {
     public abstract boolean isFold();
     public abstract int fold();
 
+    public abstract String getName();
     public abstract void setDealer();
     public abstract void setSmallBlind();
     public abstract void setBigBlind();
