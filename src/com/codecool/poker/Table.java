@@ -6,7 +6,6 @@ public class Table {
 
     private final int NUM_OF_PLAYERS = 4;
     private List<Player> players;
-    private List<Player> activePlayers;
     private Deck deck;
     private int activeBet;
 
@@ -14,7 +13,6 @@ public class Table {
 
     public Table() {
         this.players = new ArrayList<Player>();
-        this.activePlayers = new ArrayList<Player>();
         initPlayers();
     }
 
@@ -39,11 +37,6 @@ public class Table {
         int utgIndex = (dealerIndex + 3) % NUM_OF_PLAYERS;
         Player utg = players.get(utgIndex);
         utg.setUTG();
-
-        activePlayers.add(smallBlind);
-        activePlayers.add(bigBlind);
-        activePlayers.add(utg);
-        activePlayers.add(dealer);
 
         this.deck = new Deck();
         dealCards();
