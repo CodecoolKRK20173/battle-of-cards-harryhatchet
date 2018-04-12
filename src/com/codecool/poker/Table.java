@@ -63,12 +63,12 @@ public class Table {
     }
 
     private void initPlayers() {
-        for (int i = 0; i < 0; i++) {
+        for (int i = 0; i < 1; i++) {
             Player newPlayer = new HumanPlayer(this);
             players.add(newPlayer);
             newPlayer.setName("Player " + (i + 1));
         }
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             Player newPlayer = new AI(this);
             players.add(newPlayer);
             newPlayer.setName("AI " + (i + 1));
@@ -85,7 +85,6 @@ public class Table {
     private Player getSmallBlind() {
         for (Player player : this.players) {
             if (player.isSmallBlind()) {
-                System.out.println("FOUND SMALL BLIND FROM LINE 78");
                 return player;
             }
         }
@@ -125,10 +124,9 @@ public class Table {
 
         for (int i = 1; i < NUM_OF_PLAYERS; i++) {
             nextPlayer = this.players.get((currentPlayerIndex + i) % this.players.size());
-            System.out.println("Next player: " + nextPlayer.getName() + " -> !isFold " + !nextPlayer.isFold() + 
-            ", chips != 0" + (nextPlayer.getChips() != 0) + ", !hasActed " + (!nextPlayer.hasActed()) + ", has 5 cards " + (nextPlayer.getHand().getCards().size() == 5));
+            
             if (!nextPlayer.isFold() && nextPlayer.getChips() != 0 && !nextPlayer.hasActed() && nextPlayer.getHand().getCards().size() == 5) {
-                System.out.println("Found next player!");
+                
                 return nextPlayer;
             }
         }
@@ -146,15 +144,12 @@ public class Table {
     }
 
     private int countActivePlayers() {
-        System.out.println("\nACTIVE PLAYERS\n");
         int numOfActivePlayers = 0;
         for (Player player : this.players) {
             if (!player.isFold() && player.getChips() != 0 && player.getHand().getCards().size() == 5) {
                 numOfActivePlayers++;
-                System.out.println(player.getName());
             }
         }
-        System.out.println("\nCount active players: " + numOfActivePlayers);
         return numOfActivePlayers;
     }
 
@@ -173,9 +168,7 @@ public class Table {
                 playersThatFolded++;
             }
         }
-        System.out.println("Betting is finished? folded: " + playersThatFolded);
         if (playersThatFolded == 3) {
-            System.out.println("Betting done: 3 folded!");
             return true;
         }
 
@@ -203,12 +196,10 @@ public class Table {
         resetPlayersAction();
         resetPlayersBets();
         initHand();
-        pt.update();
         pt.printTable();
 
         showHands();
         playRound(1);
-        System.out.println("\n\nEND OF TURN !!\n\n\n");
         if (countActivePlayers() > 1) {
             exchangeCards();
             resetPlayersBets();
@@ -222,7 +213,6 @@ public class Table {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("No winner in this round!");
         }
-        System.out.println("END OF THIS PLAY! ~~~~~~~~\n~!~");
     }
 
     private void playRound(int round) {
@@ -249,12 +239,12 @@ public class Table {
         // }
         
         if (currentPlayer == previousPlayer) {
-            System.out.println("Null curr player!");
             return;
         }
 
         do {
         // for (int i = 0; i < 12; i++){
+            pt.printTable();
             System.out.println(currentPlayer.getName() + " chips: " + currentPlayer.getChips());
             int raiseSize = currentPlayer.makeAction();
             this.pot += raiseSize;
@@ -319,17 +309,16 @@ public class Table {
                 int numOfCardsToExchange = player.changeCards();
                 List<Card> newCards = deck.drawCards(numOfCardsToExchange);
                 player.getHand().addCards(newCards);
+                player.getHand().sortCards();
             }
         }
     }
 
     private void resetPlayersBets() {
-        System.out.println("Reset bets!");
         int sum = 0;
         for (Player player : players) {
             player.resetBet();
             sum += player.getChips();
-            System.out.println(player.getName() + " | " + player.getBet() + " Chips left: " + player.getChips());
         }
         System.out.println("TOTAL CHIPS LEFT: " + sum);
     }

@@ -26,6 +26,7 @@ public class PrintTable {
     }
 
     public void printTable() {
+        update();
         for(int y = 0; y < weigth; y++) {
             for(int x = 0; x < width; x++) {
                 System.out.print(displayTable[x][y]);
@@ -87,7 +88,7 @@ public class PrintTable {
     }
 
     private void addInt(int number, int firstX, int firstY) {
-        addString(Integer.toString(number), firstX, firstY);
+        addString(Integer.toString(number) + "   ", firstX, firstY);
     }
 
     private void addCards(Player player, int firstX, int firstY, boolean isHorizontal) {
