@@ -68,16 +68,8 @@ public class HandPoints implements Comparable<HandPoints> {
         return 2;
     }
 
-    public Iterator<Integer> getRankIterator() {
-        return new RankIterator(hand);
-    }
-
-    public Iterator<String> getSuitIterator() {
-        return new SuitIterator(hand);
-    }
-
     private boolean isSameColor() {
-        Iterator<String> itr = getSuitIterator();
+        Iterator<String> itr = hand.getSuitIterator();
         String firstCardColor = itr.hasNext() ? itr.next() : null;
 
         while(itr.hasNext()) {
@@ -89,7 +81,7 @@ public class HandPoints implements Comparable<HandPoints> {
     }
 
     private boolean isInSequence() {
-        Iterator<Integer> itr = getRankIterator();
+        Iterator<Integer> itr = hand.getRankIterator();
         int cardValue1 = itr.hasNext() ? itr.next() : 0;
         int cardValue2;
 
@@ -106,7 +98,7 @@ public class HandPoints implements Comparable<HandPoints> {
     }
 
     private boolean isFirstAce() {
-        Iterator<Integer> itr = getRankIterator();
+        Iterator<Integer> itr = hand.getRankIterator();
         return itr.next().equals(14);
     }
 
