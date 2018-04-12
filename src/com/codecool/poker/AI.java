@@ -425,9 +425,20 @@ public class AI extends Player {
         }
     }
 
+    private int discardCards(int numOfCardsToDiscard) {
+        int discarded = 0;
+        for (int i = 4; i >= 0; i--) {
+            if (discarded < numOfCardsToDiscard) {
+                discarded++;
+                hand.getCards().remove(i);
+            }
+        }
+        return discarded;
+    }
+
     private int optimalDiscardForCurrentHand() {
         int handPoints = hand.getHandPoints().getPoints();
-        int numOfCardsToDiscard;
+        int numOfCardsToDiscard = 0;
         switch (handPoints) {
         case 10:
         case 9:
@@ -457,14 +468,14 @@ public class AI extends Player {
             break;
         case 2:                             // Case 2: Single pair
             int rankOfMiddleCard = hand.getCards().get(4).getRank().getCardStrength();
-            if (rankOfMiddleCard < 10) {      // Replace last card if lower than ten
+            if (rankOfMiddleCard < 10) {    // Replace last card if lower than ten
                 numOfCardsToDiscard = 3;
             } else {
                 numOfCardsToDiscard = 2;
             }
             break;
         }
-        return numOfCardsToDiscard();
+        return discardCards(numOfCardsToDiscard);
     }
 
     public int makeRaise(int playersRaise) {
