@@ -7,9 +7,10 @@ import java.lang.StringBuilder;
 
 public class HumanPlayer extends Player {
 
-    Table table;
-    Hand hand;
-    Scanner sc = new Scanner(System.in);
+    private Table table;
+    private Hand hand;
+    private String name;
+    private Scanner sc = new Scanner(System.in);
 
     private int chips=100;
     private int bet=0;
@@ -18,6 +19,7 @@ public class HumanPlayer extends Player {
     private boolean isSmallBlind = false;
     private boolean isBigBlind = false;
     private boolean isUTG = false;
+    private boolean hasActed = false;
     int minRaise;
 
     public HumanPlayer(Table table) {
@@ -43,6 +45,14 @@ public class HumanPlayer extends Player {
 
     public Hand getHand() {
         return hand;
+    }
+
+    public boolean hasActed() {
+        return this.hasActed;
+    }
+
+    public void setHasActed(boolean hasActed) {
+        this.hasActed = hasActed;
     }
 
     // public int placeBet(int customBet) {
@@ -90,17 +100,22 @@ public class HumanPlayer extends Player {
     }
 
     public int makeAction() {
-        System.out.println("Choose your action: ");
+        System.out.println(this.name + ", choose your action: ");
         String action = sc.next();
         switch (action) {
             case "fold":
-                fold();
-                return 0;
+                this.hasActed = true;
+                return fold();
             case "call":
+                this.hasActed = true;
                 return makeCall();
+            case "check":
+                this.hasActed = true;
+                return makeCheck();
             case "raise":
                 System.out.println("Choose raise size: ");
                 int raiseSize = sc.nextInt();
+                this.hasActed = true;
                 return makeRaise(raiseSize);
         }
         return 1;
@@ -139,12 +154,17 @@ public class HumanPlayer extends Player {
         return callAmount;
     }
 
+    public int makeCheck() {
+        return 0;
+    }
+
     public int getBet() {
         return bet;
     }
 
-    public void fold() {
-        isFold = true;
+    public int fold() {
+        this.isFold = true;
+        return 0;
     }
 
     public void setDealer() {
@@ -173,6 +193,10 @@ public class HumanPlayer extends Player {
         isSmallBlind = false;
         isBigBlind = false;
         isUTG = true;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isDealer() {
