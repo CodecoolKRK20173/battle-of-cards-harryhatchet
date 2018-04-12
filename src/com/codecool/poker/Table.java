@@ -6,7 +6,6 @@ public class Table {
 
     private final int NUM_OF_PLAYERS = 4;
     private List<Player> players;
-    private List<Player> activePlayers;
     private Deck deck;
     private int activeBet;
     private int previousBet;
@@ -15,7 +14,6 @@ public class Table {
 
     public Table() {
         this.players = new ArrayList<Player>();
-        this.activePlayers = new ArrayList<Player>();
         initPlayers();
     }
 
@@ -40,11 +38,6 @@ public class Table {
         int utgIndex = (dealerIndex + 3) % NUM_OF_PLAYERS;
         Player utg = players.get(utgIndex);
         utg.setUTG();
-
-        activePlayers.add(smallBlind);
-        activePlayers.add(bigBlind);
-        activePlayers.add(utg);
-        activePlayers.add(dealer);
 
         this.deck = new Deck();
         dealCards();
@@ -99,10 +92,15 @@ public class Table {
         return null;
     }
 
-    private Player getNextPlayer(Player currentPlayer) {
-        int currentPlayerIndex = this.activePlayers.indexOf(currentPlayer);
-        
-        return this.activePlayers.get((currentPlayerIndex + 1) % this.activePlayers.size());
+    private Player getNextActivePlayer(Player currentPlayer) {
+        int currentPlayerIndex = this.players.indexOf(currentPlayer);
+        Player nextPlayer = null; 
+        do {
+            nextPlayer = this.players.get((currentPlayerIndex + 1) % this.players.size());
+        }
+        while (nextPlayer.isFold());
+
+        return nextPlayer;
     }
 
     private void dealCards() {
@@ -114,8 +112,8 @@ public class Table {
     private boolean isBettingFinished() {
         boolean isTrue = true;
 
-        for (Player player : this.activePlayers) {
-            if (player.getBet() != this.activeBet) {
+        for (Player player : this.players) {
+            if (!player.isFold() && player.getBet() != this.activeBet) {
                 isTrue = false;
             }
         }
@@ -123,21 +121,22 @@ public class Table {
         return isTrue;
     }
 
-    public void showCards() {
-        for (Player player : getPlayers()) {
-            System.out.println(player.getHand().toString());
+    public void showHands() {
+        for (Player player : players) {
+            if (!player.isFold()) {
+                System.out.println(player);
+            }
         }
     }
 
     public void playHand() {
         initHand();
-        showCards();
+        showHands();
         playRound(1);
-        if (activePlayers.size() > 1) {
+        if (players.size() > 1) {
             exchangeCards();
-            showCards();
-            this.previousBet = 0;
-            this.activeBet = 0;
+            resetPlayersBets();
+            showHands();
             playRound(2);
         }
         //determineWinners();
@@ -150,20 +149,18 @@ public class Table {
             currentPlayer = getUTG();
         }
         else {
-            currentPlayer = this.activePlayers.get(0);
+            this.activeBet = 0;
+            currentPlayer = getSmallBlind();
         }
 
         do {
             this.pot += currentPlayer.makeAction();
             this.previousBet = activeBet;
             this.activeBet = currentPlayer.getBet();
-            if (currentPlayer.isFold()) {
-                this.activePlayers.remove(currentPlayer);
-            }
-            currentPlayer = getNextPlayer(currentPlayer);
+            currentPlayer = getNextActivePlayer(currentPlayer);
             System.out.println("POT: " + this.pot);
         }
-        while (!isBettingFinished());
+        while (isBettingFinished());
     }
 
     public int getDiff() {
@@ -172,10 +169,16 @@ public class Table {
     }
 
     private void exchangeCards() {
-        for (Player player : activePlayers) {
+        for (Player player : players) {
             int numOfCardsToExchange = player.changeCards();
             List<Card> newCards = deck.drawCards(numOfCardsToExchange);
             player.getHand().addCards(newCards);
+        }
+    }
+
+    private void resetPlayersBets() {
+        for (Player player : players) {
+            player.resetBet();
         }
     }
 
