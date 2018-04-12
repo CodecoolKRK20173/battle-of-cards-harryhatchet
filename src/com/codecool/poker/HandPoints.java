@@ -17,7 +17,7 @@ public class HandPoints implements Comparable<HandPoints> {
         this.points = calculateHandPoints();
     }
 
-    public int getHandPoints() {
+    public int getPoints() {
         return this.points;
     }
 
@@ -112,6 +112,6 @@ public class HandPoints implements Comparable<HandPoints> {
 
     @Override
     public int compareTo(HandPoints other) {
-        return points - other.getHandPoints();
+        return points - other.getPoints();
     }
 }
