@@ -147,14 +147,6 @@ public class Table {
         }
 
         return isTrue;
-        /*
-        for (Player player : this.players) {
-            if (!player.isFold() && player.getBet() != this.activeBet ) {
-                isTrue = false;
-            }
-        }
-
-        return isTrue;*/
     }
 
     public void showHands() {
