@@ -8,6 +8,7 @@ public class Table {
     private List<Player> players;
     private Deck deck;
     private int activeBet;
+    private int previousBet;
 
     private int pot;
 
@@ -191,7 +192,7 @@ public class Table {
             int raiseSize = currentPlayer.makeAction();
             this.pot += raiseSize;
             if (raiseSize > this.activeBet) {
-                resetPlayersAction();
+                resetPlayersAction(currentPlayer);
                 this.activeBet = currentPlayer.getBet();
             }
             System.out.println("Acted? " + currentPlayer.hasActed());
@@ -200,6 +201,11 @@ public class Table {
             System.out.println("POT: " + this.pot);
         }
         while (!isBettingFinished());
+    }
+
+    public int getDiff() {
+        int difference = activeBet - previousBet;
+        return difference;
     }
 
     private void exchangeCards() {
@@ -216,13 +222,20 @@ public class Table {
         }
     }
 
-    private void resetPlayersAction() {
+    private void resetPlayersAction(Player currentPlayer) {
         for (Player player : players) {
-            if (!player.isFold())
+            if (!player.isFold() && !player.equals(currentPlayer))
                 player.setHasActed(false);
         }
     }
 
+    private void resetPlayersAction() {
+        for (Player player : players) {
+            if (!player.isFold()) {
+                player.setHasActed(false);
+            }
+        }
+    }
     public int getPot() {
         return this.pot;
     }
