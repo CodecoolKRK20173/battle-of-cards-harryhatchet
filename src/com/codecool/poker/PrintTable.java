@@ -44,15 +44,15 @@ public class PrintTable {
         String title1 = "Stack:";
         String title2 = "Pot:";
         String title3 = "Role:";
-        addString(title1, 6, 9);
-        addString(title2, 6, 10);
-        addString(title3, 6, 11);
-        addString(title1, 14, 5);
-        addString(title2, 14, 6);
-        addString(title3, 14, 7);
         addString(title1, width - 26, weigth - 9);
         addString(title2, width - 26, weigth - 8);
         addString(title3, width - 26, weigth - 7);
+        addString(title1, 6, 9);
+        addString(title2, 6, 10);
+        addString(title3, 6, 11);
+        addString(title1, 15, 5);
+        addString(title2, 15, 6);
+        addString(title3, 15, 7);
         addString(title1, width - 16, weigth - 13);
         addString(title2, width - 16, weigth - 12);
         addString(title3, width - 16, weigth - 11);
@@ -60,14 +60,30 @@ public class PrintTable {
     }
 
     public void update() {
+        List<Player> players = table.getPlayers();
         int centerX = (int) ((width - 14) / 2);
         int centerY = (int) ((weigth - 10) / 2);
-        addCards(table.getPlayers().get(0), centerX, weigth - 4, true);
-        addCards(table.getPlayers().get(1), 3, centerY, false);
-        addCards(table.getPlayers().get(2), centerX, 2, true);
-        addCards(table.getPlayers().get(3), width - 5, centerY, false);
+        addCards(players.get(0), centerX, weigth - 4, true);
+        addCards(players.get(1), 3, centerY, false);
+        addCards(players.get(2), centerX, 2, true);
+        addCards(players.get(3), width - 5, centerY, false);
 
         addInt(table.getPot(), centerX + 6, centerY + 4);
+
+        addInt(players.get(0).getChips(), width - 20, weigth - 9);
+        addInt(players.get(1).getChips(), 12, 9);
+        addInt(players.get(2).getChips(), 20, 5);
+        addInt(players.get(3).getChips(), width - 10, weigth - 13);
+
+        addInt(players.get(0).getBet(), width - 20, weigth - 8);
+        addInt(players.get(1).getBet(), 12, 10);
+        addInt(players.get(2).getBet(), 20, 6);
+        addInt(players.get(3).getBet(), width - 10, weigth - 12);
+
+        addString(players.get(0).roleToString(), width - 20, weigth - 7);
+        addString(players.get(1).roleToString(), 12, 11);
+        addString(players.get(2).roleToString(), 20, 7);
+        addString(players.get(3).roleToString(), width - 10, weigth - 11);
     }
 
     private void addInt(int number, int firstX, int firstY) {
