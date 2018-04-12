@@ -131,11 +131,13 @@ public class HumanPlayer extends Player {
                 System.out.println("Choose raise size: ");
                 int raiseSize = sc.nextInt();
                 return makeRaise(raiseSize);
+            case "check":
+            return makeCheck();
         }
         return 1;
     }
 
-    public int makeRaise (int playersRaise) {
+    private int makeRaise (int playersRaise) {
         minRaise = table.getActiveBet() + table.getDiff();
         
         while ((minRaise + playersRaise) > getChips()) {                             // Excessive bet control
@@ -147,7 +149,7 @@ public class HumanPlayer extends Player {
         return bet;
     }
 
-    public int makeCall() {
+    private int makeCall() {
         if ((table.getActiveBet() - getBet()) > getChips() && getChips() > 0) {
             throwChips(getChips());
             return getChips();
@@ -157,7 +159,7 @@ public class HumanPlayer extends Player {
         }
     }
 
-    public int makeCheck(){
+    private int makeCheck(){
         if (table.getActiveBet() == getBet()) {
             return bet;
         }

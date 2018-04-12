@@ -15,9 +15,6 @@ public abstract class Player {
     public abstract void postBigBlind();
     public abstract int getBet();
     public abstract int makeAction();
-    public abstract int makeRaise(int playersRaise);
-    public abstract int makeCall();
-    public abstract int makeCheck();
 
     public abstract boolean isFold();
     public abstract void fold();
