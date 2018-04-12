@@ -9,6 +9,7 @@ public class Table {
     private Deck deck;
     private int activeBet;
     private int previousBet;
+    private HandComparator handComparator;
 
     private int pot;
 
@@ -18,6 +19,7 @@ public class Table {
     }
 
     public void initHand() {
+        this.pot = 0;
         int dealerIndex = players.indexOf(chooseDealer());
         Player dealer = players.get(dealerIndex);
         dealer.setDealer();
