@@ -16,7 +16,7 @@ public class AI extends Player {
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
     private boolean bluff = false;
-    private int numberOfCardsToChange = 0;
+    private int numberOfCardsToChange = -1;
     private boolean allIn = false;
 
     public AI(Table table) {
@@ -357,8 +357,15 @@ public class AI extends Player {
     }
 
     public int changeCards() {
-        hand.discard(0);
-        return 1;
+        if (this.closeToFlush || this.closeToStrit) {
+            return discardSingleCard();
+        }
+
+        if (this.numberOfCardsToChange >= 3) {
+            return discardCards();
+        }
+
+        return optimalDiscardForCurrentHand(); // AI already has a high chance for win. Discard unwanted cards
     }
 
     public int makeRaise(int playersRaise) {
