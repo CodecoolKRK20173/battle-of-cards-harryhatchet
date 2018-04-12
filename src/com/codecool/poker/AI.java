@@ -477,14 +477,4 @@ public class AI extends Player {
         }
         return discardCards(numOfCardsToDiscard);
     }
-
-    public int makeRaise(int playersRaise) {
-        return 1;
-    }
-    public int makeCall() {
-        return 1;
-    }
-    public int makeCheck() {
-        return 1;
-    }
 }
