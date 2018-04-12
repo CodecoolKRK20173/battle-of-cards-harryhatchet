@@ -98,12 +98,34 @@ public class Table {
     private Player getNextActivePlayer(Player currentPlayer) {
         int currentPlayerIndex = this.players.indexOf(currentPlayer);
         Player nextPlayer = null; 
-        do {
-            nextPlayer = this.players.get((currentPlayerIndex + 1) % this.players.size());
-        }
-        while (nextPlayer.isFold());
 
-        return nextPlayer;
+        for (int i = 1; i < NUM_OF_PLAYERS; i++) {
+            nextPlayer = this.players.get((currentPlayerIndex + i) % this.players.size());
+            if (!nextPlayer.isFold()) {
+                return nextPlayer;
+            }
+        }
+
+        return null;
+    /*
+        int i = 1;
+        do {
+            nextPlayer = this.players.get((currentPlayerIndex + i) % this.players.size());
+            i++;
+        }
+        while (nextPlayer.isFold() && i < NUM_OF_PLAYERS);
+
+        return nextPlayer;*/
+    }
+
+    private int countActivePlayers() {
+        int numOfActivePlayers = 0;
+        for (Player player : this.players) {
+            if (!player.isFold()) {
+                numOfActivePlayers++;
+            }
+        }
+        return numOfActivePlayers;
     }
 
     private void dealCards() {
