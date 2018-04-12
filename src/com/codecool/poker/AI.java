@@ -144,7 +144,7 @@ public class AI extends Player {
     }
 
     private double addChanceForStrit() {
-        Iterator<Integer> handIterator = hand.getHandPoints().getRankIterator();
+        Iterator<Integer> handIterator = hand.getRankIterator();
         int offByOne = 0;
         int previous = -1;
 
@@ -167,7 +167,7 @@ public class AI extends Player {
     }
 
     private double addChanceForFlush() {
-        Iterator<String> handIterator = hand.getHandPoints().getSuitIterator();
+        Iterator<String> handIterator = hand.getSuitIterator();
         int hearths = 0;
         int diamonds = 0;
         int clubs = 0;
