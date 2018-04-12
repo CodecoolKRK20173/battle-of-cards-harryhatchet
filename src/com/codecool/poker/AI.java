@@ -12,7 +12,9 @@ public class AI extends Player {
     private int round = 1;
     private Position position = Position.UTG;
     private Table table;
+    private String name;
 
+    private boolean hasActed;
     private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
@@ -40,8 +42,9 @@ public class AI extends Player {
         this.chips += newChips;
     }
 
-    public void fold() {
+    public int fold() {
         this.fold = true;
+        return 0;
     }
 
     public boolean isFold() {
@@ -64,6 +67,10 @@ public class AI extends Player {
         this.position = Position.UTG;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public boolean isDealer() {
         return position.equals(Position.DEALER);
     }
@@ -78,6 +85,14 @@ public class AI extends Player {
 
     public boolean isUTG() {
         return position.equals(Position.UTG);
+    }
+
+    public boolean hasActed() {
+        return this.hasActed;
+    }
+
+    public void setHasActed(boolean hasActed) {
+        this.hasActed = hasActed;
     }
 
     public void setHand(Hand hand) {
