@@ -152,8 +152,9 @@ public class HumanPlayer extends Player {
                 int raiseSize = sc.nextInt();
                 this.hasActed = true;
                 return makeRaise(raiseSize);
+            default:
+                return 0;
         }
-        return 1;
     }
 
     private int makeRaise (int playersRaise) {
@@ -192,25 +193,5 @@ public class HumanPlayer extends Player {
     public int fold() {
         isFold = !isFold;
         return 0;
-    }
-
-    public String toString() {
-        StringBuilder output = new StringBuilder();
-        if (isSmallBlind()) {
-            output.append("SB: ");
-        }
-        else if (isBigBlind()) {
-            output.append("BB: ");
-        }
-        else if (isDealer()) {
-            output.append("D: ");
-        }
-        else if (isUTG()) {
-            output.append("UTG: ");
-        }
-        output.append(getHand().toString());
-        output.append("\tstack: ");
-        output.append(this.chips);
-        return output.toString();
     }
 }
