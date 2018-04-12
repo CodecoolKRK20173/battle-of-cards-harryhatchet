@@ -16,6 +16,7 @@ public class HumanPlayer extends Player {
     private boolean isFold = false;
     private int minRaise;
     private Position position = Position.UTG;
+    private int cardToDissmiss;
 
     public HumanPlayer() {
         this.table = table;
@@ -94,12 +95,11 @@ public class HumanPlayer extends Player {
 
     public int changeCards() {
         boolean[] cardStatus = {false, false, false, false, false};
-        int cardToDissmiss;
-        do {
+        while (!(cardToDissmiss == 0)) {
             System.out.println("Choose cards to change or press 0 to quit");
             cardToDissmiss = sc.nextInt();
             cardStatus[cardToDissmiss-1] = true;
-        } while (cardToDissmiss == 0);
+        }
 
         int discard = 0;
         for (int i=4; i >= 0; i--) {
