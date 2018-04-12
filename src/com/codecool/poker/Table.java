@@ -45,7 +45,7 @@ public class Table {
 
     private void initPlayers() {
         for (int i = 0; i < NUM_OF_PLAYERS; i++) {
-            Player newPlayer = new HumanPlayer(this);
+            Player newPlayer = new AI(this);
             players.add(newPlayer);
         }
     }
@@ -153,14 +153,21 @@ public class Table {
             currentPlayer = getSmallBlind();
         }
 
-        do {
+        // This part was changed only for AI tests only. When 
+        // Original is fixed, this shall be removed
+        // do 
+        for (int i = 0; i < 16; i++) {
             this.pot += currentPlayer.makeAction();
-            this.previousBet = activeBet;
-            this.activeBet = currentPlayer.getBet();
+            if (currentPlayer.getBet() > this.activeBet) {
+                this.previousBet = activeBet;
+                this.activeBet = currentPlayer.getBet();
+            }
+            // this.previousBet = activeBet;
+            // this.activeBet = currentPlayer.getBet();
             currentPlayer = getNextActivePlayer(currentPlayer);
-            System.out.println("POT: " + this.pot);
+            System.out.println("POT: " + this.pot + "\n\n");
         }
-        while (isBettingFinished());
+        // while (isBettingFinished());
     }
 
     public int getDiff() {

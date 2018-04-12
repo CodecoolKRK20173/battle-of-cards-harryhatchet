@@ -9,7 +9,6 @@ public class AI extends Player {
     private int chips = 100;
     private int bet = 0;
     private boolean fold = false;
-    private int round = 1;
     private Position position = Position.UTG;
     private Table table;
 
@@ -111,8 +110,9 @@ public class AI extends Player {
     private boolean checkIfShouldFold() {
         int points = hand.getHandPoints().getPoints();
 
-        if (points > 0) {
-            this.chanceOfWinning = points / 10;
+        if (points > 1) {
+            System.out.println("Has a lot of points!: " + points);
+            this.chanceOfWinning = points / 10.0;
             return false;
         } else {
             return ifShouldNotPlay();
@@ -120,10 +120,11 @@ public class AI extends Player {
     }
 
     private boolean ifShouldNotPlay() {
-        chanceOfWinning = 0;
-        chanceOfWinning += addChanceForFlush();
-        chanceOfWinning += addChanceForStrit();
-        chanceOfWinning += chanceForGoodDraw();
+        System.out.println("if should not play");
+        this.chanceOfWinning = 0;
+        this.chanceOfWinning += addChanceForFlush();
+        this.chanceOfWinning += addChanceForStrit();
+        this.chanceOfWinning += chanceForGoodDraw();
         boolean wantsToPlay =  makeDecision();
         return !wantsToPlay;
     }
@@ -206,7 +207,7 @@ public class AI extends Player {
             }
         }
 
-        numberOfCardsToChange = numOfCards;
+        this.numberOfCardsToChange = numOfCards;
 
         // 1 - chanceForFail gives us chance for success
         // 0.1 is chance of winning for single pair 
@@ -222,7 +223,7 @@ public class AI extends Player {
     }
 
     private boolean makeDecision() {
-
+        System.out.println("MAKE DECISION");
         // AI goes in if has more than 20% chance of winning
         if (chanceOfWinning > 0.2) {
             return true;
@@ -232,13 +233,14 @@ public class AI extends Player {
         
         // AI goes in no matter how bad cards it has once in 50 takes
         if (generator.nextInt(101) <= 2) {
-            bluff = true;
+            System.out.println("BLUFF");
+            this.bluff = true;
             return true;
         }
 
         // AI goes bluffs if it has chanceOfWinning < 5% once in 50 takes
         if (chanceOfWinning < 0.05 && generator.nextInt(101) <= 2) {
-            bluff = true;
+            this.bluff = true;
             return true;
         }
 
@@ -278,6 +280,8 @@ public class AI extends Player {
         int bet = chooseBet();
         System.out.println("Choosen bet: " + bet);
         throwChips(bet);
+        System.out.println("Current bet total: " + this.bet);
+        System.out.println(this.position + " | COW: " + this.chanceOfWinning);
         return bet;
     }
 
@@ -285,14 +289,15 @@ public class AI extends Player {
         int chosenBet;
         int highestBet = table.getActiveBet();
         Random generator = new Random();
-        if (bluff) {
-            chosenBet = raise();
+        if (this.bluff) {
+            System.out.println("Choose bet: bluff - " + this.bluff);
+            chosenBet = bluffHighBet();
         } else {
             if (highestBet == 0 && chanceOfWinning < 0.1) {
                 System.out.println("HB = 0 && chance of win = " + chanceOfWinning);
                 chosenBet = 0;
             } else if (highestBet / (this.chips + this.bet) < (this.chips + this.bet) * chanceOfWinning) {
-                chosenBet = raise((int)((this.chips + this.bet) * chanceOfWinning));
+                chosenBet = raise();
             } else {
                 chosenBet = call();
             }
@@ -300,23 +305,25 @@ public class AI extends Player {
         return chosenBet;
     }
 
-    private int raise() {
+    private int bluffHighBet() {
         // Go all IN
         return this.chips - this.bet;
     }
 
-    private int raise(int goalNumOfChips) {
+    private int raise() {
 
         Random generator = new Random();
         int minRaisedBet = table.getActiveBet() + table.getDiff();
+        System.out.println("Raise! MinRaisedBet: " + minRaisedBet);
         if (minRaisedBet > this.chips + this.bet) {
             System.out.println("allIn from raise!");
             return this.chips;
         } else {
-            int increasedBet = goalNumOfChips + generator.nextInt(10);
+            int increasedBet = minRaisedBet + generator.nextInt((int)(chanceOfWinning * 100));
+            System.out.println("Goal num of chips: " + increasedBet);
             if (increasedBet > this.chips + this.bet) {
                 System.out.println("Not enough for increased bet!");
-                return goalNumOfChips - this.bet;
+                return minRaisedBet - this.bet;
             } else {
                 System.out.println("Increased bet! Jahar!");
                 return increasedBet - this.bet;
