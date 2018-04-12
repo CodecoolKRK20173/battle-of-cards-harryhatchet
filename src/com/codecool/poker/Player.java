@@ -5,7 +5,7 @@ public abstract class Player {
 
 
     public abstract int getBet();
-    public abstract boolean getFold();
+    public abstract boolean isFold();
     public abstract int getChips();
     public abstract Hand getHand();
     
@@ -17,7 +17,11 @@ public abstract class Player {
 
     public abstract void addChips(int newChips);
     public abstract void resetBet();
-    public abstract void resetFold();
+    //public abstract void resetFold();
+    public abstract void postSmallBlind();
+    public abstract void postBigBlind();
+    public abstract void makeAction();
+    
 
     public abstract boolean isDealer();
     public abstract boolean isSmallBlind();

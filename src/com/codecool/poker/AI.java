@@ -63,6 +63,10 @@ public class AI extends Player {
         return position.equals(Position.BIG_BLIND);
     }
 
+    public boolean isUTG() {
+        return position.equals(Position.UTG);
+    }
+
     public void setHand(Hand hand) {
         this.hand = hand;
     }
@@ -103,7 +107,7 @@ public class AI extends Player {
         chanceOfWinning = 0;
         chanceOfWinning += addChanceForFlush();
         chanceOfWinning += addChanceForStrit();
-        int numOfCardsToChange = getNumOfCardsToChange();
+        //int numOfCardsToChange = getNumOfCardsToChange();
         return makeADecision();
     }
 
@@ -202,4 +206,5 @@ public class AI extends Player {
         round++;
         return bet;
     }
+    
 }

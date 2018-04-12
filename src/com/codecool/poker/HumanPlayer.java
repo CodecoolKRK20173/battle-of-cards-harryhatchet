@@ -3,10 +3,12 @@ package com.codecool.poker;
 import java.util.List;
 import java.util.Scanner;
 
+import javafx.geometry.Orientation;
+
 
 public class HumanPlayer extends Player {
 
-    Hand hand = new Hand(cards);
+    Hand hand = new Hand();
     Scanner sc = new Scanner(System.in);
 
     private int chips=100;
@@ -72,8 +74,20 @@ public class HumanPlayer extends Player {
         return discard;
     }
 
+    public void makeAction() {
+        
+    }
+
+    public void postSmallBlind() {
+        
+    }
+
+    public void postBigBlind() {
+           
+    }
+
     private int makeRaise (int playersRaise) {
-        while (playersRaise > getChips()) {
+        /*while (playersRaise > getChips()) {
             System.out.println("Please choose avaliable size of bet");
             playersRaise = sc.nextInt();
         }
@@ -87,14 +101,15 @@ public class HumanPlayer extends Player {
                 bet = getChips();
             }
             throwChips(bet);
-            return bet;
+            return bet;*/
+            return 0;
     }    
-
+/*
     private int makeCall() {
         bet = table.getMaxBet();
         throwChips(bet);
         return bet;
-        }
+        }*/
 
     public int getBet() {
         return bet;
@@ -132,20 +147,24 @@ public class HumanPlayer extends Player {
         isUTG = true;
     }
 
-    public boolean getCurrentDealer() {
+    public boolean isDealer() {
         return isDealer;
     }
 
-    public boolean getCurrentSmallBlind() {
+    public boolean isSmallBlind() {
         return isSmallBlind;
     }
 
-    public boolean getCurrentBigBlind() {
+    public boolean isBigBlind() {
         return isBigBlind;
     }
 
-    public boolean getCurrentUTG() {
+    public boolean isUTG() {
         return isUTG;
+    }
+
+    public boolean isFold() {
+        return isFold;
     }
 
 }
