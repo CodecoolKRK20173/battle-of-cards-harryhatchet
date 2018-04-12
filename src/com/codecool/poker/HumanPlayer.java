@@ -23,83 +23,9 @@ public class HumanPlayer extends Player {
         this.table = table;
     }
 
-    public void addChips(int newChips) {
-        this.chips += newChips;
-    }
-
     public void throwChips(int bet) {
         this.chips -= bet;
         this.bet += bet;
-    }
-
-    public int getChips() {
-        return chips;
-    }
-
-    public void setHand(Hand hand) {
-        this.hand = hand;
-    }
-
-    public Hand getHand() {
-        return hand;
-    }
-    
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean hasActed() {
-        return this.hasActed;
-    }
-
-    public void setHasActed(boolean hasActed) {
-        this.hasActed = hasActed;
-    }
-
-    // public int placeBet(int customBet) {
-    //     if (isSmallBlind) {
-    public void setDealer() {
-        this.position = Position.DEALER;
-    }
-
-    public void setSmallBlind() {
-        this.position = Position.SMALL_BLIND;
-    }
-
-    public void setBigBlind() {
-        this.position = Position.BIG_BLIND;
-    }
-
-    public void setUTG() {
-        this.position = Position.UTG;
-    }
-
-    public boolean isDealer() {
-        return position.equals(Position.DEALER);
-    }
-
-    public boolean isSmallBlind() {
-        return position.equals(Position.SMALL_BLIND);
-    }
-
-    public boolean isBigBlind() {
-        return position.equals(Position.BIG_BLIND);
-    }
-
-    public boolean isUTG() {
-        return position.equals(Position.UTG);
-    }
-
-    public void resetBet() {
-        this.bet = 0;
-    }
-
-    public boolean isFold() {
-        return this.isFold;
     }
 
     public void resetFold() {
@@ -156,8 +82,9 @@ public class HumanPlayer extends Player {
                 int raiseSize = sc.nextInt();
                 this.hasActed = true;
                 return makeRaise(raiseSize);
+            default:
+                return 0;
         }
-        return 1;
     }
 
     private int makeRaise (int playersRaise) {
@@ -188,33 +115,5 @@ public class HumanPlayer extends Player {
     private int makeCheck(){
         return 0;
     }
-
-    public int getBet() {
-        return bet;
-    }
-
-    public int fold() {
-        isFold = !isFold;
-        return 0;
-    }
-
-    public String toString() {
-        StringBuilder output = new StringBuilder();
-        if (isSmallBlind()) {
-            output.append("SB: ");
-        }
-        else if (isBigBlind()) {
-            output.append("BB: ");
-        }
-        else if (isDealer()) {
-            output.append("D: ");
-        }
-        else if (isUTG()) {
-            output.append("UTG: ");
-        }
-        output.append(getHand().toString());
-        output.append("\tstack: ");
-        output.append(this.chips);
-        return output.toString();
-    }
+    
 }

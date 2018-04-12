@@ -63,11 +63,17 @@ public class Table {
     }
 
     private void initPlayers() {
-        for (int i = 0; i < NUM_OF_PLAYERS; i++) {
+        for (int i = 0; i < 0; i++) {
+            Player newPlayer = new HumanPlayer(this);
+            players.add(newPlayer);
+            newPlayer.setName("Player " + (i + 1));
+        }
+        for (int i = 0; i < 4; i++) {
             Player newPlayer = new AI(this);
             players.add(newPlayer);
             newPlayer.setName("AI " + (i + 1));
         }
+      
     }
 
     private Player chooseDealer() {

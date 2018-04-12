@@ -13,7 +13,6 @@ public class AI extends Player {
     private Table table;
     private String name;
 
-    private boolean hasActed;
     private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
@@ -22,6 +21,7 @@ public class AI extends Player {
     private boolean allIn = false;
     private Suit mostCommonSuit = Suit.CLUBS; // Implementation requires a default Suit.
     private int rankOfCardOutOfOrder = -1;
+    private boolean hasActed = false;
 
     public AI(Table table) {
         this.table = table;
@@ -66,14 +66,6 @@ public class AI extends Player {
 
     public void setUTG() {
         this.position = Position.UTG;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public boolean isDealer() {
@@ -304,7 +296,7 @@ public class AI extends Player {
 
     public int placeBet() {
         int bet = chooseBet();
-        System.out.println("Choosen bet: " + bet);
+        System.out.println("Chosen bet: " + bet);
         throwChips(bet);
         System.out.println("Current bet total: " + this.bet);
         System.out.println(this.position + " | COW: " + this.chanceOfWinning);
@@ -358,7 +350,7 @@ public class AI extends Player {
     private int call() {
         int maxBet = table.getActiveBet();
         if (maxBet < this.chips + this.bet) {
-            System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
+//System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
             return maxBet - this.bet;
         } else {
             System.out.println("All in from Call!");
