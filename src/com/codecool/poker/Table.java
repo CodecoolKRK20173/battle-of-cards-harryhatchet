@@ -274,4 +274,14 @@ public class Table {
     public List<Player> getPlayers() {
         return this.players;
     }
+    
+
+    public boolean isGameFinished() {
+        for (Player player : players) {
+            if (player.getChips() == 100 * NUM_OF_PLAYERS) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
