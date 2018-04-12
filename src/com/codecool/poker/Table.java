@@ -20,10 +20,12 @@ public class Table {
         int dealerIndex = players.indexOf(chooseDealer());
         Player dealer = players.get(dealerIndex);
         dealer.setDealer();
+        dealer.setName("dealer");
 
         int smallBlindIndex = (dealerIndex + 1) % NUM_OF_PLAYERS;
         Player smallBlind = players.get(smallBlindIndex);
         smallBlind.setSmallBlind();
+        smallBlind.setName("SB");
         this.pot += 1;
         smallBlind.postSmallBlind();
         this.pot += 2;
@@ -31,12 +33,14 @@ public class Table {
         int bigBlindIndex = (dealerIndex + 2) % NUM_OF_PLAYERS;
         Player bigBlind = players.get(bigBlindIndex);
         bigBlind.setBigBlind();
+        bigBlind.setName("BB");
         bigBlind.postBigBlind();
         this.activeBet = 2;
 
         int utgIndex = (dealerIndex + 3) % NUM_OF_PLAYERS;
         Player utg = players.get(utgIndex);
         utg.setUTG();
+        utg.setName("UTG");
 
         this.deck = new Deck();
         dealCards();
