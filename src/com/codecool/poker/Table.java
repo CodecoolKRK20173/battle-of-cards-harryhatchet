@@ -6,15 +6,19 @@ public class Table {
 
     private final int NUM_OF_PLAYERS = 4;
     private List<Player> players;
+    private Player currentPlayer = null;
     private Deck deck;
     private int activeBet;
     private int previousBet;
+
+    private PrintTable pt;
 
     private int pot;
 
     public Table() {
         this.players = new ArrayList<Player>();
         initPlayers();
+        this.pt = new PrintTable(this);
     }
 
     public void initHand() {
@@ -92,7 +96,7 @@ public class Table {
         return null;
     }
 
-    private Player getNextActivePlayer(Player currentPlayer) {
+    private Player getNextActivePlayer() {
         int currentPlayerIndex = this.players.indexOf(currentPlayer);
         Player nextPlayer = null; 
         do {
@@ -131,6 +135,9 @@ public class Table {
 
     public void playHand() {
         initHand();
+        pt.update();
+        pt.printTable();
+
         showHands();
         playRound(1);
         if (players.size() > 1) {
@@ -143,7 +150,6 @@ public class Table {
     }
 
     private void playRound(int round) {
-        Player currentPlayer = null;
 
         if (round == 1) {
             currentPlayer = getUTG();
@@ -157,7 +163,7 @@ public class Table {
             this.pot += currentPlayer.makeAction();
             this.previousBet = activeBet;
             this.activeBet = currentPlayer.getBet();
-            currentPlayer = getNextActivePlayer(currentPlayer);
+            currentPlayer = getNextActivePlayer();
             System.out.println("POT: " + this.pot);
         }
         while (isBettingFinished());
