@@ -1,8 +1,11 @@
 package com.codecool.poker;
 
+import java.util.*;
+
+
 public class PrintTable {
-    private final int width = 65;
-    private final int weigth = 35;
+    private final int width = 80;
+    private final int weigth = 40;
     private String[][] displayTable = new String[width][weigth];
 
     private final String whiteColor = "\033[0m";
@@ -41,19 +44,41 @@ public class PrintTable {
         String title1 = "Stack:";
         String title2 = "Pot:";
         String title3 = "Role:";
-        addString(title1, 5, 7);
-        addString(title2, 5, 8);
-        addString(title3, 5, 9);
-        addString(title1, 13, 3);
-        addString(title2, 13, 4);
-        addString(title3, 13, 5);
-        addString(title1, 48, 26);
-        addString(title2, 48, 27);
+        addString(title1, 6, 9);
+        addString(title2, 6, 10);
+        addString(title3, 6, 11);
+        addString(title1, 14, 5);
+        addString(title2, 14, 6);
+        addString(title3, 14, 7);
+        addString(title1, width - 26, weigth - 9);
+        addString(title2, width - 26, weigth - 8);
+        addString(title3, width - 26, weigth - 7);
+        addString(title1, width - 16, weigth - 13);
+        addString(title2, width - 16, weigth - 12);
+        addString(title3, width - 16, weigth - 11);
         
     }
 
+    public void update() {
+        addCards(table.getPlayers().get(0), (int) ((width - 8) / 2), weigth - 4, true);
+        addCards(table.getPlayers().get(1), 3, (int) ((weigth - 8) / 2), false);
+        addCards(table.getPlayers().get(2), (int) ((width - 8) / 2), 2, true);
+        addCards(table.getPlayers().get(3), width - 5, (int) ((weigth - 8) / 2), false);
+    }
+
     private void addCards(Player player, int firstX, int firstY, boolean isHorizontal) {
-        
+        Card card;
+        List<Card> cards = player.getHand().getCards();
+        int x = 0, y = 0;
+        for(int i = 0; i < cards.size(); i++) {
+            if (isHorizontal) {
+                x = i * 2;
+            } else{
+                y = i;
+            }
+            card = cards.get(i);
+            addString(card.toString(), firstX + x, firstY + y, !isHorizontal);
+        }
     }
 
     private void initTable() {
