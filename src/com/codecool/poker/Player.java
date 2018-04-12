@@ -32,6 +32,13 @@ public abstract class Player {
     public abstract boolean isBigBlind();
     public abstract boolean isUTG();
 
+    public String roleToString() {
+        if (isDealer()) {
+            return "D";
+        }
+        return " ";
+    }
+
     public enum Position {
         DEALER, SMALL_BLIND, BIG_BLIND, UTG;
     }
