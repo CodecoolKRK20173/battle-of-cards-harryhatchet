@@ -319,7 +319,7 @@ public class AI extends Player {
             if (highestBet == 0 && chanceOfWinning < 0.1) {
                 System.out.println("HB = 0 && chance of win = " + chanceOfWinning);
                 chosenBet = 0;
-            } else if (highestBet / (this.chips + this.bet) < (this.chips + this.bet) * chanceOfWinning) {
+            } else if (highestBet / (this.chips + this.bet) < this.chips * chanceOfWinning) {
                 chosenBet = raise();
             } else {
                 chosenBet = call();
@@ -342,7 +342,7 @@ public class AI extends Player {
             System.out.println("allIn from raise!");
             return this.chips;
         } else {
-            int increasedBet = minRaisedBet + generator.nextInt((int)(chanceOfWinning * 100));
+            int increasedBet = minRaisedBet + generator.nextInt((int)(chanceOfWinning * 10));
             System.out.println("Goal num of chips: " + increasedBet);
             if (increasedBet > this.chips + this.bet) {
                 System.out.println("Not enough for increased bet!");
