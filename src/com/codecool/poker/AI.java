@@ -18,6 +18,8 @@ public class AI extends Player {
     private boolean bluff = false;
     private int numberOfCardsToChange = -1;
     private boolean allIn = false;
+    private Suit mostCommonSuit = Suit.CLUBS; // Implementation requires a default Suit.
+    private int rankOfCardOutOfOrder = -1;
 
     public AI(Table table) {
         this.table = table;
@@ -138,6 +140,8 @@ public class AI extends Player {
             int current = handIterator.next();
             if (previous + 1 == current) {
                 offByOne++;
+            } else {
+                rankOfCardOutOfOrder = current;
             }
             previous = current;
         }
@@ -158,26 +162,25 @@ public class AI extends Player {
         int diamonds = 0;
         int clubs = 0;
         int spades = 0;
-        String mostCommonSuit = "";
 
         while (handIterator.hasNext()) {
             String suit = handIterator.next();
             switch (suit) {
             case "h":
                 hearths++;
-                mostCommonSuit = (hearths == 4 ? "h" : mostCommonSuit);
+                mostCommonSuit = (hearths == 4 ? Suit.HEARTS : mostCommonSuit);
                 break;
             case "d":
                 diamonds++;
-                mostCommonSuit = (diamonds == 4 ? "d" : mostCommonSuit);
+                mostCommonSuit = (diamonds == 4 ? Suit.DIAMONDS : mostCommonSuit);
                 break;
             case "c":
                 clubs++;
-                mostCommonSuit = (clubs == 4 ? "c" : mostCommonSuit);
+                mostCommonSuit = (clubs == 4 ? Suit.CLUBS : mostCommonSuit);
                 break;
             case "s":
                 spades++;
-                mostCommonSuit = (spades == 4 ? "s" : mostCommonSuit);
+                mostCommonSuit = (spades == 4 ? Suit.SPADES : mostCommonSuit);
                 break;
             }
         }
@@ -256,7 +259,7 @@ public class AI extends Player {
         return (highestBet / (chips + bet) < generator.nextDouble() / 4 + chanceOfWinning);
     }
 
-    private int getHighestCardRank(String suit) {
+    private int getHighestCardRank(Suit suit) {
         int highestRank = -1;
         for (Card c : hand.getCards()) {
             if (c.getRank().getCardStrength() > highestRank && c.getSuit().equals(suit)) {
@@ -358,7 +361,8 @@ public class AI extends Player {
 
     public int changeCards() {
         if (this.closeToFlush || this.closeToStrit) {
-            return discardSingleCard();
+            discardSingleCard();
+            return 1;
         }
 
         if (this.numberOfCardsToChange >= 3) {
@@ -366,6 +370,22 @@ public class AI extends Player {
         }
 
         return optimalDiscardForCurrentHand(); // AI already has a high chance for win. Discard unwanted cards
+    }
+
+    private void discardSingleCard() {
+        if (closeToFlush) {
+            for (int i = 4; i >= 0; i--) {
+                if (!hand.getCards().get(i).getSuit().equals(mostCommonSuit)){
+                    hand.getCards().remove(i);
+                }
+            }
+        } else {
+            for (int i = 4; i >= 0; i--) {
+                if (hand.getCards().get(i).getRank().getCardStrength() == rankOfCardOutOfOrder){
+                    hand.getCards().remove(i);
+                }
+            }
+        }
     }
 
     public int makeRaise(int playersRaise) {
