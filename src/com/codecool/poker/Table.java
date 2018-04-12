@@ -8,6 +8,7 @@ public class Table {
     private List<Player> players;
     private Deck deck;
     private int activeBet;
+    private int previousBet;
 
     private int pot;
 
@@ -154,11 +155,17 @@ public class Table {
 
         do {
             this.pot += currentPlayer.makeAction();
+            this.previousBet = activeBet;
             this.activeBet = currentPlayer.getBet();
             currentPlayer = getNextActivePlayer(currentPlayer);
             System.out.println("POT: " + this.pot);
         }
         while (isBettingFinished());
+    }
+
+    public int getDiff() {
+        int difference = activeBet - previousBet;
+        return difference;
     }
 
     private void exchangeCards() {
