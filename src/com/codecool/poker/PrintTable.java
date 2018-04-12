@@ -60,10 +60,18 @@ public class PrintTable {
     }
 
     public void update() {
-        addCards(table.getPlayers().get(0), (int) ((width - 8) / 2), weigth - 4, true);
-        addCards(table.getPlayers().get(1), 3, (int) ((weigth - 8) / 2), false);
-        addCards(table.getPlayers().get(2), (int) ((width - 8) / 2), 2, true);
-        addCards(table.getPlayers().get(3), width - 5, (int) ((weigth - 8) / 2), false);
+        int centerX = (int) ((width - 14) / 2);
+        int centerY = (int) ((weigth - 10) / 2);
+        addCards(table.getPlayers().get(0), centerX, weigth - 4, true);
+        addCards(table.getPlayers().get(1), 3, centerY, false);
+        addCards(table.getPlayers().get(2), centerX, 2, true);
+        addCards(table.getPlayers().get(3), width - 5, centerY, false);
+
+        addInt(table.getPot(), centerX + 6, centerY + 4);
+    }
+
+    private void addInt(int number, int firstX, int firstY) {
+        addString(Integer.toString(number), firstX, firstY);
     }
 
     private void addCards(Player player, int firstX, int firstY, boolean isHorizontal) {
@@ -72,9 +80,9 @@ public class PrintTable {
         int x = 0, y = 0;
         for(int i = 0; i < cards.size(); i++) {
             if (isHorizontal) {
-                x = i * 2;
+                x = i * 3;
             } else{
-                y = i;
+                y = i * 2;
             }
             card = cards.get(i);
             addString(card.toString(), firstX + x, firstY + y, !isHorizontal);
