@@ -50,10 +50,21 @@ public class Table {
     }
 
     private void initPlayers() {
-        for (int i = 0; i < NUM_OF_PLAYERS; i++) {
+        for (int i = 0; i < 0; i++) {
             Player newPlayer = new HumanPlayer(this);
             players.add(newPlayer);
         }
+        
+        Player newAI1 = new AI(this);
+        Player newAI2 = new AI(this);
+        Player newAI3 = new AI(this);
+        Player newAI4 = new AI(this);
+
+        players.add(newAI1);
+        players.add(newAI2);
+        players.add(newAI3);
+        players.add(newAI4);
+        
     }
 
     private Player chooseDealer() {
@@ -124,7 +135,7 @@ public class Table {
     private int countActivePlayers() {
         int numOfActivePlayers = 0;
         for (Player player : this.players) {
-            if (!player.isFold()) {
+            if (!player.isFold() && player.getChips() != 0) {
                 numOfActivePlayers++;
             }
         }
