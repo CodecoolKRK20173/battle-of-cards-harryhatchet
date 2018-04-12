@@ -109,10 +109,14 @@ public class AI extends Player {
     }
 
     public int makeAction() {
-        if (fold || allIn) {
-            System.out.println("Fold: " + fold + " | allIn: " + allIn);
+        if (fold || allIn || hasActed) {
+            this.hasActed = true;
+            System.out.println("Fold: " + fold + " | allIn: " + allIn + " | hasActed: " + hasActed);
             return 0;
         }
+
+        System.out.println("~~Action of: " + this.name + " ~~");
+        this.hasActed = true;
 
         boolean shouldFold = checkIfShouldFold();
         if (shouldFold) {
@@ -307,6 +311,7 @@ public class AI extends Player {
         int chosenBet;
         int highestBet = table.getActiveBet();
         Random generator = new Random();
+        System.out.println("Curr chips: " + chips + " | curr bet: " + bet);
         if (this.bluff) {
             System.out.println("Choose bet: bluff - " + this.bluff);
             chosenBet = bluffHighBet();
@@ -341,7 +346,7 @@ public class AI extends Player {
             System.out.println("Goal num of chips: " + increasedBet);
             if (increasedBet > this.chips + this.bet) {
                 System.out.println("Not enough for increased bet!");
-                return minRaisedBet - this.bet;
+                return chips;
             } else {
                 System.out.println("Increased bet! Jahar!");
                 return increasedBet - this.bet;
