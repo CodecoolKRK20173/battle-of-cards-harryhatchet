@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class AI extends Player {
 
-    private boolean hasActed = false;
     private Hand hand;
     private int chips = 100;
     private int bet = 0;
