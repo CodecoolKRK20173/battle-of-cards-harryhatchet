@@ -138,12 +138,20 @@ public class Table {
         boolean isTrue = true;
 
         for (Player player : this.players) {
-            if (!player.isFold() && player.getBet() != this.activeBet) {
+            if (!player.hasActed()) {
                 isTrue = false;
             }
         }
 
         return isTrue;
+        /*
+        for (Player player : this.players) {
+            if (!player.isFold() && player.getBet() != this.activeBet ) {
+                isTrue = false;
+            }
+        }
+
+        return isTrue;*/
     }
 
     public void showHands() {
@@ -158,9 +166,10 @@ public class Table {
         initHand();
         showHands();
         playRound(1);
-        if (players.size() > 1) {
+        if (countActivePlayers() > 1) {
             exchangeCards();
             resetPlayersBets();
+            resetPlayersAction();
             showHands();
             playRound(2);
         }
@@ -179,12 +188,18 @@ public class Table {
         }
 
         do {
-            this.pot += currentPlayer.makeAction();
-            this.activeBet = currentPlayer.getBet();
+            int raiseSize = currentPlayer.makeAction();
+            this.pot += raiseSize;
+            if (raiseSize > this.activeBet) {
+                resetPlayersAction();
+                this.activeBet = currentPlayer.getBet();
+            }
+            System.out.println("Acted? " + currentPlayer.hasActed());
             currentPlayer = getNextActivePlayer(currentPlayer);
+            System.out.println("Is betting finished? " + isBettingFinished());
             System.out.println("POT: " + this.pot);
         }
-        while (isBettingFinished());
+        while (!isBettingFinished());
     }
 
     private void exchangeCards() {
