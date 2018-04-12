@@ -17,7 +17,6 @@ public class Hand implements Comparable<Hand>, Comparator<HandPoints>, Iterators
 
     public Hand(List<Card> cards) {
         this.cards = cards;
-        this.cardsOccurrence = calculateCardsOccurrence();
         sortCards();
         this.handPoints = new HandPoints(this);
     }
@@ -68,10 +67,11 @@ public class Hand implements Comparable<Hand>, Comparator<HandPoints>, Iterators
         return cardsOccurrence;
     }
 
-    private void sortCards() {
+    public void sortCards() {
         List<Card> sortedCards = new ArrayList<>();
         Integer count1;
         Integer count2;
+        cardsOccurrence = calculateCardsOccurrence();
 
         for (Card card : cards) {
             count1 = card.getRank().getCardStrength();

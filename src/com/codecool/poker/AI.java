@@ -22,6 +22,7 @@ public class AI extends Player {
     private boolean allIn = false;
     private Suit mostCommonSuit = Suit.CLUBS; // Implementation requires a default Suit.
     private int rankOfCardOutOfOrder = -1;
+    private boolean hasActed = false;
 
     public AI(Table table) {
         this.table = table;
@@ -68,10 +69,6 @@ public class AI extends Player {
         this.position = Position.UTG;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public boolean isDealer() {
         return position.equals(Position.DEALER);
     }
@@ -108,16 +105,23 @@ public class AI extends Player {
         this.fold = false;
     }
 
-    public int makeAction() {
-        if (fold || allIn || hasActed) {
-            this.hasActed = true;
-            System.out.println("Fold: " + fold + " | allIn: " + allIn + " | hasActed: " + hasActed);
-            return 0;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public int makeAction() {
         System.out.println("~~Action of: " + this.name + " ~~");
         this.hasActed = true;
 
+        if (this.chips <= 0) {
+            return 0;
+        }
+
+        System.out.println("Chips: " + chips + ", bet" + bet);
         boolean shouldFold = checkIfShouldFold();
         if (shouldFold) {
             System.out.println("ShouldFold!");
@@ -134,7 +138,8 @@ public class AI extends Player {
         if (points > 1) {
             System.out.println("Has a lot of points!: " + points);
             this.chanceOfWinning = points / 10.0;
-            return false;
+            System.out.println("137: " + chanceOfWinning + " | " + ((double)table.getActiveBet() / (this.chips + this.bet)));
+            return chanceOfWinning < (double)table.getActiveBet() / (this.chips + this.bet);
         } else {
             return ifShouldNotPlay();
         }
@@ -310,16 +315,13 @@ public class AI extends Player {
     private int chooseBet() {
         int chosenBet;
         int highestBet = table.getActiveBet();
-        Random generator = new Random();
+        System.out.println("raise condition: " + (highestBet / (this.chips + this.bet)));
         System.out.println("Curr chips: " + chips + " | curr bet: " + bet);
         if (this.bluff) {
             System.out.println("Choose bet: bluff - " + this.bluff);
             chosenBet = bluffHighBet();
         } else {
-            if (highestBet == 0 && chanceOfWinning < 0.1) {
-                System.out.println("HB = 0 && chance of win = " + chanceOfWinning);
-                chosenBet = 0;
-            } else if (highestBet / (this.chips + this.bet) < this.chips * chanceOfWinning) {
+            if (highestBet / (this.chips + this.bet) < (this.chips + this.bet) * chanceOfWinning * 2) {
                 chosenBet = raise();
             } else {
                 chosenBet = call();
@@ -330,7 +332,7 @@ public class AI extends Player {
 
     private int bluffHighBet() {
         // Go all IN
-        return this.chips - this.bet;
+        return this.chips;
     }
 
     private int raise() {
@@ -346,7 +348,7 @@ public class AI extends Player {
             System.out.println("Goal num of chips: " + increasedBet);
             if (increasedBet > this.chips + this.bet) {
                 System.out.println("Not enough for increased bet!");
-                return chips;
+                return minRaisedBet - this.bet;
             } else {
                 System.out.println("Increased bet! Jahar!");
                 return increasedBet - this.bet;
@@ -366,17 +368,23 @@ public class AI extends Player {
     }
 
     public void postSmallBlind() {
+        System.out.println("Post small blind");
         throwChips(1);
     }
 
     public void postBigBlind() {
-        throwChips(2);
+        System.out.println("Post big blind");
+        if (this.chips >= 2) {
+            throwChips(2);
+        } else {
+            throwChips(this.chips);
+        }
     }
 
     public void throwChips(int bet) {
         this.chips -= bet;
         this.bet += bet;
-        this.allIn = this.chips == 0;
+        this.allIn = this.chips < 1;
     }
 
     public int changeCards() {

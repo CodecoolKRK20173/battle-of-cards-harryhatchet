@@ -19,45 +19,32 @@ public class HumanPlayer extends Player {
     private int minRaise;
     private Position position = Position.UTG;
 
-    public HumanPlayer(Table table) {
-        this.table = table;
-    }
-
-    public void addChips(int newChips) {
-        this.chips += newChips;
-    }
-
-    public void throwChips(int bet) {
-        this.chips -= bet;
-        this.bet += bet;
-    }
 
     public int getChips() {
         return chips;
     }
 
-    public void setHand(Hand hand) {
-        this.hand = hand;
+    public int getBet() {
+        return bet;
     }
 
     public Hand getHand() {
         return hand;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void addChips(int newChips) {
+        this.chips += newChips;
     }
 
-    public boolean hasActed() {
-        return this.hasActed;
+    public int fold() {
+        this.isFold = true;
+        return 0;
     }
 
-    public void setHasActed(boolean hasActed) {
-        this.hasActed = hasActed;
+    public boolean isFold() {
+        return this.isFold;
     }
 
-    // public int placeBet(int customBet) {
-    //     if (isSmallBlind) {
     public void setDealer() {
         this.position = Position.DEALER;
     }
@@ -90,18 +77,41 @@ public class HumanPlayer extends Player {
         return position.equals(Position.UTG);
     }
 
+    public boolean hasActed() {
+        return this.hasActed;
+    }
+
+    public void setHasActed(boolean hasActed) {
+        this.hasActed = hasActed;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
+
     public void resetBet() {
         this.bet = 0;
     }
 
-    public boolean isFold() {
-        return this.isFold;
+    public void resetFold() {
+        this.isFold = false;
     }
 
-    public void resetFold() {
-        if (isFold == true && getChips() > 0) {
-            isFold = false;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public HumanPlayer(Table table) {
+        this.table = table;
+    }
+
+    public void throwChips(int bet) {
+        this.chips -= bet;
+        this.bet += bet;
     }
 
     public int changeCards() {
@@ -185,13 +195,5 @@ public class HumanPlayer extends Player {
     private int makeCheck(){
         return 0;
     }
-
-    public int getBet() {
-        return bet;
-    }
-
-    public int fold() {
-        isFold = !isFold;
-        return 0;
-    }
+    
 }
