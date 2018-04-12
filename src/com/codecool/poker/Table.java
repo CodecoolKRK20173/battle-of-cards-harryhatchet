@@ -6,16 +6,20 @@ public class Table {
 
     private final int NUM_OF_PLAYERS = 4;
     private List<Player> players;
+    private Player currentPlayer = null;
     private Deck deck;
     private int activeBet;
     private int previousBet;
     private HandComparator handComparator;
+
+    private PrintTable pt;
 
     private int pot;
 
     public Table() {
         this.players = new ArrayList<Player>();
         initPlayers();
+        this.pt = new PrintTable(this);
     }
 
     public void initHand() {
@@ -183,7 +187,7 @@ public class Table {
     public void showHands() {
         for (Player player : players) {
             if (!player.isFold()) {
-                System.out.println(player);
+                pt.printTable();
             }
         }
     }
@@ -193,6 +197,9 @@ public class Table {
         resetPlayersAction();
         resetPlayersBets();
         initHand();
+        pt.update();
+        pt.printTable();
+
         showHands();
         playRound(1);
         System.out.println("\n\nEND OF TURN !!\n\n\n");
