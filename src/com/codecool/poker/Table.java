@@ -22,6 +22,9 @@ public class Table {
         this.pt = new PrintTable(this);
     }
 
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
+    }
     public void initHand() {
         this.deck = new Deck();
         dealCards();
@@ -59,16 +62,15 @@ public class Table {
         // Player utg = players.get(utgIndex);
         // utg.setUTG();
         // // utg.setName("UTG");
-        System.out.println("SB: " + smallBlind.getName() + "\nBB: " + bigBlind.getName());
     }
 
     private void initPlayers() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 4; i++) {
             Player newPlayer = new HumanPlayer(this);
             players.add(newPlayer);
             newPlayer.setName("Player " + (i + 1));
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 0; i++) {
             Player newPlayer = new AI(this);
             players.add(newPlayer);
             newPlayer.setName("AI " + (i + 1));
@@ -126,11 +128,11 @@ public class Table {
             nextPlayer = this.players.get((currentPlayerIndex + i) % this.players.size());
             
             if (!nextPlayer.isFold() && nextPlayer.getChips() != 0 && !nextPlayer.hasActed() && nextPlayer.getHand().getCards().size() == 5) {
-                
+                this.currentPlayer = nextPlayer;
                 return nextPlayer;
             }
         }
-        // System.out.println("Next player is null!");
+        this.currentPlayer = currentPlayer;
         return currentPlayer;
     /*
         int i = 1;
@@ -221,15 +223,18 @@ public class Table {
 
         if (round == 1) {
             currentPlayer = getUTG();
+            this.currentPlayer = currentPlayer;
         }
         else {
             this.previousBet = 0;
             this.activeBet = 0;
             currentPlayer = getSmallBlind();
+            this.currentPlayer = currentPlayer;
             if (currentPlayer.isFold() || currentPlayer.getChips() == 0) {
                 // System.out.println("Curr is fold!");
                 previousPlayer = currentPlayer;
                 currentPlayer = getNextActivePlayer(currentPlayer);
+                this.currentPlayer = currentPlayer;
             }
         }
         // System.out.println("currentPlayer == previousPlayer " + (currentPlayer == previousPlayer));
@@ -256,6 +261,7 @@ public class Table {
             System.out.println("Acted? " + currentPlayer.hasActed());
             previousPlayer = currentPlayer;
             currentPlayer = getNextActivePlayer(currentPlayer);
+            this.currentPlayer = currentPlayer;
             if (currentPlayer == previousPlayer) {
                 System.out.println("Null curr player!");
                 return;
@@ -305,7 +311,9 @@ public class Table {
 
     private void exchangeCards() {
         for (Player player : players) {
+            this.currentPlayer = player;
             if (player.getHand().getCards().size() == 5) {
+                pt.printTable();
                 int numOfCardsToExchange = player.changeCards();
                 List<Card> newCards = deck.drawCards(numOfCardsToExchange);
                 player.getHand().addCards(newCards);

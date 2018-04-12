@@ -42,18 +42,22 @@ public class PrintTable {
     }
 
     private void addSubtitles() {
-        String title1 = "Stack:";
-        String title2 = "Pot:";
+        String title1 = "Chips:";
+        String title2 = "Bet:";
         String title3 = "Role:";
+
         addString(title1, width - 26, weigth - 9);
         addString(title2, width - 26, weigth - 8);
         addString(title3, width - 26, weigth - 7);
+
         addString(title1, 6, 9);
         addString(title2, 6, 10);
         addString(title3, 6, 11);
+
         addString(title1, 15, 5);
         addString(title2, 15, 6);
         addString(title3, 15, 7);
+
         addString(title1, width - 16, weigth - 13);
         addString(title2, width - 16, weigth - 12);
         addString(title3, width - 16, weigth - 11);
@@ -73,17 +77,17 @@ public class PrintTable {
 
         addInt(players.get(0).getChips(), width - 20, weigth - 9);
         addInt(players.get(1).getChips(), 12, 9);
-        addInt(players.get(2).getChips(), 20, 5);
+        addInt(players.get(2).getChips(), 21, 5);
         addInt(players.get(3).getChips(), width - 10, weigth - 13);
 
         addInt(players.get(0).getBet(), width - 20, weigth - 8);
         addInt(players.get(1).getBet(), 12, 10);
-        addInt(players.get(2).getBet(), 20, 6);
+        addInt(players.get(2).getBet(), 21, 6);
         addInt(players.get(3).getBet(), width - 10, weigth - 12);
 
         addString(players.get(0).roleToString(), width - 20, weigth - 7);
         addString(players.get(1).roleToString(), 12, 11);
-        addString(players.get(2).roleToString(), 20, 7);
+        addString(players.get(2).roleToString(), 21, 7);
         addString(players.get(3).roleToString(), width - 10, weigth - 11);
     }
 
@@ -92,7 +96,7 @@ public class PrintTable {
     }
 
     private void addCards(Player player, int firstX, int firstY, boolean isHorizontal) {
-        Card card;
+        String card;
         List<Card> cards = player.getHand().getCards();
         int x = 0, y = 0;
         for(int i = 0; i < cards.size(); i++) {
@@ -101,8 +105,13 @@ public class PrintTable {
             } else{
                 y = i * 2;
             }
-            card = cards.get(i);
-            addString(card.toString(), firstX + x, firstY + y, !isHorizontal);
+            if(player.equals(table.getCurrentPlayer())) {
+                card = cards.get(i).toString();
+            } else {
+                card = "--";
+            }
+            
+            addString(card, firstX + x, firstY + y, !isHorizontal);
         }
     }
 
