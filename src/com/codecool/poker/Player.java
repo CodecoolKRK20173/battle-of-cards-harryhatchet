@@ -21,17 +21,20 @@ public abstract class Player {
     public abstract int makeCall();
 
     public abstract boolean isFold();
-    public abstract void fold();
+    public abstract int fold();
 
     public abstract void setDealer();
     public abstract void setSmallBlind();
     public abstract void setBigBlind();
     public abstract void setUTG();
+    public abstract void setName(String name);
+    public abstract void setHasActed(boolean hasActed);
 
     public abstract boolean isDealer();
     public abstract boolean isSmallBlind();
     public abstract boolean isBigBlind();
     public abstract boolean isUTG();
+    public abstract boolean hasActed();
 
     public abstract int changeCards();
 
