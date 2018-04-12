@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.lang.StringBuilder;
 import java.util.Iterator;
 import java.lang.Comparable;
+import java.util.Comparator;
 
-public class Hand implements Comparable<Hand> {
+public class Hand implements Comparable<Hand>, Comparator<HandPoints>, Iterators {
     private List<Card> cards;
     private Map<Integer, Integer> cardsOccurrence;
     private HandPoints handPoints;
@@ -78,14 +79,9 @@ public class Hand implements Comparable<Hand> {
             for (int i = 0; i < sortedCards.size(); i++) {
                 count2 = sortedCards.get(i).getRank().getCardStrength();
 
-                if (cardsOccurrence.get(count1) > (cardsOccurrence.get(count2))) {
+                if (isFirstThan(count1, count2)) {
                     sortedCards.add(i, card);
                     break;
-                } else if (cardsOccurrence.get(count1) == (cardsOccurrence.get(count2))) {
-                    if (count1 > count2) {
-                        sortedCards.add(i, card);
-                        break;
-                    }
                 }
             }
             if (!sortedCards.contains(card)) {
@@ -94,6 +90,18 @@ public class Hand implements Comparable<Hand> {
         }
         
         this.cards = sortedCards;
+    }
+
+    private boolean isFirstThan(int count1, int count2) {
+        if (cardsOccurrence.get(count1) > (cardsOccurrence.get(count2))) {
+            return true;
+        }
+        if (cardsOccurrence.get(count1) == (cardsOccurrence.get(count2))) {
+            if (count1 > count2) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -109,7 +117,7 @@ public class Hand implements Comparable<Hand> {
     @Override
     public int compareTo(Hand other) {
         List<Card> cards2 = other.getCards();
-        int result = handPoints.compareTo(other.getHandPoints());
+        int result = compare(handPoints, other.getHandPoints());
 
         if (result == 0) {
             for (int i = 0; i < cards.size(); i++) {
@@ -120,5 +128,20 @@ public class Hand implements Comparable<Hand> {
             }
         }
         return result;
+    }
+
+    @Override
+    public int compare(HandPoints hp1, HandPoints hp2) {
+        return hp1.getPoints() - hp2.getPoints();
+    }
+
+    @Override
+    public Iterator<Integer> getRankIterator() {
+        return new RankIterator(this);
+    }
+
+    
+    public Iterator<String> getSuitIterator() {
+        return new SuitIterator(this);
     }
 }
