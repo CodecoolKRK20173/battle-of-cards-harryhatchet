@@ -1,10 +1,10 @@
 package com.codecool.poker;
 
 public enum Suit {
-    HEARTS("h"),
-    DIAMONDS("d"),
-    SPADES("s"),
-    CLUBS("c");
+    HEARTS("hearts"),
+    DIAMONDS("diamonds"),
+    SPADES("spades"),
+    CLUBS("clubs");
 
     private String symbol;
 
