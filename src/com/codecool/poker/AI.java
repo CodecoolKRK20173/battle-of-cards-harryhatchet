@@ -109,7 +109,7 @@ public class AI extends Player {
     }
 
     private boolean checkIfShouldFold() {
-        int points = hand.getHandPoints().getHandPoints();
+        int points = hand.getHandPoints().getPoints();
 
         if (points > 0) {
             this.chanceOfWinning = points / 10;
@@ -129,7 +129,7 @@ public class AI extends Player {
     }
 
     private double addChanceForStrit() {
-        Iterator<Integer> handIterator = hand.getRankIterator();
+        Iterator<Integer> handIterator = hand.getHandPoints().getRankIterator();
         int offByOne = 0;
         int previous = -1;
 
@@ -152,7 +152,7 @@ public class AI extends Player {
     }
 
     private double addChanceForFlush() {
-        Iterator<String> handIterator = hand.getSuitIterator();
+        Iterator<String> handIterator = hand.getHandPoints().getSuitIterator();
         int hearths = 0;
         int diamonds = 0;
         int clubs = 0;

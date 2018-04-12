@@ -45,7 +45,7 @@ public class Table {
 
     private void initPlayers() {
         for (int i = 0; i < NUM_OF_PLAYERS; i++) {
-            Player newPlayer = new AI(this);
+            Player newPlayer = new HumanPlayer(this);
             players.add(newPlayer);
         }
     }
