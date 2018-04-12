@@ -14,7 +14,6 @@ public class AI extends Player {
     private Table table;
     private String name;
 
-    private boolean hasActed;
     private double chanceOfWinning = 0;
     private boolean closeToFlush = false;
     private boolean closeToStrit = false;
@@ -108,6 +107,7 @@ public class AI extends Player {
     }
 
     public int makeAction() {
+        this.hasActed = true;
         if (fold || allIn) {
             System.out.println("Fold: " + fold + " | allIn: " + allIn);
             return 0;
@@ -291,7 +291,7 @@ public class AI extends Player {
 
     public int placeBet() {
         int bet = chooseBet();
-        System.out.println("Choosen bet: " + bet);
+        System.out.println("Chosen bet: " + bet);
         throwChips(bet);
         return bet;
     }
@@ -342,7 +342,7 @@ public class AI extends Player {
     private int call() {
         int maxBet = table.getActiveBet();
         if (maxBet < this.chips + this.bet) {
-            System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
+//System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
             return maxBet - this.bet;
         } else {
             System.out.println("All in from Call!");
