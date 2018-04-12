@@ -1,17 +1,23 @@
 package com.codecool.poker;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,35 +27,52 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class Table extends Pane {
+public class Table extends BorderPane {
     
     private final int NUM_OF_PLAYERS = 4;
     private List<Player> players;
     private List<Player> activePlayers;
     private Deck deck;
-    //private List<Card> deck = new ArrayList<>();
 
-    //private Pile restDeck;
     private List<Hand> playersHands = FXCollections.observableArrayList();
     private int activeBet;
     private int pot;
 
-    private static double STOCK_GAP = 1;
-    private static double FOUNDATION_GAP = 0;
-    private static double TABLEAU_GAP = 30;
+    //private static double STOCK_GAP = 1;
+    //private static double FOUNDATION_GAP = 0;
+    //private static double TABLEAU_GAP = 30;
     
     public Table() {
+        Card.loadCardImages();
+        
         this.players = new ArrayList<Player>();
         this.activePlayers = new ArrayList<Player>();
+
         initPlayers();
-        this.deck = new Deck();
-        //deck = Card.createNewDeck();
-        initHands();
-        deck.shuffle();
-        List<Card> drawnCards = new ArrayList<>();
+        playHand();
     }
 
-    public void initHand() {
+    public void playHand() {
+        this.deck = new Deck();
+        initPositions();
+        initHands(); 
+        dealCards();
+        playRound(1);
+        if (activePlayers.size() > 1) {
+            exchangeCards();
+            playRound(2);
+        }
+        //determineWinners();
+    }
+
+    private void initPlayers() {
+        for (int i = 0; i < NUM_OF_PLAYERS; i++) {
+            Player newPlayer = new HumanPlayer();
+            players.add(newPlayer);
+        }
+    }
+
+    public void initPositions() {
         int dealerIndex = players.indexOf(chooseDealer());
         Player dealer = players.get(dealerIndex);
         dealer.setDealer();
@@ -72,22 +95,18 @@ public class Table extends Pane {
         activePlayers.add(bigBlind);
         activePlayers.add(utg);
         activePlayers.add(dealer);
-
-        this.deck = new Deck();
-        dealCards();
-    }
-
-    private void initPlayers() {
-        for (int i = 0; i < NUM_OF_PLAYERS; i++) {
-            Player newPlayer = new HumanPlayer();
-            players.add(newPlayer);
-        }
     }
 
     private Player chooseDealer() {
         Random randomizer = new Random();
         Player dealer = this.players.get(randomizer.nextInt(this.players.size()));
         return dealer;
+    }
+
+    private void dealCards() {
+        for (int i = 0; i < NUM_OF_PLAYERS; i++) {
+            players.get(i).setHand(playersHands.get(i));
+        }
     }
 
     private Player getSmallBlind() {
@@ -132,12 +151,6 @@ public class Table extends Pane {
         return this.activePlayers.get((currentPlayerIndex + 1) % this.activePlayers.size());
     }
 
-    private void dealCards() {
-        for (Player player : this.players) {
-            //layer.setHand(new Hand(this.deck.drawCards(5)));
-        }
-    }
-
     private boolean isBettingFinished() {
         boolean isTrue = true;
 
@@ -148,16 +161,6 @@ public class Table extends Pane {
         }
 
         return isTrue;
-    }
-
-    public void playHand() {
-        initHand();
-        playRound(1);
-        if (activePlayers.size() > 1) {
-            exchangeCards();
-            playRound(2);
-        }
-        //determineWinners();
     }
 
     private void playRound(int round) {
@@ -196,21 +199,36 @@ public class Table extends Pane {
     }
 
     private void initHands() {
-        int x;
-        for (int i = 0; i < 4; i++) {
-            x = 610 + i * 180;
-            Hand playerHand = initOneHand("Hand " + i, FOUNDATION_GAP, x, 20);
-            playersHands.add(playerHand);
-        }
+        HandView playerHandView;
+        playerHandView = initOneHand(PaneName.TOP, 0);
+        this.setTop(playerHandView);
+        
+        playerHandView = initOneHand(PaneName.LEFT, 90);
+        this.setLeft(playerHandView);
+        
+        playerHandView = initOneHand(PaneName.RIGHT, 90);
+        this.setRight(playerHandView);
+        
+        playerHandView = initOneHand(PaneName.BOTTOM, 0);
+        this.setBottom(playerHandView);    
+
     }
 
-    private Hand initOneHand(String name, double gap, int x, int y) {
-        Hand hand = new Hand(name, gap);
-        hand.setBlurredBackground();
-        hand.setLayoutX(x);
-        hand.setLayoutY(y);
-        //hand.setCards(deck.drawCards(5));
-        getChildren().add(hand);
-        return hand;
+    //private Hand initOneHand(int columns, int rotate, double gap) {        
+    private HandView initOneHand(PaneName paneName, int rotate) {
+        Hand hand = new Hand();        
+        List<Card> cards = deck.drawCards(5);
+        hand.addCards(cards);
+        
+        HandView handView = new HandView(hand, paneName);
+
+        for (Card card : cards) {
+            card.setRotate(rotate);
+            card.setContainingHandView(handView);
+            handView.getChildren().add(card);
+        }
+        
+        playersHands.add(hand);      
+        return handView;
     }
 }
