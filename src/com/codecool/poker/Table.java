@@ -9,6 +9,7 @@ public class Table {
     private Deck deck;
     private int activeBet;
     private int previousBet;
+    private HandComparator handComparator;
 
     private int pot;
 
@@ -18,6 +19,7 @@ public class Table {
     }
 
     public void initHand() {
+        this.pot = 0;
         int dealerIndex = players.indexOf(chooseDealer());
         Player dealer = players.get(dealerIndex);
         dealer.setDealer();
@@ -146,14 +148,6 @@ public class Table {
         }
 
         return isTrue;
-        /*
-        for (Player player : this.players) {
-            if (!player.isFold() && player.getBet() != this.activeBet ) {
-                isTrue = false;
-            }
-        }
-
-        return isTrue;*/
     }
 
     public void showHands() {
@@ -175,7 +169,8 @@ public class Table {
             showHands();
             playRound(2);
         }
-        //determineWinners();
+        List<Player> winners = getWinners();
+        awardPot(winners);
     }
 
     private void playRound(int round) {
@@ -187,6 +182,9 @@ public class Table {
         else {
             this.activeBet = 0;
             currentPlayer = getSmallBlind();
+            if (currentPlayer.isFold()) {
+                currentPlayer = getNextActivePlayer(currentPlayer);
+            }
         }
 
         do {
@@ -202,6 +200,35 @@ public class Table {
             System.out.println("POT: " + this.pot + "\n~~~~~~~~~~\n");
         }
         while (!isBettingFinished());
+    }
+
+    private List<Player> getWinners() {
+        List<Hand> allHands = new ArrayList<>();
+        List<Hand> winningHands = new ArrayList<>();
+        List<Player> winners = new ArrayList<>();
+        for (Player player : players) {
+            if (!player.isFold()) {
+                allHands.add(player.getHand());
+            }
+        }
+
+        handComparator = new HandComparator(allHands);
+        winningHands = handComparator.getBestHands();
+
+        for (Hand winningHand : winningHands) {
+            for (Player player : players) {
+                if (player.getHand().compareTo(winningHand) == 0) {
+                    winners.add(player);
+                }
+            }
+        }
+        return winners;
+    }
+
+    private void awardPot(List<Player> winners) {
+        for (Player winner : winners) {
+            winner.addChips(this.pot);
+        }
     }
 
     public int getDiff() {
@@ -247,5 +274,15 @@ public class Table {
 
     public List<Player> getPlayers() {
         return this.players;
+    }
+    
+
+    public boolean isGameFinished() {
+        for (Player player : players) {
+            if (player.getChips() == 100 * NUM_OF_PLAYERS) {
+                return true;
+            }
+        }
+        return false;
     }
 }
