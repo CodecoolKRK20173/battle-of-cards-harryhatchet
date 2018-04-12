@@ -128,7 +128,7 @@ public class Table {
     public void showHands() {
         for (Player player : players) {
             if (!player.isFold()) {
-                System.out.println(player);
+                pt.printTable();
             }
         }
     }
@@ -164,7 +164,7 @@ public class Table {
             this.previousBet = activeBet;
             this.activeBet = currentPlayer.getBet();
             currentPlayer = getNextActivePlayer();
-            System.out.println("POT: " + this.pot);
+            pt.printTable();
         }
         while (isBettingFinished());
     }
