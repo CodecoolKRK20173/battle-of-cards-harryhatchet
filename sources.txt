@@ -1,3 +1,4 @@
+src/com/codecool/poker/AI.java
 src/com/codecool/poker/Suit.java
 src/com/codecool/poker/SuitIterator.java
 src/com/codecool/poker/Table.java
