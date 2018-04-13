@@ -113,7 +113,7 @@ public class AI extends Player {
     }
 
     public int makeAction() {
-        System.out.println("~~Action of: " + this.name + " ~~");
+        System.out.println(this.name + ": ");
         this.hasActed = true;
 
         if (this.chips <= 0) {
@@ -123,7 +123,7 @@ public class AI extends Player {
         System.out.println("Chips: " + chips + ", bet" + bet);
         boolean shouldFold = checkIfShouldFold();
         if (shouldFold) {
-            System.out.println("ShouldFold!");
+            System.out.println("Fold!");
             fold();
             return 0;
         } else {
@@ -135,9 +135,7 @@ public class AI extends Player {
         int points = hand.getHandPoints().getPoints();
 
         if (points > 1) {
-            System.out.println("Has a lot of points!: " + points);
             this.chanceOfWinning = points / 10.0;
-            System.out.println("137: " + chanceOfWinning + " | " + ((double)table.getActiveBet() / (this.chips + this.bet)));
             return chanceOfWinning < (double)table.getActiveBet() / (this.chips + this.bet);
         } else {
             return ifShouldNotPlay();
@@ -249,7 +247,6 @@ public class AI extends Player {
     }
 
     private boolean makeDecision() {
-        System.out.println("MAKE DECISION");
         // AI goes in if has more than 20% chance of winning
         if (chanceOfWinning > 0.2) {
             return true;
@@ -307,17 +304,13 @@ public class AI extends Player {
         System.out.println("Chosen bet: " + bet);
         throwChips(bet);
         System.out.println("Current bet total: " + this.bet);
-        System.out.println(this.position + " | COW: " + this.chanceOfWinning);
         return bet;
     }
 
     private int chooseBet() {
         int chosenBet;
         int highestBet = table.getActiveBet();
-        System.out.println("raise condition: " + (highestBet / (this.chips + this.bet)));
-        System.out.println("Curr chips: " + chips + " | curr bet: " + bet);
         if (this.bluff) {
-            System.out.println("Choose bet: bluff - " + this.bluff);
             chosenBet = bluffHighBet();
         } else {
             if (highestBet / (this.chips + this.bet) < (this.chips + this.bet) * chanceOfWinning * 2) {
@@ -338,18 +331,16 @@ public class AI extends Player {
 
         Random generator = new Random();
         int minRaisedBet = table.getActiveBet() + table.getDiff();
-        System.out.println("Raise! MinRaisedBet: " + minRaisedBet);
         if (minRaisedBet > this.chips + this.bet) {
             System.out.println("allIn from raise!");
             return this.chips;
         } else {
             int increasedBet = minRaisedBet + generator.nextInt((int)(chanceOfWinning * 10));
-            System.out.println("Goal num of chips: " + increasedBet);
+            System.out.println("Bet: " + increasedBet);
             if (increasedBet > this.chips + this.bet) {
                 System.out.println("Not enough for increased bet!");
                 return minRaisedBet - this.bet;
             } else {
-                System.out.println("Increased bet! Jahar!");
                 return increasedBet - this.bet;
             }
         }
@@ -358,10 +349,8 @@ public class AI extends Player {
     private int call() {
         int maxBet = table.getActiveBet();
         if (maxBet < this.chips + this.bet) {
-//System.out.println("Call for max bet!: " + (maxBet - this.bet) + " | MB: " + maxBet + " | B: " + bet);
-            return maxBet - this.bet;
+           return maxBet - this.bet;
         } else {
-            System.out.println("All in from Call!");
             return this.chips;
         }
     }

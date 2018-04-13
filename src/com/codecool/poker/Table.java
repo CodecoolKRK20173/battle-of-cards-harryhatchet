@@ -13,6 +13,7 @@ public class Table {
     private HandComparator handComparator;
 
     private PrintTable pt;
+    private Scanner sc = new Scanner(System.in);
 
     private int pot;
 
@@ -65,12 +66,19 @@ public class Table {
     }
 
     private void initPlayers() {
-        for (int i = 0; i < 4; i++) {
+        System.out.println("How many players play? ");
+        int numberOfPlayers;
+        do {
+            numberOfPlayers = sc.nextInt();
+        } while (numberOfPlayers > 4 || numberOfPlayers < 0);
+        
+
+        for (int i = 0; i < numberOfPlayers; i++) {
             Player newPlayer = new HumanPlayer(this);
             players.add(newPlayer);
             newPlayer.setName("Player " + (i + 1));
         }
-        for (int i = 0; i < 0; i++) {
+        for (int i = 0; i < NUM_OF_PLAYERS - numberOfPlayers; i++) {
             Player newPlayer = new AI(this);
             players.add(newPlayer);
             newPlayer.setName("AI " + (i + 1));
