@@ -10,7 +10,7 @@ public class PrintTable {
 
     private final String clear = "\033[H\033[2J";
     private final String stopColor = "\033[0m";
-    private final String greenColor = "\033[1;32m";
+    private final String yellowColor = "\033[1;33m";
     private final String redColor = "\033[1;31m";
     private final String blackColor = "\033[30m";
     private final String pinkColor = "\033[35m";
@@ -39,7 +39,7 @@ public class PrintTable {
         colorSign.put("D", blackBackground + redColor + "D" + stopColor);
         for (int i = 0; i < s.length(); i++) {
             l = String.valueOf(s.charAt(i));
-            colorSign.put(l, greyBackground + greenColor + l + stopColor);
+            colorSign.put(l, greyBackground + yellowColor + l + stopColor);
         }
 
     }
