@@ -1,8 +1,10 @@
-package com.codecool.poker;
+package com.codecool.poker.properties.iterator;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import com.codecool.poker.hand.Hand;
+import com.codecool.poker.card.Card;
 
 public class RankIterator implements Iterator<Integer> {
     private int index;

@@ -1,6 +1,8 @@
-package com.codecool.poker;
+package com.codecool.poker.card;
 
 import java.util.*;
+import com.codecool.poker.properties.*;
+
 
 public class Deck {
 

@@ -1,9 +1,11 @@
-package com.codecool.poker;
+package com.codecool.poker.table;
 
 import java.util.*;
+import com.codecool.poker.card.Card;
+import com.codecool.poker.player.Player;
 
 public class PrintTable {
-    private final int width = 80;
+    private final int width = 100;
     private final int weigth = 40;
     private String[][] displayTable = new String[width][weigth];
     private Map<String, String> colorSign = new HashMap<>();

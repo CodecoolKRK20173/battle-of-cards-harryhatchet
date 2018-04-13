@@ -1,6 +1,10 @@
-package com.codecool.poker;
+package com.codecool.poker.table;
 
 import java.util.*;
+import com.codecool.poker.card.*;
+import com.codecool.poker.hand.*;
+import com.codecool.poker.player.*;
+import com.codecool.poker.properties.*;
 
 public class Table {
 

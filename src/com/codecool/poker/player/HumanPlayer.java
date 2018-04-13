@@ -1,9 +1,12 @@
-package com.codecool.poker;
+package com.codecool.poker.player;
 
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.lang.StringBuilder;
+import com.codecool.poker.table.Table;
+import com.codecool.poker.hand.Hand;
+import com.codecool.poker.card.*;
 
 
 public class HumanPlayer extends Player {

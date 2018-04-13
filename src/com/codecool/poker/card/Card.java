@@ -1,6 +1,7 @@
-package com.codecool.poker;
+package com.codecool.poker.card;
 
 import java.lang.Comparable;
+import com.codecool.poker.properties.*;
 
 public class Card implements Comparable<Card> {
 

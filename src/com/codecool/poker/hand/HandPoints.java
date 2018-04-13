@@ -1,4 +1,4 @@
-package com.codecool.poker;
+package com.codecool.poker.hand;
 
 import java.util.List;
 import java.util.ArrayList;

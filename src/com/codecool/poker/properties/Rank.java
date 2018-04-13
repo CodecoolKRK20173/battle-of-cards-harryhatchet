@@ -1,4 +1,4 @@
-package com.codecool.poker;
+package com.codecool.poker.properties;
 
 public enum Rank {
     TWO(2, "2"),

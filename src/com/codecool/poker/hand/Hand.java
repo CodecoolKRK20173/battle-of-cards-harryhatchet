@@ -1,4 +1,4 @@
-package com.codecool.poker;
+package com.codecool.poker.hand;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.lang.StringBuilder;
 import java.util.Iterator;
 import java.lang.Comparable;
 import java.util.Comparator;
+import com.codecool.poker.card.*;
+import com.codecool.poker.properties.*;
+import com.codecool.poker.properties.iterator.*;
 
 public class Hand implements Comparable<Hand>, Comparator<HandPoints>, Iterators {
     private List<Card> cards;

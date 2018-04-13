@@ -1,4 +1,9 @@
-package com.codecool.poker;
+package com.codecool.poker.player;
+
+
+import com.codecool.poker.table.Table;
+import com.codecool.poker.hand.Hand;
+import com.codecool.poker.card.*;
 
 
 public abstract class Player {

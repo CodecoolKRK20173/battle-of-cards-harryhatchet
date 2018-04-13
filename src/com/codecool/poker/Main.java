@@ -1,6 +1,7 @@
 package com.codecool.poker;
 
 import java.util.*;
+import com.codecool.poker.table.*;
 
 public class Main {
 

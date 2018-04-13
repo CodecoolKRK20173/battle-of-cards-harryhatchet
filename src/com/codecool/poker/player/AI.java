@@ -1,7 +1,12 @@
-package com.codecool.poker;
+package com.codecool.poker.player;
 
 import java.util.Iterator;
 import java.util.Random;
+import com.codecool.poker.table.Table;
+import com.codecool.poker.hand.Hand;
+import com.codecool.poker.card.*;
+import com.codecool.poker.properties.*;
+import com.codecool.poker.properties.iterator.*;
 
 public class AI extends Player {
 

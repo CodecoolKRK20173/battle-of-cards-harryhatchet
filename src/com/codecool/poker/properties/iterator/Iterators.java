@@ -1,4 +1,4 @@
-package com.codecool.poker;
+package com.codecool.poker.properties.iterator;
 
 import java.util.Iterator;
 
