@@ -1,12 +1,19 @@
-package com.codecool.poker;
+package com.codecool.poker.card;
 
 import java.util.*;
+import com.codecool.poker.properties.*;
+
 
 public class Deck {
 
     private List<Card> deck = new ArrayList<>();
 
     public Deck() {
+        generateCards();
+        shuffle();
+    }
+
+    private void generateCards() {
         for (Suit suit: Suit.values()) {
             for (Rank rank: Rank.values()) {
                 this.deck.add(new Card(rank, suit));
@@ -14,26 +21,20 @@ public class Deck {
         }
     }
 
-    public void shuffle() {
+    private void shuffle() {
         Collections.shuffle(this.deck);
     }
 
     public List<Card> drawCards(int n) {
         Random generator = new Random();
         List<Card> drawnCards = new ArrayList<>();
-        int i = 0;
 
-        do {
-            int cardIndex = 0;
-            do {
-                cardIndex = generator.nextInt(52);
-            }
-            while (drawnCards.contains(this.deck.get(cardIndex)));
+        int cardIndex = 0;
+        for (int i = 0; i < n; i++) {
+            cardIndex = generator.nextInt(this.deck.size() - i);
             drawnCards.add(this.deck.get(cardIndex));
-
-            i++;
+            this.deck.remove(cardIndex);
         }
-        while (i <= n);
 
         return drawnCards;
     }
