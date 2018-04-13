@@ -34,7 +34,6 @@ public class Table {
         int dealerIndex = players.indexOf(chooseDealer());
         Player dealer = players.get(dealerIndex);
         dealer.setDealer();
-        // dealer.setName("dealer");
 
         int smallBlindIndex = (dealerIndex + 1) % NUM_OF_PLAYERS;
         Player smallBlind = players.get(smallBlindIndex);
@@ -42,7 +41,6 @@ public class Table {
             smallBlind = getNextActivePlayer(smallBlind);
         }
         smallBlind.setSmallBlind();
-        // smallBlind.setName("SB");
         this.pot += 1;
         smallBlind.postSmallBlind();
 
@@ -55,14 +53,7 @@ public class Table {
             this.activeBet = bigBlind.getChips();
         }
         bigBlind.setBigBlind();
-        // bigBlind.setName("BB");
         bigBlind.postBigBlind();
-        // this.activeBet = 2;
-
-        // int utgIndex = (dealerIndex + 3) % NUM_OF_PLAYERS;
-        // Player utg = players.get(utgIndex);
-        // utg.setUTG();
-        // // utg.setName("UTG");
     }
 
     private void initPlayers() {
@@ -142,15 +133,6 @@ public class Table {
         }
         this.currentPlayer = currentPlayer;
         return currentPlayer;
-    /*
-        int i = 1;
-        do {
-            nextPlayer = this.players.get((currentPlayerIndex + i) % this.players.size());
-            i++;
-        }
-        while (nextPlayer.isFold() && i < NUM_OF_PLAYERS);
-
-        return nextPlayer;*/
     }
 
     private int countActivePlayers() {
@@ -239,24 +221,17 @@ public class Table {
             currentPlayer = getSmallBlind();
             this.currentPlayer = currentPlayer;
             if (currentPlayer.isFold() || currentPlayer.getChips() == 0) {
-                // System.out.println("Curr is fold!");
                 previousPlayer = currentPlayer;
                 currentPlayer = getNextActivePlayer(currentPlayer);
                 this.currentPlayer = currentPlayer;
             }
         }
-        // System.out.println("currentPlayer == previousPlayer " + (currentPlayer == previousPlayer));
-        // if (currentPlayer == previousPlayer) {
-        //     System.out.println("Null incoming!");
-        //     return;
-        // }
         
         if (currentPlayer == previousPlayer) {
             return;
         }
 
         do {
-        // for (int i = 0; i < 12; i++){
             pt.printTable();
             System.out.println(currentPlayer.getName() + " chips: " + currentPlayer.getChips());
             int raiseSize = currentPlayer.makeAction();
@@ -266,15 +241,12 @@ public class Table {
                 resetPlayersAction(currentPlayer);
                 this.activeBet = currentPlayer.getBet();
             }
-            System.out.println("Acted? " + currentPlayer.hasActed());
             previousPlayer = currentPlayer;
             currentPlayer = getNextActivePlayer(currentPlayer);
             this.currentPlayer = currentPlayer;
             if (currentPlayer == previousPlayer) {
-                System.out.println("Null curr player!");
                 return;
             }
-            System.out.println("Is betting finished? " + isBettingFinished());
             System.out.println("POT: " + this.pot + "\n~~~~~~~~~~\n");
         }
         while (!isBettingFinished());
@@ -384,7 +356,9 @@ public class Table {
 
     public boolean isGameFinished() {
         for (Player player : players) {
-            if (player.getChips() == 100 * NUM_OF_PLAYERS) {
+            if (player.getChips() >= 100 * NUM_OF_PLAYERS) {
+                System.out.println("GAME OVER!");
+                pt.printTable();
                 return true;
             }
         }

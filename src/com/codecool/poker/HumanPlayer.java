@@ -20,6 +20,9 @@ public class HumanPlayer extends Player {
     private int minRaise;
     private Position position = Position.UTG;
 
+    public HumanPlayer(Table table) {
+        this.table = table;
+    }
 
     public int getChips() {
         return chips;
@@ -106,10 +109,6 @@ public class HumanPlayer extends Player {
         return this.name;
     }
 
-    public HumanPlayer(Table table) {
-        this.table = table;
-    }
-
     public void throwChips(int bet) {
         this.chips -= bet;
         this.bet += bet;
@@ -162,8 +161,8 @@ public class HumanPlayer extends Player {
                 System.out.println("Choose raise size: ");
                 try {
                     int raiseSize = sc.nextInt();
-                this.hasActed = true;
-                return makeRaise(raiseSize);
+                    this.hasActed = true;
+                    return makeRaise(raiseSize);
                 } catch (InputMismatchException e) {
                     e.getMessage();
                 }
