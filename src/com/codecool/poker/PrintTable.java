@@ -2,34 +2,60 @@ package com.codecool.poker;
 
 import java.util.*;
 
-
 public class PrintTable {
     private final int width = 80;
     private final int weigth = 40;
     private String[][] displayTable = new String[width][weigth];
+    private Map<String, String> colorSign = new HashMap<>();
 
-    private final String whiteColor = "\033[0m";
-    private final String greenColor = "\033[32m";
-    private final String blueColor = "\033[37m";
-    private final String blueBackground = "\033[46m";
-    private final String redColor = "\033[31m";
-    private final String brownColor = "\033[30m";
-    private final String yellowColor = "\033[33m";
-    private final String brownBackground = "\033[40m";
+    private final String clear = "\033[H\033[2J";
+    private final String stopColor = "\033[0m";
+    private final String greenColor = "\033[1;32m";
+    private final String redColor = "\033[1;31m";
+    private final String blackColor = "\033[30m";
     private final String pinkColor = "\033[35m";
+    private final String pinkBackground = "\033[45m";
+    private final String whiteBackground = "\033[107m";
+    private final String blackBackground = "\033[40m";
+    private final String greyBackground = "\033[100m";
 
     Table table;
 
     public PrintTable(Table table) {
         this.table = table;
         initDisplayTable();
+        initColorSignMap();
+    }
+
+    private void initColorSignMap() {
+        String s = "0123456789AKQJT";
+        String l;
+        colorSign.put("#", pinkBackground + pinkColor + "#" + stopColor);
+        colorSign.put("♥", whiteBackground + redColor + "♥" + stopColor);
+        colorSign.put("♦", whiteBackground + redColor + "♦" + stopColor);
+        colorSign.put("♠", whiteBackground + blackColor + "♠" + stopColor);
+        colorSign.put("♣", whiteBackground + blackColor + "♣" + stopColor);
+        colorSign.put("-", whiteBackground + "-" + stopColor);
+        colorSign.put("D", blackBackground + redColor + "D" + stopColor);
+        for (int i = 0; i < s.length(); i++) {
+            l = String.valueOf(s.charAt(i));
+            colorSign.put(l, greyBackground + greenColor + l + stopColor);
+        }
+
     }
 
     public void printTable() {
+        String sign;
         update();
-        for(int y = 0; y < weigth; y++) {
-            for(int x = 0; x < width; x++) {
-                System.out.print(displayTable[x][y]);
+        for (int y = 0; y < weigth; y++) {
+            for (int x = 0; x < width; x++) {
+                sign = displayTable[x][y];
+                if (colorSign.containsKey(sign)) {
+                    System.out.print(colorSign.get(sign));
+                } else {
+                    System.out.print(greyBackground + sign);
+                }
+
             }
             System.out.println();
         }
@@ -61,7 +87,7 @@ public class PrintTable {
         addString(title1, width - 16, weigth - 13);
         addString(title2, width - 16, weigth - 12);
         addString(title3, width - 16, weigth - 11);
-        
+
     }
 
     public void update() {
@@ -98,27 +124,29 @@ public class PrintTable {
     private void addCards(Player player, int firstX, int firstY, boolean isHorizontal) {
         String card;
         List<Card> cards = player.getHand().getCards();
-        int x = 0, y = 0;
-        for(int i = 0; i < cards.size(); i++) {
+        int x = 0, y = 0, j = 0;
+        for (int i = 0; i < cards.size(); i++) {
             if (isHorizontal) {
                 x = i * 3;
-            } else{
+            } else {
                 y = i * 2;
+                j = 1;
             }
-            if(player.equals(table.getCurrentPlayer())) {
+            if (player.equals(table.getCurrentPlayer())) {
                 card = cards.get(i).toString();
             } else {
                 card = "--";
             }
-            
+
+            addString("--", firstX + x + 1, firstY + y, !isHorizontal);
             addString(card, firstX + x, firstY + y, !isHorizontal);
         }
     }
 
     private void initTable() {
         this.displayTable = new String[width][weigth];
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < weigth; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < weigth; y++) {
                 displayTable[x][y] = " ";
             }
         }
@@ -126,30 +154,29 @@ public class PrintTable {
 
     private void addFrame() {
         String sign = "#";
-        for(int x = 0; x < width; x++) {
+        for (int x = 0; x < width; x++) {
             displayTable[x][0] = sign;
             displayTable[x][weigth - 1] = sign;
         }
-        for(int y = 0; y < weigth; y++) {
+        for (int y = 0; y < weigth; y++) {
             displayTable[0][y] = sign;
             displayTable[width - 1][y] = sign;
         }
     }
 
-    private void addString(String str, int firstX, int firstY) {  
+    private void addString(String str, int firstX, int firstY) {
         addString(str, firstX, firstY, true);
-    }  
+    }
 
     private void addString(String str, int firstX, int firstY, boolean isHorizontal) {
         int x = 0, y = 0;
-        for(int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < str.length(); i++) {
             if (isHorizontal) {
                 x = i;
-            } else{
+            } else {
                 y = i;
             }
             displayTable[firstX + x][firstY + y] = Character.toString(str.charAt(i));
         }
     }
 }
-
